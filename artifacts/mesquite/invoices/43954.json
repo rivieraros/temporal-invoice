@@ -1,0 +1,232 @@
+{
+  "feedlot": {
+    "name": "Mesquite Cattle Feeders",
+    "address_line1": "P.O. Box 1025",
+    "address_line2": "1504 E. Highway 78",
+    "city": "Brawley",
+    "state": "CA",
+    "postal_code": "92227",
+    "phone": null
+  },
+  "owner": {
+    "owner_number": null,
+    "name": "Sugar Mountain Livestock",
+    "address_line1": "1725 Westlake Ave. N",
+    "address_line2": "Suite 200",
+    "city": "Seattle",
+    "state": "WA",
+    "postal_code": "98109"
+  },
+  "invoice_number": "43954",
+  "invoice_date": "2025-11-30",
+  "statement_date": null,
+  "lot": {
+    "lot_number": "0543",
+    "pen": null,
+    "home_pen": null,
+    "sex": "Steers",
+    "date_in": "2023-12-27",
+    "ownership_pct": "100.0"
+  },
+  "cattle_inventory": {
+    "head_received": 109,
+    "head_shipped": null,
+    "head_out": 104,
+    "deaths": 5,
+    "current_head": null,
+    "live_head": "0.0",
+    "death_loss_pct": "4.59"
+  },
+  "line_items": [
+    {
+      "description": "W13",
+      "rate": "291.02",
+      "rate_unit": "TON",
+      "quantity": "17050.0",
+      "quantity_unit": "LBS",
+      "ownership_pct": null,
+      "total": "2480.94"
+    },
+    {
+      "description": "Hospital Feed",
+      "rate": "323.01",
+      "rate_unit": "TON",
+      "quantity": "2030.59",
+      "quantity_unit": "LBS",
+      "ownership_pct": null,
+      "total": "327.95"
+    },
+    {
+      "description": "Yardage",
+      "rate": null,
+      "rate_unit": null,
+      "quantity": null,
+      "quantity_unit": null,
+      "ownership_pct": null,
+      "total": "38.48"
+    }
+  ],
+  "totals": {
+    "total_period_charges": "2847.37",
+    "total_amount_due": null
+  },
+  "performance_metrics": [
+    {
+      "metric_name": "Total Head Days",
+      "ptd_value": "962",
+      "ltd_value": "62858",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Head Days",
+      "ptd_value": "8.83",
+      "ltd_value": "576.68",
+      "unit": null
+    },
+    {
+      "metric_name": "Total Pounds Fed",
+      "ptd_value": "19081",
+      "ltd_value": "1289574",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Daily Consumption",
+      "ptd_value": "19.83",
+      "ltd_value": "20.52",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Daily Cost",
+      "ptd_value": "2.96",
+      "ltd_value": "3.02",
+      "unit": null
+    }
+  ],
+  "feeding_expense_summary": [],
+  "financial_summary": [
+    {
+      "label": "Total Charges",
+      "current": "2847.37",
+      "previous": "186834.69",
+      "total": "189682.06"
+    },
+    {
+      "label": "Special Feed Credits",
+      "current": "0.0",
+      "previous": "0.0",
+      "total": "0.0"
+    },
+    {
+      "label": "Feed Prepayments",
+      "current": "0.0",
+      "previous": "0.0",
+      "total": "0.0"
+    },
+    {
+      "label": "Net Amount",
+      "current": "2847.37",
+      "previous": "186834.69",
+      "total": "189682.06"
+    },
+    {
+      "label": "Credits",
+      "current": "186834.69",
+      "previous": null,
+      "total": null
+    },
+    {
+      "label": "Current Balance",
+      "current": "2847.37",
+      "previous": null,
+      "total": null
+    },
+    {
+      "label": "Purchase Cost",
+      "current": "0.0",
+      "previous": null,
+      "total": null
+    }
+  ],
+  "current_period_transactions": [
+    {
+      "date": "2025-11-26",
+      "head": "37",
+      "type": "Ship",
+      "pay_weight": "57024",
+      "amount": null,
+      "note": "ONE WORLD BEEF"
+    }
+  ],
+  "feeding_history": [
+    {
+      "period_label": "12/27 - 09/30",
+      "live": "37",
+      "in": "109",
+      "ship": "67",
+      "trans": "0",
+      "dead": "5",
+      "avg": "57.3",
+      "hd_days_total": "60479",
+      "hd_days_per_day": "20.53",
+      "total_pounds_fed": "1247030",
+      "avg_daily_consumption": "2.93",
+      "cog_feed": "0.09",
+      "cog_other": "1.3",
+      "cog_total": "3.02"
+    },
+    {
+      "period_label": "10/01 - 10/31",
+      "live": "37",
+      "in": "0",
+      "ship": "0",
+      "trans": "0",
+      "dead": "0",
+      "avg": "35.1",
+      "hd_days_total": "1147",
+      "hd_days_per_day": "10.64",
+      "total_pounds_fed": "23465",
+      "avg_daily_consumption": "3.16",
+      "cog_feed": "0.04",
+      "cog_other": "3.0",
+      "cog_total": "3.2"
+    },
+    {
+      "period_label": "11/01 - 11/30",
+      "live": "0",
+      "in": "0",
+      "ship": "37",
+      "trans": "0",
+      "dead": "0",
+      "avg": "32.0",
+      "hd_days_total": "962",
+      "hd_days_per_day": "19.83",
+      "total_pounds_fed": "19081",
+      "avg_daily_consumption": "2.92",
+      "cog_feed": "0.04",
+      "cog_other": "2.96",
+      "cog_total": "3.0"
+    },
+    {
+      "period_label": "Summary",
+      "live": "0",
+      "in": "109",
+      "ship": "104",
+      "trans": "0",
+      "dead": "5",
+      "avg": "57.6",
+      "hd_days_total": "62858",
+      "hd_days_per_day": "20.52",
+      "total_pounds_fed": "1289574",
+      "avg_daily_consumption": "2.93",
+      "cog_feed": "0.08",
+      "cog_other": "3.01",
+      "cog_total": "3.09"
+    }
+  ],
+  "notes": null,
+  "document_metadata": {
+    "source_file": "C:\\Users\\sunil\\Downloads\\Sunil Meetings\\Prospects\\Sugar Mountain\\Mesquite.pdf",
+    "page_count": 1,
+    "extracted_at": "2026-01-07T11:17:51.505139"
+  }
+}

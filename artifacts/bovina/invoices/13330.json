@@ -1,0 +1,158 @@
+{
+  "feedlot": {
+    "name": "BOVINA FEEDERS INC. DBA BF2",
+    "address_line1": "1741 Co Rd S",
+    "address_line2": null,
+    "city": "FRIONA",
+    "state": "TX",
+    "postal_code": null,
+    "phone": "806 265-3281"
+  },
+  "owner": {
+    "owner_number": "531",
+    "name": "SUGAR MOUNTAIN LIVESTOCK",
+    "address_line1": "1725 WESTLAKE AVE N #200",
+    "address_line2": null,
+    "city": "SEATTLE",
+    "state": "WA",
+    "postal_code": "98109"
+  },
+  "invoice_number": "13330",
+  "invoice_date": null,
+  "statement_date": "2025-11-30",
+  "lot": {
+    "lot_number": "20-3883",
+    "pen": "090",
+    "home_pen": null,
+    "sex": "Mixed",
+    "date_in": "1924-06-19",
+    "ownership_pct": "100.0"
+  },
+  "cattle_inventory": {
+    "head_received": 95,
+    "head_shipped": 2,
+    "head_out": null,
+    "deaths": 0,
+    "current_head": 93,
+    "live_head": null,
+    "death_loss_pct": "0.0"
+  },
+  "line_items": [
+    {
+      "description": "Feed & Rations",
+      "rate": "187.7",
+      "rate_unit": "Ton",
+      "quantity": "90440",
+      "quantity_unit": "LBS",
+      "ownership_pct": "100.0",
+      "total": "8487.61"
+    },
+    {
+      "description": "TCFA DUES",
+      "rate": null,
+      "rate_unit": null,
+      "quantity": "93",
+      "quantity_unit": "HD",
+      "ownership_pct": "100.0",
+      "total": "12.09"
+    },
+    {
+      "description": "CATTLE INSURANCE",
+      "rate": null,
+      "rate_unit": null,
+      "quantity": "93",
+      "quantity_unit": "HD",
+      "ownership_pct": "100.0",
+      "total": "17.67"
+    }
+  ],
+  "totals": {
+    "total_period_charges": null,
+    "total_amount_due": "8517.37"
+  },
+  "performance_metrics": [
+    {
+      "metric_name": "Total Head Days",
+      "ptd_value": "2790",
+      "ltd_value": "49694",
+      "unit": null
+    },
+    {
+      "metric_name": "Average Head Days",
+      "ptd_value": null,
+      "ltd_value": "523",
+      "unit": null
+    },
+    {
+      "metric_name": "Total Ration Fed",
+      "ptd_value": "90440",
+      "ltd_value": "1476502",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Daily Consumption",
+      "ptd_value": "32.416",
+      "ltd_value": "29.712",
+      "unit": null
+    },
+    {
+      "metric_name": "Average Daily Cost",
+      "ptd_value": "3.053",
+      "ltd_value": "2.83",
+      "unit": null
+    },
+    {
+      "metric_name": "Average Pay Weight",
+      "ptd_value": null,
+      "ltd_value": "399",
+      "unit": null
+    },
+    {
+      "metric_name": "Current Est Weight",
+      "ptd_value": null,
+      "ltd_value": "1468",
+      "unit": null
+    }
+  ],
+  "feeding_expense_summary": [
+    {
+      "category": "FEED",
+      "total_amount": "138779.68",
+      "avg_per_head": "1460.84",
+      "cog_per_cwt": "136.59"
+    },
+    {
+      "category": "MEDICINE",
+      "total_amount": "260.81",
+      "avg_per_head": "2.75",
+      "cog_per_cwt": "0.26"
+    },
+    {
+      "category": "PROCESSING",
+      "total_amount": "1067.06",
+      "avg_per_head": "11.23",
+      "cog_per_cwt": "1.05"
+    },
+    {
+      "category": "CATTLE DUES/INS",
+      "total_amount": "533.56",
+      "avg_per_head": "5.62",
+      "cog_per_cwt": "0.53"
+    },
+    {
+      "category": "Total Feeding Expenses",
+      "total_amount": "140641.11",
+      "avg_per_head": "1480.43",
+      "cog_per_cwt": "138.42"
+    }
+  ],
+  "financial_summary": [],
+  "current_period_transactions": [],
+  "feeding_history": [],
+  "notes": null,
+  "document_metadata": {
+    "source_file": "C:\\Users\\sunil\\Downloads\\Sunil Meetings\\Prospects\\Sugar Mountain\\Bovina.pdf",
+    "page_count": 1,
+    "extracted_at": "2026-01-07T10:59:08.622748"
+  }
+}

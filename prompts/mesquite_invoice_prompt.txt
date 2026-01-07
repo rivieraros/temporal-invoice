@@ -1,0 +1,134 @@
+Extract the Mesquite Invoice (single lot).
+
+Context cues:
+- Invoice No and Invoice Date appear in header.
+- Lot section includes Lot, Home Pen, Date In, Ownership %, head counts, sex breakdown.
+- Period Charges table includes Description, Quantity (with rate), Total.
+- Financial Summary includes Current / Previous / Total values.
+- Performance Summary includes PTD and LTD metrics.
+- Current Period Transactions section lists ship/dead events.
+- Feeding History grid shows head counts, head days, feed, and COG per period.
+
+Return JSON that matches this schema exactly:
+{
+  "feedlot": {
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null,
+    "phone": string|null
+  },
+  "owner": {
+    "owner_number": string|null,
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null
+  },
+  "invoice_number": string|null,
+  "invoice_date": "YYYY-MM-DD"|null,
+  "statement_date": "YYYY-MM-DD"|null,
+  "lot": {
+    "lot_number": string|null,
+    "pen": string|null,
+    "home_pen": string|null,
+    "sex": string|null,
+    "date_in": "YYYY-MM-DD"|null,
+    "ownership_pct": number|null
+  },
+  "cattle_inventory": {
+    "head_received": integer|null,
+    "head_shipped": integer|null,
+    "head_out": integer|null,
+    "deaths": integer|null,
+    "current_head": integer|null,
+    "live_head": number|null,
+    "death_loss_pct": number|null
+  },
+  "line_items": [
+    {
+      "description": string,
+      "rate": number|null,
+      "rate_unit": string|null,
+      "quantity": number|null,
+      "quantity_unit": string|null,
+      "ownership_pct": number|null,
+      "total": number|null
+    }
+  ],
+  "totals": {
+    "total_period_charges": number|null,
+    "total_amount_due": number|null
+  },
+  "performance_metrics": [
+    {
+      "metric_name": string,
+      "ptd_value": number|null,
+      "ltd_value": number|null,
+      "unit": string|null
+    }
+  ],
+  "feeding_expense_summary": [
+    {
+      "category": string,
+      "total_amount": number|null,
+      "avg_per_head": number|null,
+      "cog_per_cwt": number|null
+    }
+  ],
+  "financial_summary": [
+    {
+      "label": string,
+      "current": number|null,
+      "previous": number|null,
+      "total": number|null
+    }
+  ],
+  "current_period_transactions": [
+    {
+      "date": "YYYY-MM-DD"|null,
+      "head": number|null,
+      "type": string|null,
+      "pay_weight": number|null,
+      "amount": number|null,
+      "note": string|null
+    }
+  ],
+  "feeding_history": [
+    {
+      "period_label": string,
+      "live": number|null,
+      "in": number|null,
+      "ship": number|null,
+      "trans": number|null,
+      "dead": number|null,
+      "avg": number|null,
+      "hd_days_total": number|null,
+      "hd_days_per_day": number|null,
+      "total_pounds_fed": number|null,
+      "avg_daily_consumption": number|null,
+      "cog_feed": number|null,
+      "cog_other": number|null,
+      "cog_total": number|null
+    }
+  ],
+  "notes": string|null
+}
+
+Extraction rules:
+- For line items like "16,470.00 lb @ $291.00/ton", parse quantity=16470, quantity_unit=LBS, rate=291.00, rate_unit=TON.
+- If the description includes a ration code (e.g., W1J or W13), keep it in description.
+- Financial Summary rows should be captured as-is with their Current/Previous/Total values.
+- If a section is absent, return an empty list for that section.
+- Preserve leading zeros in lot_number.
+
+CRITICAL - Amount accuracy:
+- Read each digit in the Total column very carefully. Common OCR errors: 9↔5, 1↔7, 8↔6, 3↔8.
+- The total_period_charges MUST equal the sum of all line_items[].total values.
+- Look for "Total Charges" or "Net Amount" in the Current column of Financial Summary for the period total.
+- If you see a "Current Balance" row, that is the total_amount_due.
+- Capture ALL line items - do not skip any rows in the Period Charges table.

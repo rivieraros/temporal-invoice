@@ -1,0 +1,73 @@
+Extract the Mesquite "Statement of Account".
+
+Context cues:
+- Feedlot name: Mesquite Cattle Feeders, Inc.
+- Statement Date appears near the header.
+- Customer ID (Owner number) shown.
+- Transactions list includes Date, Lot, Reference, Type, Charge, Credit.
+- Summary table includes Beginning Balance, Statement Charges, Statement Credits, Amount Due.
+
+Return JSON that matches this schema exactly:
+{
+  "feedlot": {
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null,
+    "phone": string|null
+  },
+  "owner": {
+    "owner_number": string|null,
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null
+  },
+  "statement_date": "YYYY-MM-DD"|null,
+  "period_start": "YYYY-MM-DD"|null,
+  "period_end": "YYYY-MM-DD"|null,
+  "total_balance": number|null,
+  "summary_rows": [
+    {
+      "category": string,
+      "beginning_balance": number|null,
+      "statement_charges": number|null,
+      "statement_credits": number|null,
+      "amount_due": number|null
+    }
+  ],
+  "transactions": [
+    {
+      "lot_number": string|null,
+      "date": "YYYY-MM-DD"|null,
+      "ref_number": string|null,
+      "type": string|null,
+      "description": string|null,
+      "principal": number|null,
+      "interest": number|null,
+      "total": number|null,
+      "charge": number|null,
+      "credit": number|null
+    }
+  ],
+  "lot_references": [
+    {
+      "lot_number": string,
+      "invoice_number": string|null,
+      "statement_charge": number|null,
+      "ending_balance": number|null,
+      "description": string|null
+    }
+  ],
+  "notes": string|null
+}
+
+Extraction rules:
+- Every transaction row becomes one transactions entry.
+- For each Feed Inv transaction, add a lot_references entry (lot_number, invoice_number from Reference, statement_charge from Charge).
+- total_balance should use Amount Due total if present.
+- If statement charges/credits are shown in a summary table, capture them in summary_rows.

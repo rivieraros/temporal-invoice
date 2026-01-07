@@ -1,0 +1,126 @@
+{
+  "feedlot": {
+    "name": "Mesquite Cattle Feeders",
+    "address_line1": "P.O. Box 1025",
+    "address_line2": "1504 E. Highway 78",
+    "city": "Brawley",
+    "state": "CA",
+    "postal_code": "92227",
+    "phone": "7603444718"
+  },
+  "owner": {
+    "owner_number": "702",
+    "name": "Sugar Mountain Livestock",
+    "address_line1": "1725 Westlake Ave. N",
+    "address_line2": "Suite 200",
+    "city": "Seattle",
+    "state": "WA",
+    "postal_code": "98109"
+  },
+  "statement_date": "2025-11-30",
+  "period_start": "2025-11-01",
+  "period_end": null,
+  "total_balance": 8421.56,
+  "summary_rows": [
+    {
+      "category": "Feed",
+      "beginning_balance": 16096.07,
+      "statement_charges": 8421.56,
+      "statement_credits": 16096.07,
+      "amount_due": 8421.56
+    },
+    {
+      "category": "Cattle",
+      "beginning_balance": 0.0,
+      "statement_charges": 0.0,
+      "statement_credits": 0.0,
+      "amount_due": 0.0
+    },
+    {
+      "category": "Total",
+      "beginning_balance": 16096.07,
+      "statement_charges": 8421.56,
+      "statement_credits": 16096.07,
+      "amount_due": 8421.56
+    }
+  ],
+  "transactions": [
+    {
+      "lot_number": null,
+      "date": "2025-11-13",
+      "ref_number": "WIRE",
+      "type": "Pymt",
+      "description": null,
+      "principal": null,
+      "interest": null,
+      "total": null,
+      "charge": null,
+      "credit": 16096.07
+    },
+    {
+      "lot_number": "0522",
+      "date": "2025-11-30",
+      "ref_number": "43953",
+      "type": "Feed Inv",
+      "description": null,
+      "principal": null,
+      "interest": null,
+      "total": null,
+      "charge": 2655.32,
+      "credit": null
+    },
+    {
+      "lot_number": "0543",
+      "date": "2025-11-30",
+      "ref_number": "43954",
+      "type": "Feed Inv",
+      "description": null,
+      "principal": null,
+      "interest": null,
+      "total": null,
+      "charge": 2847.37,
+      "credit": null
+    },
+    {
+      "lot_number": "0544",
+      "date": "2025-11-30",
+      "ref_number": "43955",
+      "type": "Feed Inv",
+      "description": null,
+      "principal": null,
+      "interest": null,
+      "total": null,
+      "charge": 2918.87,
+      "credit": null
+    }
+  ],
+  "lot_references": [
+    {
+      "lot_number": "0522",
+      "invoice_number": "43953",
+      "statement_charge": 2655.32,
+      "ending_balance": null,
+      "description": null
+    },
+    {
+      "lot_number": "0543",
+      "invoice_number": "43954",
+      "statement_charge": 2847.37,
+      "ending_balance": null,
+      "description": null
+    },
+    {
+      "lot_number": "0544",
+      "invoice_number": "43955",
+      "statement_charge": 2918.87,
+      "ending_balance": null,
+      "description": null
+    }
+  ],
+  "notes": null,
+  "document_metadata": {
+    "source_file": "C:\\Users\\sunil\\Downloads\\Sunil Meetings\\Prospects\\Sugar Mountain\\Mesquite.pdf",
+    "page_count": 1,
+    "extracted_at": "2026-01-07T11:15:59.576045"
+  }
+}

@@ -1,0 +1,73 @@
+Extract the Bovina "Statement of Notes".
+
+Context cues:
+- Feedlot name: BOVINA FEEDERS INC. DBA BF2
+- Owner: SUGAR MOUNTAIN LIVESTOCK
+- Owner number: 531
+- Period: 11/1/2025 to 11/30/2025
+- Each Subnote corresponds to a Lot number (e.g., 20-3883)
+- Rows include: Beginning Balance, OCTOBER FEED BILL, Feed inv:Lot <lot>, Ending Balance
+- Invoice reference numbers appear in the Ref Number column
+- Statement Balance is shown at the footer
+
+Return JSON that matches this schema exactly:
+{
+  "feedlot": {
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null,
+    "phone": string|null
+  },
+  "owner": {
+    "owner_number": string|null,
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null
+  },
+  "statement_date": "YYYY-MM-DD"|null,
+  "period_start": "YYYY-MM-DD"|null,
+  "period_end": "YYYY-MM-DD"|null,
+  "total_balance": number|null,
+  "lot_references": [
+    {
+      "lot_number": string,
+      "invoice_number": string|null,
+      "statement_charge": number|null,
+      "ending_balance": number|null,
+      "description": string|null
+    }
+  ],
+  "transactions": [
+    {
+      "lot_number": string|null,
+      "date": "YYYY-MM-DD"|null,
+      "ref_number": string|null,
+      "type": string|null,
+      "description": string|null,
+      "principal": number|null,
+      "interest": number|null,
+      "total": number|null
+    }
+  ],
+  "notes": string|null
+}
+
+Extraction rules:
+- Every row in the statement should become one transaction entry.
+- Carry forward the current Subnote as lot_number for subsequent rows until the Subnote changes.
+- For each "Feed inv:Lot" row, add a lot_references entry.
+- For each lot, capture the "Ending Balance" amount when present.
+- The "OCTOBER FEED BILL" line is usually a credit that offsets prior balance; keep it as-is.
+
+CRITICAL - Amount accuracy:
+- Read each digit in dollar amounts very carefully.
+- For statement_charge amounts, double-check each digit. Common errors: 9 vs 5, 1 vs 7, 8 vs 6.
+- Cross-reference: The statement_charge for each lot should match the line item in the transactions.
+- The total_balance should approximately equal the sum of all lot ending balances.
+- Count all lots carefully - ensure you capture EVERY lot listed, even if some are on different pages.

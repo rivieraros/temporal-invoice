@@ -1,0 +1,1077 @@
+[
+  {
+    "feedlot": "BOVINA FEEDERS INC. DBA BF2",
+    "status": "PASS",
+    "checks": [
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13330 has all required fields",
+        "evidence": {
+          "invoice_number": "13330"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13330 line sum matches total",
+        "evidence": {
+          "invoice_number": "13330",
+          "line_sum": "8517.37",
+          "invoice_total": "8517.37",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13334 has all required fields",
+        "evidence": {
+          "invoice_number": "13334"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13334 line sum matches total",
+        "evidence": {
+          "invoice_number": "13334",
+          "line_sum": "7052.34",
+          "invoice_total": "7052.34",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13335 has all required fields",
+        "evidence": {
+          "invoice_number": "13335"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13335 line sum matches total",
+        "evidence": {
+          "invoice_number": "13335",
+          "line_sum": "5448.03",
+          "invoice_total": "5448.03",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13339 has all required fields",
+        "evidence": {
+          "invoice_number": "13339"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13339 line sum matches total",
+        "evidence": {
+          "invoice_number": "13339",
+          "line_sum": "7591.23",
+          "invoice_total": "7591.23",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13347 has all required fields",
+        "evidence": {
+          "invoice_number": "13347"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13347 line sum matches total",
+        "evidence": {
+          "invoice_number": "13347",
+          "line_sum": "3492.23",
+          "invoice_total": "3492.23",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13353 has all required fields",
+        "evidence": {
+          "invoice_number": "13353"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13353 line sum matches total",
+        "evidence": {
+          "invoice_number": "13353",
+          "line_sum": "10510.03",
+          "invoice_total": "10510.03",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13354 has all required fields",
+        "evidence": {
+          "invoice_number": "13354"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13354 line sum matches total",
+        "evidence": {
+          "invoice_number": "13354",
+          "line_sum": "6461.15",
+          "invoice_total": "6461.15",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13355 has all required fields",
+        "evidence": {
+          "invoice_number": "13355"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13355 line sum matches total",
+        "evidence": {
+          "invoice_number": "13355",
+          "line_sum": "15518.02",
+          "invoice_total": "15518.02",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13357 has all required fields",
+        "evidence": {
+          "invoice_number": "13357"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13357 line sum matches total",
+        "evidence": {
+          "invoice_number": "13357",
+          "line_sum": "2154.95",
+          "invoice_total": "2154.95",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13358 has all required fields",
+        "evidence": {
+          "invoice_number": "13358"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13358 line sum matches total",
+        "evidence": {
+          "invoice_number": "13358",
+          "line_sum": "1835.87",
+          "invoice_total": "1835.87",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13411 has all required fields",
+        "evidence": {
+          "invoice_number": "13411"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13411 line sum matches total",
+        "evidence": {
+          "invoice_number": "13411",
+          "line_sum": "2372.35",
+          "invoice_total": "2372.35",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13490 has all required fields",
+        "evidence": {
+          "invoice_number": "13490"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13490 line sum matches total",
+        "evidence": {
+          "invoice_number": "13490",
+          "line_sum": "15983.39",
+          "invoice_total": "15983.39",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13491 has all required fields",
+        "evidence": {
+          "invoice_number": "13491"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13491 line sum matches total",
+        "evidence": {
+          "invoice_number": "13491",
+          "line_sum": "16933.98",
+          "invoice_total": "16933.98",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13496 has all required fields",
+        "evidence": {
+          "invoice_number": "13496"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13496 line sum matches total",
+        "evidence": {
+          "invoice_number": "13496",
+          "line_sum": "6991.85",
+          "invoice_total": "6991.85",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13497 has all required fields",
+        "evidence": {
+          "invoice_number": "13497"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13497 line sum matches total",
+        "evidence": {
+          "invoice_number": "13497",
+          "line_sum": "6205.23",
+          "invoice_total": "6205.23",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13501 has all required fields",
+        "evidence": {
+          "invoice_number": "13501"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13501 line sum matches total",
+        "evidence": {
+          "invoice_number": "13501",
+          "line_sum": "14579.62",
+          "invoice_total": "14579.62",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13502 has all required fields",
+        "evidence": {
+          "invoice_number": "13502"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13502 line sum matches total",
+        "evidence": {
+          "invoice_number": "13502",
+          "line_sum": "13195.76",
+          "invoice_total": "13195.76",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13506 has all required fields",
+        "evidence": {
+          "invoice_number": "13506"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13506 line sum matches total",
+        "evidence": {
+          "invoice_number": "13506",
+          "line_sum": "6498.04",
+          "invoice_total": "6498.04",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13508 has all required fields",
+        "evidence": {
+          "invoice_number": "13508"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13508 line sum matches total",
+        "evidence": {
+          "invoice_number": "13508",
+          "line_sum": "7995.87",
+          "invoice_total": "7995.87",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13568 has all required fields",
+        "evidence": {
+          "invoice_number": "13568"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13568 line sum matches total",
+        "evidence": {
+          "invoice_number": "13568",
+          "line_sum": "2041.32",
+          "invoice_total": "2041.32",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13569 has all required fields",
+        "evidence": {
+          "invoice_number": "13569"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13569 line sum matches total",
+        "evidence": {
+          "invoice_number": "13569",
+          "line_sum": "2264.83",
+          "invoice_total": "2264.83",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13582 has all required fields",
+        "evidence": {
+          "invoice_number": "13582"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13582 line sum matches total",
+        "evidence": {
+          "invoice_number": "13582",
+          "line_sum": "687.25",
+          "invoice_total": "687.25",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13583 has all required fields",
+        "evidence": {
+          "invoice_number": "13583"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13583 line sum matches total",
+        "evidence": {
+          "invoice_number": "13583",
+          "line_sum": "769.08",
+          "invoice_total": "769.08",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "D1_DUPLICATE_INVOICE",
+        "severity": "INFO",
+        "passed": true,
+        "message": "No duplicate invoices detected",
+        "evidence": {
+          "invoice_count": 23
+        }
+      },
+      {
+        "check_id": "A1_PACKAGE_COMPLETENESS",
+        "severity": "WARN",
+        "passed": true,
+        "message": "1 invoices missing from source PDF (not extraction failure)",
+        "evidence": {
+          "source_pdf_missing": [
+            "13304"
+          ],
+          "source_pdf_missing_reasons": {
+            "13304": "Invoice for lot 20-3927 - listed on statement but invoice page not in PDF"
+          },
+          "expected_count": 24,
+          "extracted_count": 23
+        }
+      },
+      {
+        "check_id": "A2_EXTRA_INVOICES",
+        "severity": "INFO",
+        "passed": true,
+        "message": "No extra invoices found",
+        "evidence": {}
+      },
+      {
+        "check_id": "A3_PERIOD_CONSISTENCY",
+        "severity": "INFO",
+        "passed": true,
+        "message": "All invoices within statement period",
+        "evidence": {
+          "period_start": "2025-11-01",
+          "period_end": "2025-11-30"
+        }
+      },
+      {
+        "check_id": "A4_FEEDLOT_OWNER_CONSISTENCY",
+        "severity": "INFO",
+        "passed": true,
+        "message": "All invoices match statement feedlot and owner",
+        "evidence": {
+          "feedlot": "BOVINA FEEDERS INC. DBA BF2",
+          "owner_number": "531"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13330 amount matches statement",
+        "evidence": {
+          "invoice_number": "13330",
+          "invoice_total": "8517.37",
+          "statement_amount": "8517.37",
+          "match_type": "invoice_number",
+          "match_key": "13330"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13334 amount matches statement",
+        "evidence": {
+          "invoice_number": "13334",
+          "invoice_total": "7052.34",
+          "statement_amount": "7052.34",
+          "match_type": "invoice_number",
+          "match_key": "13334"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13335 differs from statement (trusting invoice): 5448.03 vs 5446.03",
+        "evidence": {
+          "invoice_number": "13335",
+          "invoice_total": "5448.03",
+          "statement_amount": "5446.03",
+          "difference": "2.00",
+          "match_type": "invoice_number",
+          "match_key": "13335",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13339 amount matches statement",
+        "evidence": {
+          "invoice_number": "13339",
+          "invoice_total": "7591.23",
+          "statement_amount": "7591.23",
+          "match_type": "invoice_number",
+          "match_key": "13339"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13347 differs from statement (trusting invoice): 3492.23 vs 3452.23",
+        "evidence": {
+          "invoice_number": "13347",
+          "invoice_total": "3492.23",
+          "statement_amount": "3452.23",
+          "difference": "40.00",
+          "match_type": "invoice_number",
+          "match_key": "13347",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13353 amount matches statement",
+        "evidence": {
+          "invoice_number": "13353",
+          "invoice_total": "10510.03",
+          "statement_amount": "10510.03",
+          "match_type": "invoice_number",
+          "match_key": "13353"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13354 amount matches statement",
+        "evidence": {
+          "invoice_number": "13354",
+          "invoice_total": "6461.15",
+          "statement_amount": "6461.15",
+          "match_type": "invoice_number",
+          "match_key": "13354"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13355 differs from statement (trusting invoice): 15518.02 vs 15182.02",
+        "evidence": {
+          "invoice_number": "13355",
+          "invoice_total": "15518.02",
+          "statement_amount": "15182.02",
+          "difference": "336.00",
+          "match_type": "invoice_number",
+          "match_key": "13355",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13357 amount matches statement",
+        "evidence": {
+          "invoice_number": "13357",
+          "invoice_total": "2154.95",
+          "statement_amount": "2154.95",
+          "match_type": "invoice_number",
+          "match_key": "13357"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13358 amount matches statement",
+        "evidence": {
+          "invoice_number": "13358",
+          "invoice_total": "1835.87",
+          "statement_amount": "1835.87",
+          "match_type": "invoice_number",
+          "match_key": "13358"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13411 amount matches statement",
+        "evidence": {
+          "invoice_number": "13411",
+          "invoice_total": "2372.35",
+          "statement_amount": "2372.35",
+          "match_type": "invoice_number",
+          "match_key": "13411"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13490 differs from statement (trusting invoice): 15983.39 vs 15883.39",
+        "evidence": {
+          "invoice_number": "13490",
+          "invoice_total": "15983.39",
+          "statement_amount": "15883.39",
+          "difference": "100.00",
+          "match_type": "invoice_number",
+          "match_key": "13490",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13491 differs from statement (trusting invoice): 16933.98 vs 16333.98",
+        "evidence": {
+          "invoice_number": "13491",
+          "invoice_total": "16933.98",
+          "statement_amount": "16333.98",
+          "difference": "600.00",
+          "match_type": "invoice_number",
+          "match_key": "13491",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13496 differs from statement (trusting invoice): 6991.85 vs 6917.85",
+        "evidence": {
+          "invoice_number": "13496",
+          "invoice_total": "6991.85",
+          "statement_amount": "6917.85",
+          "difference": "74.00",
+          "match_type": "invoice_number",
+          "match_key": "13496",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13497 amount matches statement",
+        "evidence": {
+          "invoice_number": "13497",
+          "invoice_total": "6205.23",
+          "statement_amount": "6205.23",
+          "match_type": "invoice_number",
+          "match_key": "13497"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13501 amount matches statement",
+        "evidence": {
+          "invoice_number": "13501",
+          "invoice_total": "14579.62",
+          "statement_amount": "14579.62",
+          "match_type": "invoice_number",
+          "match_key": "13501"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13502 amount matches statement",
+        "evidence": {
+          "invoice_number": "13502",
+          "invoice_total": "13195.76",
+          "statement_amount": "13195.76",
+          "match_type": "invoice_number",
+          "match_key": "13502"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13506 differs from statement (trusting invoice): 6498.04 vs 6458.04",
+        "evidence": {
+          "invoice_number": "13506",
+          "invoice_total": "6498.04",
+          "statement_amount": "6458.04",
+          "difference": "40.00",
+          "match_type": "invoice_number",
+          "match_key": "13506",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Invoice 13508 differs from statement (trusting invoice): 7995.87 vs 7427.87",
+        "evidence": {
+          "invoice_number": "13508",
+          "invoice_total": "7995.87",
+          "statement_amount": "7427.87",
+          "difference": "568.00",
+          "match_type": "invoice_number",
+          "match_key": "13508",
+          "trusted_source": "invoice",
+          "reason": "Invoice line items sum correctly; statement likely has OCR errors"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13568 amount matches statement",
+        "evidence": {
+          "invoice_number": "13568",
+          "invoice_total": "2041.32",
+          "statement_amount": "2041.32",
+          "match_type": "invoice_number",
+          "match_key": "13568"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13569 amount matches statement",
+        "evidence": {
+          "invoice_number": "13569",
+          "invoice_total": "2264.83",
+          "statement_amount": "2264.83",
+          "match_type": "invoice_number",
+          "match_key": "13569"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13582 amount matches statement",
+        "evidence": {
+          "invoice_number": "13582",
+          "invoice_total": "687.25",
+          "statement_amount": "687.25",
+          "match_type": "invoice_number",
+          "match_key": "13582"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 13583 amount matches statement",
+        "evidence": {
+          "invoice_number": "13583",
+          "invoice_total": "769.08",
+          "statement_amount": "769.08",
+          "match_type": "invoice_number",
+          "match_key": "13583"
+        }
+      },
+      {
+        "check_id": "A6_PACKAGE_TOTAL_BOVINA",
+        "severity": "WARN",
+        "passed": true,
+        "message": "Package total differs (trusting invoices): invoices=165099.79 vs statement=163641.15 (diff=1458.64, 0.89%)",
+        "evidence": {
+          "invoice_sum": "165099.79",
+          "statement_charges_sum": "163641.15",
+          "statement_total_balance": "164833.15",
+          "difference": "1458.64",
+          "difference_pct": "0.89%",
+          "trusted_source": "invoices"
+        }
+      },
+      {
+        "check_id": "A7_LOT_COMPLETENESS",
+        "severity": "WARN",
+        "passed": true,
+        "message": "1 lots missing from source PDF (not extraction failure)",
+        "evidence": {
+          "source_pdf_missing_lots": [
+            "20-3927"
+          ],
+          "statement_lots": 24,
+          "invoice_lots": 23
+        }
+      }
+    ],
+    "matched_invoices_count": 23,
+    "expected_invoices_count": 24,
+    "total_invoice_sum": "165099.79",
+    "statement_total_reference": "164833.15",
+    "statement_total_source": "statement.total_balance"
+  },
+  {
+    "feedlot": "Mesquite Cattle Feeders",
+    "status": "PASS",
+    "checks": [
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43953 has all required fields",
+        "evidence": {
+          "invoice_number": "43953"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43953 line sum matches total",
+        "evidence": {
+          "invoice_number": "43953",
+          "line_sum": "2655.32",
+          "invoice_total": "2655.32",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43954 has all required fields",
+        "evidence": {
+          "invoice_number": "43954"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43954 line sum matches total",
+        "evidence": {
+          "invoice_number": "43954",
+          "line_sum": "2847.37",
+          "invoice_total": "2847.37",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "B1_REQUIRED_FIELDS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43955 has all required fields",
+        "evidence": {
+          "invoice_number": "43955"
+        }
+      },
+      {
+        "check_id": "B2_LINE_SUM",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43955 line sum matches total",
+        "evidence": {
+          "invoice_number": "43955",
+          "line_sum": "2918.87",
+          "invoice_total": "2918.87",
+          "difference": "0.00"
+        }
+      },
+      {
+        "check_id": "D1_DUPLICATE_INVOICE",
+        "severity": "INFO",
+        "passed": true,
+        "message": "No duplicate invoices detected",
+        "evidence": {
+          "invoice_count": 3
+        }
+      },
+      {
+        "check_id": "A1_PACKAGE_COMPLETENESS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "All 3 referenced invoices found",
+        "evidence": {
+          "expected_count": 3,
+          "extracted_count": 3
+        }
+      },
+      {
+        "check_id": "A2_EXTRA_INVOICES",
+        "severity": "INFO",
+        "passed": true,
+        "message": "No extra invoices found",
+        "evidence": {}
+      },
+      {
+        "check_id": "A3_PERIOD_CONSISTENCY",
+        "severity": "INFO",
+        "passed": true,
+        "message": "All invoices within statement period",
+        "evidence": {
+          "period_start": "2025-11-01",
+          "period_end": null
+        }
+      },
+      {
+        "check_id": "A4_FEEDLOT_OWNER_CONSISTENCY",
+        "severity": "INFO",
+        "passed": true,
+        "message": "All invoices match statement feedlot and owner",
+        "evidence": {
+          "feedlot": "Mesquite Cattle Feeders",
+          "owner_number": "702"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43953 amount matches statement",
+        "evidence": {
+          "invoice_number": "43953",
+          "invoice_total": "2655.32",
+          "statement_amount": "2655.32",
+          "match_type": "invoice_number",
+          "match_key": "43953"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43954 amount matches statement",
+        "evidence": {
+          "invoice_number": "43954",
+          "invoice_total": "2847.37",
+          "statement_amount": "2847.37",
+          "match_type": "invoice_number",
+          "match_key": "43954"
+        }
+      },
+      {
+        "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Invoice 43955 amount matches statement",
+        "evidence": {
+          "invoice_number": "43955",
+          "invoice_total": "2918.87",
+          "statement_amount": "2918.87",
+          "match_type": "invoice_number",
+          "match_key": "43955"
+        }
+      },
+      {
+        "check_id": "A6_PACKAGE_TOTAL_MESQUITE",
+        "severity": "INFO",
+        "passed": true,
+        "message": "Package total reconciles: invoices=8421.56, statement=8421.56",
+        "evidence": {
+          "invoice_sum": "8421.56",
+          "statement_charges": "8421.56"
+        }
+      },
+      {
+        "check_id": "A7_LOT_COMPLETENESS",
+        "severity": "INFO",
+        "passed": true,
+        "message": "All 3 lots have corresponding invoices",
+        "evidence": {
+          "statement_lots": 3,
+          "invoice_lots": 3
+        }
+      }
+    ],
+    "matched_invoices_count": 3,
+    "expected_invoices_count": 3,
+    "total_invoice_sum": "8421.56",
+    "statement_total_reference": "8421.56",
+    "statement_total_source": "statement.total_balance"
+  }
+]

@@ -1,0 +1,1132 @@
+{
+  "feedlot": {
+    "name": "BOVINA FEEDERS INC. DBA BF2",
+    "address_line1": null,
+    "address_line2": null,
+    "city": null,
+    "state": null,
+    "postal_code": null,
+    "phone": null
+  },
+  "owner": {
+    "owner_number": "531",
+    "name": "SUGAR MOUNTAIN LIVESTOCK",
+    "address_line1": "1725 WESTLAKE AVE N #200",
+    "address_line2": null,
+    "city": "SEATTLE",
+    "state": "WA",
+    "postal_code": "98109"
+  },
+  "statement_date": null,
+  "period_start": "2025-11-01",
+  "period_end": "2025-11-30",
+  "total_balance": 164833.15,
+  "lot_references": [
+    {
+      "lot_number": "20-3883",
+      "invoice_number": "13330",
+      "statement_charge": 8517.37,
+      "ending_balance": 8517.37,
+      "description": "Feed Inv:Lot 20-3883"
+    },
+    {
+      "lot_number": "20-3917",
+      "invoice_number": "13334",
+      "statement_charge": 7052.34,
+      "ending_balance": 7052.34,
+      "description": "Feed Inv:Lot 20-3917"
+    },
+    {
+      "lot_number": "20-3918",
+      "invoice_number": "13335",
+      "statement_charge": 5446.03,
+      "ending_balance": 5446.03,
+      "description": "Feed Inv:Lot 20-3918"
+    },
+    {
+      "lot_number": "20-3927",
+      "invoice_number": "13304",
+      "statement_charge": 301.36,
+      "ending_balance": 301.36,
+      "description": "Feed Inv:Lot 20-3927"
+    },
+    {
+      "lot_number": "20-3973",
+      "invoice_number": "13339",
+      "statement_charge": 7591.23,
+      "ending_balance": 7591.23,
+      "description": "Feed Inv:Lot 20-3973"
+    },
+    {
+      "lot_number": "20-4009",
+      "invoice_number": "13347",
+      "statement_charge": 3452.23,
+      "ending_balance": 3452.23,
+      "description": "Feed Inv:Lot 20-4009"
+    },
+    {
+      "lot_number": "20-4031",
+      "invoice_number": "13353",
+      "statement_charge": 10510.03,
+      "ending_balance": 10510.03,
+      "description": "Feed Inv:Lot 20-4031"
+    },
+    {
+      "lot_number": "20-4032",
+      "invoice_number": "13354",
+      "statement_charge": 6461.15,
+      "ending_balance": 6461.15,
+      "description": "Feed Inv:Lot 20-4032"
+    },
+    {
+      "lot_number": "20-4033",
+      "invoice_number": "13355",
+      "statement_charge": 15182.02,
+      "ending_balance": 15182.02,
+      "description": "Feed Inv:Lot 20-4033"
+    },
+    {
+      "lot_number": "20-4040",
+      "invoice_number": "13357",
+      "statement_charge": 2154.95,
+      "ending_balance": 2154.95,
+      "description": "Feed Inv:Lot 20-4040"
+    },
+    {
+      "lot_number": "20-4041",
+      "invoice_number": "13358",
+      "statement_charge": 1835.87,
+      "ending_balance": 1835.87,
+      "description": "Feed Inv:Lot 20-4041"
+    },
+    {
+      "lot_number": "20-4135",
+      "invoice_number": "13411",
+      "statement_charge": 2372.35,
+      "ending_balance": 2372.35,
+      "description": "Feed Inv:Lot 20-4135"
+    },
+    {
+      "lot_number": "20-4233",
+      "invoice_number": "13490",
+      "statement_charge": 15883.39,
+      "ending_balance": 15883.39,
+      "description": "Feed Inv:Lot 20-4233"
+    },
+    {
+      "lot_number": "20-4234",
+      "invoice_number": "13491",
+      "statement_charge": 16333.98,
+      "ending_balance": 16333.98,
+      "description": "Feed Inv:Lot 20-4234"
+    },
+    {
+      "lot_number": "20-4242",
+      "invoice_number": "13496",
+      "statement_charge": 6917.85,
+      "ending_balance": 6917.85,
+      "description": "Feed Inv:Lot 20-4242"
+    },
+    {
+      "lot_number": "20-4243",
+      "invoice_number": "13497",
+      "statement_charge": 6205.23,
+      "ending_balance": 6205.23,
+      "description": "Feed Inv:Lot 20-4243"
+    },
+    {
+      "lot_number": "20-4252",
+      "invoice_number": "13501",
+      "statement_charge": 14579.62,
+      "ending_balance": 14579.62,
+      "description": "Feed Inv:Lot 20-4252"
+    },
+    {
+      "lot_number": "20-4253",
+      "invoice_number": "13502",
+      "statement_charge": 13195.76,
+      "ending_balance": 13195.76,
+      "description": "Feed Inv:Lot 20-4253"
+    },
+    {
+      "lot_number": "20-4260",
+      "invoice_number": "13506",
+      "statement_charge": 6458.04,
+      "ending_balance": 6458.04,
+      "description": "Feed Inv:Lot 20-4260"
+    },
+    {
+      "lot_number": "20-4263",
+      "invoice_number": "13508",
+      "statement_charge": 7427.87,
+      "ending_balance": 7427.87,
+      "description": "Feed Inv:Lot 20-4263"
+    },
+    {
+      "lot_number": "20-4353",
+      "invoice_number": "13568",
+      "statement_charge": 2041.32,
+      "ending_balance": 2041.32,
+      "description": "Feed Inv:Lot 20-4353"
+    },
+    {
+      "lot_number": "20-4354",
+      "invoice_number": "13569",
+      "statement_charge": 2264.83,
+      "ending_balance": 2264.83,
+      "description": "Feed Inv:Lot 20-4354"
+    },
+    {
+      "lot_number": "20-4367",
+      "invoice_number": "13582",
+      "statement_charge": 687.25,
+      "ending_balance": 687.25,
+      "description": "Feed Inv:Lot 20-4367"
+    },
+    {
+      "lot_number": "20-4368",
+      "invoice_number": "13583",
+      "statement_charge": 769.08,
+      "ending_balance": 769.08,
+      "description": "Feed Inv:Lot 20-4368"
+    }
+  ],
+  "transactions": [
+    {
+      "lot_number": "20-3883",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 8487.62,
+      "interest": 0.0,
+      "total": 8487.62
+    },
+    {
+      "lot_number": "20-3883",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -8487.62,
+      "interest": 0.0,
+      "total": -8487.62
+    },
+    {
+      "lot_number": "20-3883",
+      "date": "2025-11-30",
+      "ref_number": "13330",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-3883",
+      "principal": 8517.37,
+      "interest": 0.0,
+      "total": 8517.37
+    },
+    {
+      "lot_number": "20-3883",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 8517.37,
+      "interest": 0.0,
+      "total": 8517.37
+    },
+    {
+      "lot_number": "20-3917",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 7283.52,
+      "interest": 0.0,
+      "total": 7283.52
+    },
+    {
+      "lot_number": "20-3917",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -7283.52,
+      "interest": 0.0,
+      "total": -7283.52
+    },
+    {
+      "lot_number": "20-3917",
+      "date": "2025-11-30",
+      "ref_number": "13334",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-3917",
+      "principal": 7052.34,
+      "interest": 0.0,
+      "total": 7052.34
+    },
+    {
+      "lot_number": "20-3917",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 7052.34,
+      "interest": 0.0,
+      "total": 7052.34
+    },
+    {
+      "lot_number": "20-3918",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 5958.82,
+      "interest": 0.0,
+      "total": 5958.82
+    },
+    {
+      "lot_number": "20-3918",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -5958.82,
+      "interest": 0.0,
+      "total": -5958.82
+    },
+    {
+      "lot_number": "20-3918",
+      "date": "2025-11-30",
+      "ref_number": "13335",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-3918",
+      "principal": 5446.03,
+      "interest": 0.0,
+      "total": 5446.03
+    },
+    {
+      "lot_number": "20-3918",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 5446.03,
+      "interest": 0.0,
+      "total": 5446.03
+    },
+    {
+      "lot_number": "20-3927",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 4784.86,
+      "interest": 0.0,
+      "total": 4784.86
+    },
+    {
+      "lot_number": "20-3927",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -4784.86,
+      "interest": 0.0,
+      "total": -4784.86
+    },
+    {
+      "lot_number": "20-3927",
+      "date": "2025-11-30",
+      "ref_number": "13304",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-3927",
+      "principal": 301.36,
+      "interest": 0.0,
+      "total": 301.36
+    },
+    {
+      "lot_number": "20-3927",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 301.36,
+      "interest": 0.0,
+      "total": 301.36
+    },
+    {
+      "lot_number": "20-3973",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 10117.77,
+      "interest": 0.0,
+      "total": 10117.77
+    },
+    {
+      "lot_number": "20-3973",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -10117.77,
+      "interest": 0.0,
+      "total": -10117.77
+    },
+    {
+      "lot_number": "20-3973",
+      "date": "2025-11-30",
+      "ref_number": "13339",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-3973",
+      "principal": 7591.23,
+      "interest": 0.0,
+      "total": 7591.23
+    },
+    {
+      "lot_number": "20-3973",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 7591.23,
+      "interest": 0.0,
+      "total": 7591.23
+    },
+    {
+      "lot_number": "20-4009",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 4546.09,
+      "interest": 0.0,
+      "total": 4546.09
+    },
+    {
+      "lot_number": "20-4009",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -4546.09,
+      "interest": 0.0,
+      "total": -4546.09
+    },
+    {
+      "lot_number": "20-4009",
+      "date": "2025-11-30",
+      "ref_number": "13347",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4009",
+      "principal": 3492.23,
+      "interest": 0.0,
+      "total": 3492.23
+    },
+    {
+      "lot_number": "20-4009",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 3452.23,
+      "interest": 0.0,
+      "total": 3452.23
+    },
+    {
+      "lot_number": "20-4031",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 10869.57,
+      "interest": 0.0,
+      "total": 10869.57
+    },
+    {
+      "lot_number": "20-4031",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -10869.57,
+      "interest": 0.0,
+      "total": -10869.57
+    },
+    {
+      "lot_number": "20-4031",
+      "date": "2025-11-30",
+      "ref_number": "13353",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4031",
+      "principal": 10510.03,
+      "interest": 0.0,
+      "total": 10510.03
+    },
+    {
+      "lot_number": "20-4031",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 10510.03,
+      "interest": 0.0,
+      "total": 10510.03
+    },
+    {
+      "lot_number": "20-4032",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 6924.51,
+      "interest": 0.0,
+      "total": 6924.51
+    },
+    {
+      "lot_number": "20-4032",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -6924.51,
+      "interest": 0.0,
+      "total": -6924.51
+    },
+    {
+      "lot_number": "20-4032",
+      "date": "2025-11-30",
+      "ref_number": "13354",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4032",
+      "principal": 6461.15,
+      "interest": 0.0,
+      "total": 6461.15
+    },
+    {
+      "lot_number": "20-4032",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 6461.15,
+      "interest": 0.0,
+      "total": 6461.15
+    },
+    {
+      "lot_number": "20-4033",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 16571.92,
+      "interest": 0.0,
+      "total": 16571.92
+    },
+    {
+      "lot_number": "20-4033",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -16571.92,
+      "interest": 0.0,
+      "total": -16571.92
+    },
+    {
+      "lot_number": "20-4033",
+      "date": "2025-11-30",
+      "ref_number": "13355",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4033",
+      "principal": 15182.02,
+      "interest": 0.0,
+      "total": 15182.02
+    },
+    {
+      "lot_number": "20-4033",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 15182.02,
+      "interest": 0.0,
+      "total": 15182.02
+    },
+    {
+      "lot_number": "20-4040",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 2304.42,
+      "interest": 0.0,
+      "total": 2304.42
+    },
+    {
+      "lot_number": "20-4040",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -2304.42,
+      "interest": 0.0,
+      "total": -2304.42
+    },
+    {
+      "lot_number": "20-4040",
+      "date": "2025-11-30",
+      "ref_number": "13357",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4040",
+      "principal": 2154.95,
+      "interest": 0.0,
+      "total": 2154.95
+    },
+    {
+      "lot_number": "20-4040",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 2154.95,
+      "interest": 0.0,
+      "total": 2154.95
+    },
+    {
+      "lot_number": "20-4041",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 1963.29,
+      "interest": 0.0,
+      "total": 1963.29
+    },
+    {
+      "lot_number": "20-4041",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -1963.29,
+      "interest": 0.0,
+      "total": -1963.29
+    },
+    {
+      "lot_number": "20-4041",
+      "date": "2025-11-30",
+      "ref_number": "13358",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4041",
+      "principal": 1835.87,
+      "interest": 0.0,
+      "total": 1835.87
+    },
+    {
+      "lot_number": "20-4041",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 1835.87,
+      "interest": 0.0,
+      "total": 1835.87
+    },
+    {
+      "lot_number": "20-4135",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 1744.61,
+      "interest": 0.0,
+      "total": 1744.61
+    },
+    {
+      "lot_number": "20-4135",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -1744.61,
+      "interest": 0.0,
+      "total": -1744.61
+    },
+    {
+      "lot_number": "20-4135",
+      "date": "2025-11-30",
+      "ref_number": "13411",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4135",
+      "principal": 2372.35,
+      "interest": 0.0,
+      "total": 2372.35
+    },
+    {
+      "lot_number": "20-4135",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 2372.35,
+      "interest": 0.0,
+      "total": 2372.35
+    },
+    {
+      "lot_number": "20-4233",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 17112.22,
+      "interest": 0.0,
+      "total": 17112.22
+    },
+    {
+      "lot_number": "20-4233",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -17112.22,
+      "interest": 0.0,
+      "total": -17112.22
+    },
+    {
+      "lot_number": "20-4233",
+      "date": "2025-11-30",
+      "ref_number": "13490",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4233",
+      "principal": 15883.39,
+      "interest": 0.0,
+      "total": 15883.39
+    },
+    {
+      "lot_number": "20-4233",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 15883.39,
+      "interest": 0.0,
+      "total": 15883.39
+    },
+    {
+      "lot_number": "20-4234",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 17968.77,
+      "interest": 0.0,
+      "total": 17968.77
+    },
+    {
+      "lot_number": "20-4234",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -17968.77,
+      "interest": 0.0,
+      "total": -17968.77
+    },
+    {
+      "lot_number": "20-4234",
+      "date": "2025-11-30",
+      "ref_number": "13491",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4234",
+      "principal": 16333.98,
+      "interest": 0.0,
+      "total": 16333.98
+    },
+    {
+      "lot_number": "20-4234",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 16333.98,
+      "interest": 0.0,
+      "total": 16333.98
+    },
+    {
+      "lot_number": "20-4242",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 7470.37,
+      "interest": 0.0,
+      "total": 7470.37
+    },
+    {
+      "lot_number": "20-4242",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -7470.37,
+      "interest": 0.0,
+      "total": -7470.37
+    },
+    {
+      "lot_number": "20-4242",
+      "date": "2025-11-30",
+      "ref_number": "13496",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4242",
+      "principal": 6917.85,
+      "interest": 0.0,
+      "total": 6917.85
+    },
+    {
+      "lot_number": "20-4242",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 6917.85,
+      "interest": 0.0,
+      "total": 6917.85
+    },
+    {
+      "lot_number": "20-4243",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 7027.86,
+      "interest": 0.0,
+      "total": 7027.86
+    },
+    {
+      "lot_number": "20-4243",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -7027.86,
+      "interest": 0.0,
+      "total": -7027.86
+    },
+    {
+      "lot_number": "20-4243",
+      "date": "2025-11-30",
+      "ref_number": "13497",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4243",
+      "principal": 6205.23,
+      "interest": 0.0,
+      "total": 6205.23
+    },
+    {
+      "lot_number": "20-4243",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 6205.23,
+      "interest": 0.0,
+      "total": 6205.23
+    },
+    {
+      "lot_number": "20-4252",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 16391.79,
+      "interest": 0.0,
+      "total": 16391.79
+    },
+    {
+      "lot_number": "20-4252",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -16391.79,
+      "interest": 0.0,
+      "total": -16391.79
+    },
+    {
+      "lot_number": "20-4252",
+      "date": "2025-11-30",
+      "ref_number": "13501",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4252",
+      "principal": 14579.62,
+      "interest": 0.0,
+      "total": 14579.62
+    },
+    {
+      "lot_number": "20-4252",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 14579.62,
+      "interest": 0.0,
+      "total": 14579.62
+    },
+    {
+      "lot_number": "20-4253",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 15045.46,
+      "interest": 0.0,
+      "total": 15045.46
+    },
+    {
+      "lot_number": "20-4253",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -15045.46,
+      "interest": 0.0,
+      "total": -15045.46
+    },
+    {
+      "lot_number": "20-4253",
+      "date": "2025-11-30",
+      "ref_number": "13502",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4253",
+      "principal": 13195.76,
+      "interest": 0.0,
+      "total": 13195.76
+    },
+    {
+      "lot_number": "20-4253",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 13195.76,
+      "interest": 0.0,
+      "total": 13195.76
+    },
+    {
+      "lot_number": "20-4260",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 5394.2,
+      "interest": 0.0,
+      "total": 5394.2
+    },
+    {
+      "lot_number": "20-4260",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -5394.2,
+      "interest": 0.0,
+      "total": -5394.2
+    },
+    {
+      "lot_number": "20-4260",
+      "date": "2025-11-30",
+      "ref_number": "13506",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4260",
+      "principal": 6458.04,
+      "interest": 0.0,
+      "total": 6458.04
+    },
+    {
+      "lot_number": "20-4260",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 6458.04,
+      "interest": 0.0,
+      "total": 6458.04
+    },
+    {
+      "lot_number": "20-4263",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 8348.91,
+      "interest": 0.0,
+      "total": 8348.91
+    },
+    {
+      "lot_number": "20-4263",
+      "date": "2025-11-04",
+      "ref_number": "25098",
+      "type": "Expense",
+      "description": "1HD MIDWEST 11/4/25",
+      "principal": -568.0,
+      "interest": 0.0,
+      "total": -568.0
+    },
+    {
+      "lot_number": "20-4263",
+      "date": "2025-11-13",
+      "ref_number": "111325",
+      "type": "Expense",
+      "description": "OCTOBER FEED BILL",
+      "principal": -8348.91,
+      "interest": 0.0,
+      "total": -8348.91
+    },
+    {
+      "lot_number": "20-4263",
+      "date": "2025-11-30",
+      "ref_number": "13508",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4263",
+      "principal": 7995.87,
+      "interest": 0.0,
+      "total": 7995.87
+    },
+    {
+      "lot_number": "20-4263",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 7427.87,
+      "interest": 0.0,
+      "total": 7427.87
+    },
+    {
+      "lot_number": "20-4353",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 0.0,
+      "interest": 0.0,
+      "total": 0.0
+    },
+    {
+      "lot_number": "20-4353",
+      "date": "2025-11-30",
+      "ref_number": "13568",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4353",
+      "principal": 2041.32,
+      "interest": 0.0,
+      "total": 2041.32
+    },
+    {
+      "lot_number": "20-4353",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 2041.32,
+      "interest": 0.0,
+      "total": 2041.32
+    },
+    {
+      "lot_number": "20-4354",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 0.0,
+      "interest": 0.0,
+      "total": 0.0
+    },
+    {
+      "lot_number": "20-4354",
+      "date": "2025-11-30",
+      "ref_number": "13569",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4354",
+      "principal": 2264.83,
+      "interest": 0.0,
+      "total": 2264.83
+    },
+    {
+      "lot_number": "20-4354",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 2264.83,
+      "interest": 0.0,
+      "total": 2264.83
+    },
+    {
+      "lot_number": "20-4367",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 0.0,
+      "interest": 0.0,
+      "total": 0.0
+    },
+    {
+      "lot_number": "20-4367",
+      "date": "2025-11-30",
+      "ref_number": "13582",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4367",
+      "principal": 687.25,
+      "interest": 0.0,
+      "total": 687.25
+    },
+    {
+      "lot_number": "20-4367",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 687.25,
+      "interest": 0.0,
+      "total": 687.25
+    },
+    {
+      "lot_number": "20-4368",
+      "date": "2025-11-01",
+      "ref_number": null,
+      "type": null,
+      "description": "Beginning Balance",
+      "principal": 0.0,
+      "interest": 0.0,
+      "total": 0.0
+    },
+    {
+      "lot_number": "20-4368",
+      "date": "2025-11-30",
+      "ref_number": "13583",
+      "type": "Expense",
+      "description": "Feed Inv:Lot 20-4368",
+      "principal": 769.08,
+      "interest": 0.0,
+      "total": 769.08
+    },
+    {
+      "lot_number": "20-4368",
+      "date": "2025-11-30",
+      "ref_number": null,
+      "type": null,
+      "description": "Ending Balance",
+      "principal": 769.08,
+      "interest": 0.0,
+      "total": 769.08
+    }
+  ],
+  "notes": null,
+  "document_metadata": {
+    "source_file": "C:\\Users\\sunil\\Downloads\\Sunil Meetings\\Prospects\\Sugar Mountain\\Bovina.pdf",
+    "page_count": 3,
+    "extracted_at": "2026-01-07T10:58:27.673495"
+  }
+}

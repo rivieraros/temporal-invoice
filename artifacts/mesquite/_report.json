@@ -1,0 +1,185 @@
+{
+  "feedlot_key": "mesquite",
+  "status": "PASS",
+  "checks": [
+    {
+      "check_id": "B1_REQUIRED_FIELDS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43953 has all required fields",
+      "evidence": {
+        "invoice_number": "43953"
+      }
+    },
+    {
+      "check_id": "B2_LINE_SUM",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43953 line sum matches total",
+      "evidence": {
+        "invoice_number": "43953",
+        "line_sum": "2655.32",
+        "invoice_total": "2655.32",
+        "difference": "0.00"
+      }
+    },
+    {
+      "check_id": "B1_REQUIRED_FIELDS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43954 has all required fields",
+      "evidence": {
+        "invoice_number": "43954"
+      }
+    },
+    {
+      "check_id": "B2_LINE_SUM",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43954 line sum matches total",
+      "evidence": {
+        "invoice_number": "43954",
+        "line_sum": "2847.37",
+        "invoice_total": "2847.37",
+        "difference": "0.00"
+      }
+    },
+    {
+      "check_id": "B1_REQUIRED_FIELDS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43955 has all required fields",
+      "evidence": {
+        "invoice_number": "43955"
+      }
+    },
+    {
+      "check_id": "B2_LINE_SUM",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43955 line sum matches total",
+      "evidence": {
+        "invoice_number": "43955",
+        "line_sum": "2918.87",
+        "invoice_total": "2918.87",
+        "difference": "0.00"
+      }
+    },
+    {
+      "check_id": "D1_DUPLICATE_INVOICE",
+      "severity": "INFO",
+      "passed": true,
+      "message": "No duplicate invoices detected",
+      "evidence": {
+        "invoice_count": 3
+      }
+    },
+    {
+      "check_id": "A1_PACKAGE_COMPLETENESS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "All 3 referenced invoices found",
+      "evidence": {
+        "expected_count": 3,
+        "extracted_count": 3
+      }
+    },
+    {
+      "check_id": "A2_EXTRA_INVOICES",
+      "severity": "INFO",
+      "passed": true,
+      "message": "No extra invoices found",
+      "evidence": {}
+    },
+    {
+      "check_id": "A3_PERIOD_CONSISTENCY",
+      "severity": "INFO",
+      "passed": true,
+      "message": "All invoices within statement period",
+      "evidence": {
+        "period_start": "2025-11-01",
+        "period_end": null
+      }
+    },
+    {
+      "check_id": "A4_FEEDLOT_OWNER_CONSISTENCY",
+      "severity": "INFO",
+      "passed": true,
+      "message": "All invoices match statement feedlot and owner",
+      "evidence": {
+        "feedlot": "Mesquite Cattle Feeders",
+        "owner_number": "702"
+      }
+    },
+    {
+      "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43953 amount matches statement",
+      "evidence": {
+        "invoice_number": "43953",
+        "invoice_total": "2655.32",
+        "statement_amount": "2655.32"
+      }
+    },
+    {
+      "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43954 amount matches statement",
+      "evidence": {
+        "invoice_number": "43954",
+        "invoice_total": "2847.37",
+        "statement_amount": "2847.37"
+      }
+    },
+    {
+      "check_id": "A5_INVOICE_AMOUNT_RECONCILIATION",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 43955 amount matches statement",
+      "evidence": {
+        "invoice_number": "43955",
+        "invoice_total": "2918.87",
+        "statement_amount": "2918.87"
+      }
+    },
+    {
+      "check_id": "A6_PACKAGE_TOTAL_MESQUITE",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Package totals match",
+      "evidence": {
+        "invoice_sum": "8421.56",
+        "statement_total": "8421.56",
+        "difference": "0.00"
+      }
+    },
+    {
+      "check_id": "A7_LOT_COMPLETENESS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "All 3 lots have corresponding invoices",
+      "evidence": {
+        "statement_lots": 3,
+        "invoice_lots": 3
+      }
+    }
+  ],
+  "summary": {
+    "feedlot_name": "Mesquite Cattle Feeders",
+    "status": "PASS",
+    "total_checks": 16,
+    "passed_checks": 16,
+    "blocking_issues": 0,
+    "warnings": 0
+  },
+  "metrics": {
+    "matched_invoices": 3,
+    "expected_invoices": 3,
+    "extracted_invoices": 3,
+    "total_invoice_sum": "8421.56",
+    "statement_total": "8421.56"
+  },
+  "report_ref": null
+}

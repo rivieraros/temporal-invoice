@@ -1,0 +1,182 @@
+{
+  "feedlot": {
+    "name": "BOVINA FEEDERS INC. DBA BF2",
+    "address_line1": "1741 Co Rd S",
+    "address_line2": null,
+    "city": "FRIONA",
+    "state": "TX",
+    "postal_code": null,
+    "phone": "806 265-3281"
+  },
+  "owner": {
+    "owner_number": "531",
+    "name": "SUGAR MOUNTAIN LIVESTOCK",
+    "address_line1": "1725 WESTLAKE AVE N #200",
+    "address_line2": null,
+    "city": "SEATTLE",
+    "state": "WA",
+    "postal_code": "98109"
+  },
+  "invoice_number": "13355",
+  "invoice_date": null,
+  "statement_date": "2025-11-30",
+  "lot": {
+    "lot_number": "20-4033",
+    "pen": "106",
+    "home_pen": null,
+    "sex": "Steers",
+    "date_in": "2024-08-27",
+    "ownership_pct": "100.0"
+  },
+  "cattle_inventory": {
+    "head_received": 186,
+    "head_shipped": 4,
+    "head_out": null,
+    "deaths": 4,
+    "current_head": 178,
+    "live_head": null,
+    "death_loss_pct": "2.15"
+  },
+  "line_items": [
+    {
+      "description": "Feed & Rations",
+      "rate": null,
+      "rate_unit": null,
+      "quantity": "5",
+      "quantity_unit": "LBS",
+      "ownership_pct": "100.0",
+      "total": "11.25"
+    },
+    {
+      "description": "Feed & Rations",
+      "rate": "187.67",
+      "rate_unit": "Ton",
+      "quantity": "164610",
+      "quantity_unit": "LBS",
+      "ownership_pct": "100.0",
+      "total": "15445.93"
+    },
+    {
+      "description": "Hospital Feed",
+      "rate": "152.16",
+      "rate_unit": "Ton",
+      "quantity": "51",
+      "quantity_unit": "LBS",
+      "ownership_pct": "100.0",
+      "total": "3.88"
+    },
+    {
+      "description": "TCFA DUES",
+      "rate": null,
+      "rate_unit": null,
+      "quantity": "178",
+      "quantity_unit": "HD",
+      "ownership_pct": "100.0",
+      "total": "23.14"
+    },
+    {
+      "description": "CATTLE INSURANCE",
+      "rate": null,
+      "rate_unit": null,
+      "quantity": "178",
+      "quantity_unit": "HD",
+      "ownership_pct": "100.0",
+      "total": "33.82"
+    }
+  ],
+  "totals": {
+    "total_period_charges": null,
+    "total_amount_due": "15518.02"
+  },
+  "performance_metrics": [
+    {
+      "metric_name": "Total Head Days",
+      "ptd_value": "5346",
+      "ltd_value": "83981",
+      "unit": null
+    },
+    {
+      "metric_name": "Average Head Days",
+      "ptd_value": null,
+      "ltd_value": "452",
+      "unit": null
+    },
+    {
+      "metric_name": "Total Ration Fed",
+      "ptd_value": "164610",
+      "ltd_value": "2630092",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Daily Consumption",
+      "ptd_value": "30.791",
+      "ltd_value": "31.318",
+      "unit": null
+    },
+    {
+      "metric_name": "Average Daily Cost",
+      "ptd_value": "2.903",
+      "ltd_value": "3.045",
+      "unit": null
+    },
+    {
+      "metric_name": "Average Pay Weight",
+      "ptd_value": null,
+      "ltd_value": "548",
+      "unit": null
+    },
+    {
+      "metric_name": "Current Est Weight",
+      "ptd_value": null,
+      "ltd_value": "1471",
+      "unit": null
+    }
+  ],
+  "feeding_expense_summary": [
+    {
+      "category": "FEED",
+      "total_amount": "249139.91",
+      "avg_per_head": "1339.46",
+      "cog_per_cwt": "148.26"
+    },
+    {
+      "category": "MEDICINE",
+      "total_amount": "1706.48",
+      "avg_per_head": "9.17",
+      "cog_per_cwt": "1.02"
+    },
+    {
+      "category": "PROCESSING",
+      "total_amount": "3971.07",
+      "avg_per_head": "21.35",
+      "cog_per_cwt": "2.36"
+    },
+    {
+      "category": "CATTLE DUES/INS",
+      "total_amount": "923.24",
+      "avg_per_head": "4.96",
+      "cog_per_cwt": "0.55"
+    },
+    {
+      "category": "Total Feeding Expenses",
+      "total_amount": "255740.7",
+      "avg_per_head": "1374.95",
+      "cog_per_cwt": "152.18"
+    },
+    {
+      "category": "Total All Cost",
+      "total_amount": "255740.7",
+      "avg_per_head": null,
+      "cog_per_cwt": null
+    }
+  ],
+  "financial_summary": [],
+  "current_period_transactions": [],
+  "feeding_history": [],
+  "notes": null,
+  "document_metadata": {
+    "source_file": "C:\\Users\\sunil\\Downloads\\Sunil Meetings\\Prospects\\Sugar Mountain\\Bovina.pdf",
+    "page_count": 1,
+    "extracted_at": "2026-01-07T11:04:10.930455"
+  }
+}

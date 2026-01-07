@@ -1,0 +1,135 @@
+Extract the Bovina Feed Invoice (single lot).
+
+Context cues:
+- Invoice Number and Statement Date appear near the header.
+- Owner Number is shown in header.
+- Lot section includes Lot, Pen, Sex, Date In, Ownership %.
+- Cattle Inventory includes Head Received, Head Shipped, Deaths, Current Head, Death Loss %.
+- Line Items table includes Description, Rate, Quantity, % Owned, Total.
+- Total Amount Due is shown below the line items.
+- Performance metrics and Feeding Expenses appear below (PTD vs Lifetime).
+
+Return JSON that matches this schema exactly:
+{
+  "feedlot": {
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null,
+    "phone": string|null
+  },
+  "owner": {
+    "owner_number": string|null,
+    "name": string|null,
+    "address_line1": string|null,
+    "address_line2": string|null,
+    "city": string|null,
+    "state": string|null,
+    "postal_code": string|null
+  },
+  "invoice_number": string|null,
+  "invoice_date": "YYYY-MM-DD"|null,
+  "statement_date": "YYYY-MM-DD"|null,
+  "lot": {
+    "lot_number": string|null,
+    "pen": string|null,
+    "home_pen": string|null,
+    "sex": string|null,
+    "date_in": "YYYY-MM-DD"|null,
+    "ownership_pct": number|null
+  },
+  "cattle_inventory": {
+    "head_received": integer|null,
+    "head_shipped": integer|null,
+    "head_out": integer|null,
+    "deaths": integer|null,
+    "current_head": integer|null,
+    "live_head": number|null,
+    "death_loss_pct": number|null
+  },
+  "line_items": [
+    {
+      "description": string,
+      "rate": number|null,
+      "rate_unit": string|null,
+      "quantity": number|null,
+      "quantity_unit": string|null,
+      "ownership_pct": number|null,
+      "total": number|null
+    }
+  ],
+  "totals": {
+    "total_period_charges": number|null,
+    "total_amount_due": number|null
+  },
+  "performance_metrics": [
+    {
+      "metric_name": string,
+      "ptd_value": number|null,
+      "ltd_value": number|null,
+      "unit": string|null
+    }
+  ],
+  "feeding_expense_summary": [
+    {
+      "category": string,
+      "total_amount": number|null,
+      "avg_per_head": number|null,
+      "cog_per_cwt": number|null
+    }
+  ],
+  "financial_summary": [
+    {
+      "label": string,
+      "current": number|null,
+      "previous": number|null,
+      "total": number|null
+    }
+  ],
+  "current_period_transactions": [
+    {
+      "date": "YYYY-MM-DD"|null,
+      "head": number|null,
+      "type": string|null,
+      "pay_weight": number|null,
+      "amount": number|null,
+      "note": string|null
+    }
+  ],
+  "feeding_history": [
+    {
+      "period_label": string,
+      "live": number|null,
+      "in": number|null,
+      "ship": number|null,
+      "trans": number|null,
+      "dead": number|null,
+      "avg": number|null,
+      "hd_days_total": number|null,
+      "hd_days_per_day": number|null,
+      "total_pounds_fed": number|null,
+      "avg_daily_consumption": number|null,
+      "cog_feed": number|null,
+      "cog_other": number|null,
+      "cog_total": number|null
+    }
+  ],
+  "notes": string|null
+}
+
+Extraction rules:
+- Keep all line items exactly as shown (Feed & Rations, Hospital Feed, Medicine, TCFA Dues, Cattle Insurance, etc.).
+- Parse rate and quantity from the line item row when shown; keep units in rate_unit and quantity_unit.
+- If a value is present but unit is missing, set the unit to null.
+- Map PTD and Lifetime values into performance_metrics list. Use metric_name exactly as the label on the invoice.
+- Feeding Expense rows should include FEED, MEDICINE, PROCESSING, CATTLE DUES/INS, Total Feeding Expenses, Total All Cost, Owner Charges to Date, Total Amount when present.
+- If a section does not exist on the invoice, return an empty list for that section.
+
+CRITICAL - Amount accuracy:
+- Read each digit in the Total column very carefully. Common OCR errors: 9↔5, 1↔7, 8↔6, 3↔8.
+- The total_amount_due MUST equal the sum of all line_items[].total values.
+- If you notice the sum doesn't match, re-read the individual line item totals.
+- For Feed & Rations: verify by checking rate × quantity ÷ 2000 (to convert lbs to tons) ≈ total.
+- Capture ALL line items - do not skip any rows in the charges table.

@@ -1,0 +1,211 @@
+{
+  "feedlot": {
+    "name": "Mesquite Cattle Feeders",
+    "address_line1": "P.O. Box 1025",
+    "address_line2": "1504 E. Highway 78",
+    "city": "Brawley",
+    "state": "CA",
+    "postal_code": "92227",
+    "phone": null
+  },
+  "owner": {
+    "owner_number": null,
+    "name": "Sugar Mountain Livestock",
+    "address_line1": "1725 Westlake Ave. N",
+    "address_line2": "Suite 200",
+    "city": "Seattle",
+    "state": "WA",
+    "postal_code": "98109"
+  },
+  "invoice_number": "43955",
+  "invoice_date": "2025-11-30",
+  "statement_date": null,
+  "lot": {
+    "lot_number": "0544",
+    "pen": null,
+    "home_pen": null,
+    "sex": "Heifers",
+    "date_in": "2023-12-27",
+    "ownership_pct": "100.0"
+  },
+  "cattle_inventory": {
+    "head_received": 118,
+    "head_shipped": 117,
+    "head_out": 117,
+    "deaths": 1,
+    "current_head": null,
+    "live_head": "0.0",
+    "death_loss_pct": "0.85"
+  },
+  "line_items": [
+    {
+      "description": "W13",
+      "rate": "291.01",
+      "rate_unit": "TON",
+      "quantity": "19760.0",
+      "quantity_unit": "LBS",
+      "ownership_pct": null,
+      "total": "2875.19"
+    },
+    {
+      "description": "Yardage",
+      "rate": null,
+      "rate_unit": null,
+      "quantity": null,
+      "quantity_unit": null,
+      "ownership_pct": null,
+      "total": "43.68"
+    }
+  ],
+  "totals": {
+    "total_period_charges": "2918.87",
+    "total_amount_due": null
+  },
+  "performance_metrics": [
+    {
+      "metric_name": "Total Head Days",
+      "ptd_value": "1092",
+      "ltd_value": "71329",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Head Days",
+      "ptd_value": "9.25",
+      "ltd_value": "604.48",
+      "unit": null
+    },
+    {
+      "metric_name": "Total Pounds Fed",
+      "ptd_value": "19760",
+      "ltd_value": "1419378",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Daily Consumption",
+      "ptd_value": "18.1",
+      "ltd_value": "19.9",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Daily Cost",
+      "ptd_value": "2.67",
+      "ltd_value": "2.9",
+      "unit": null
+    },
+    {
+      "metric_name": "Avg Pay Wt",
+      "ptd_value": null,
+      "ltd_value": "423.73",
+      "unit": null
+    }
+  ],
+  "feeding_expense_summary": [],
+  "financial_summary": [
+    {
+      "label": "Total Charges",
+      "current": "2918.87",
+      "previous": "203959.79",
+      "total": "206878.66"
+    },
+    {
+      "label": "Special Feed Credits",
+      "current": "0.0",
+      "previous": "0.0",
+      "total": "0.0"
+    },
+    {
+      "label": "Feed Prepayments",
+      "current": "0.0",
+      "previous": "0.0",
+      "total": "0.0"
+    },
+    {
+      "label": "Net Amount",
+      "current": "2918.87",
+      "previous": "203959.79",
+      "total": "206878.66"
+    }
+  ],
+  "current_period_transactions": [
+    {
+      "date": "2025-11-26",
+      "head": "42",
+      "type": "Ship",
+      "pay_weight": "57504",
+      "amount": null,
+      "note": "ONE WORLD BEEF"
+    }
+  ],
+  "feeding_history": [
+    {
+      "period_label": "12/27 - 09/30",
+      "live": "42",
+      "in": "118",
+      "ship": "0",
+      "trans": "0",
+      "dead": "1",
+      "avg": "584.2",
+      "hd_days_total": "68935",
+      "hd_days_per_day": "19.97",
+      "total_pounds_fed": "1376348",
+      "avg_daily_consumption": "2.81",
+      "cog_feed": "2.81",
+      "cog_other": "0.09",
+      "cog_total": "2.9"
+    },
+    {
+      "period_label": "10/01 - 10/31",
+      "live": "42",
+      "in": "0",
+      "ship": "0",
+      "trans": "0",
+      "dead": "0",
+      "avg": "11.0",
+      "hd_days_total": "1102",
+      "hd_days_per_day": "17.87",
+      "total_pounds_fed": "23270",
+      "avg_daily_consumption": "2.73",
+      "cog_feed": "2.73",
+      "cog_other": "0.04",
+      "cog_total": "2.77"
+    },
+    {
+      "period_label": "11/01 - 11/30",
+      "live": "0",
+      "in": "0",
+      "ship": "42",
+      "trans": "0",
+      "dead": "0",
+      "avg": "9.3",
+      "hd_days_total": "1092",
+      "hd_days_per_day": "18.1",
+      "total_pounds_fed": "19760",
+      "avg_daily_consumption": "2.63",
+      "cog_feed": "2.63",
+      "cog_other": "0.04",
+      "cog_total": "2.67"
+    },
+    {
+      "period_label": "Summary",
+      "live": "0",
+      "in": "118",
+      "ship": "117",
+      "trans": "0",
+      "dead": "1",
+      "avg": "604.5",
+      "hd_days_total": "71329",
+      "hd_days_per_day": "19.9",
+      "total_pounds_fed": "1419378",
+      "avg_daily_consumption": "2.81",
+      "cog_feed": "2.81",
+      "cog_other": "0.09",
+      "cog_total": "2.9"
+    }
+  ],
+  "notes": null,
+  "document_metadata": {
+    "source_file": "C:\\Users\\sunil\\Downloads\\Sunil Meetings\\Prospects\\Sugar Mountain\\Mesquite.pdf",
+    "page_count": 1,
+    "extracted_at": "2026-01-07T11:18:49.720348"
+  }
+}
