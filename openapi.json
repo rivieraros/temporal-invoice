@@ -1,0 +1,5765 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AP Automation API",
+    "description": "API for accounts payable automation with ERP-neutral extraction and configurable connectors",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health Check",
+        "description": "Health check endpoint.",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Readiness Check",
+        "description": "Readiness probe for Kubernetes.",
+        "operationId": "readiness_check_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Readiness Check Ready Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/live": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Liveness Check",
+        "description": "Liveness probe for Kubernetes.",
+        "operationId": "liveness_check_live_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Liveness Check Live Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Mission Control Dashboard",
+        "description": "Returns the complete Mission Control dashboard data including pipeline state, packages, and statistics.",
+        "operationId": "get_mission_control_dashboard_get",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Period filter (e.g., '2025-11' or 'November 2025')",
+              "title": "Period"
+            },
+            "description": "Period filter (e.g., '2025-11' or 'November 2025')"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissionControlResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/pipeline": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Pipeline State",
+        "description": "Returns current pipeline stage counts and dollar amounts.",
+        "operationId": "get_pipeline_dashboard_pipeline_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PipelineSnapshot"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/today-stats": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Today's Statistics",
+        "description": "Returns today's processing metrics.",
+        "operationId": "get_today_stats_dashboard_today_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodayStats"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/review-queue": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Human Review Queue",
+        "description": "Returns summary of invoices awaiting human review.",
+        "operationId": "get_review_queue_dashboard_review_queue_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanReviewSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/insights/{role}": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Role-Based Insights",
+        "description": "Returns drill-down insights for a specific stakeholder role.",
+        "operationId": "get_insights_dashboard_insights__role__get",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/StakeholderRole",
+              "description": "Stakeholder role"
+            },
+            "description": "Stakeholder role"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrilldownResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/insights": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get All Insights",
+        "description": "Returns insights for all stakeholder roles.",
+        "operationId": "get_all_insights_dashboard_insights_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DrilldownResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Insights Dashboard Insights Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/packages": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "List Packages",
+        "description": "Returns list of feedlot packages with optional filtering.",
+        "operationId": "list_packages_dashboard_packages_get",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Period filter (e.g., '2025-11')",
+              "title": "Period"
+            },
+            "description": "Period filter (e.g., '2025-11')"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/PackageStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by status",
+              "title": "Status"
+            },
+            "description": "Filter by status"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Search by feedlot name or owner",
+              "title": "Search"
+            },
+            "description": "Search by feedlot name or owner"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "description": "Maximum results",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Maximum results"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Pagination offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Pagination offset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/models__api_responses__PackageSummary"
+                  },
+                  "title": "Response List Packages Dashboard Packages Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/packages/{package_id}": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Package Details",
+        "description": "Returns complete package details including all invoices.",
+        "operationId": "get_package_dashboard_packages__package_id__get",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Package identifier",
+              "title": "Package Id"
+            },
+            "description": "Package identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/packages/{package_id}/invoices": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "List Package Invoices",
+        "description": "Returns all invoices in a package.",
+        "operationId": "list_package_invoices_dashboard_packages__package_id__invoices_get",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Package identifier",
+              "title": "Package Id"
+            },
+            "description": "Package identifier"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/InvoiceStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by invoice status",
+              "title": "Status"
+            },
+            "description": "Filter by invoice status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceSummary"
+                  },
+                  "title": "Response List Package Invoices Dashboard Packages  Package Id  Invoices Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/packages/{package_id}/invoices/{invoice_id}": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Invoice Details",
+        "description": "Returns complete invoice details including line items, validation, and reconciliation.",
+        "operationId": "get_package_invoice_dashboard_packages__package_id__invoices__invoice_id__get",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Package identifier",
+              "title": "Package Id"
+            },
+            "description": "Package identifier"
+          },
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Invoice identifier",
+              "title": "Invoice Id"
+            },
+            "description": "Invoice identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/drilldown": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Get Drilldown Data",
+        "description": "Returns filtered drilldown data with recommended focus target.",
+        "operationId": "get_drilldown_dashboard_drilldown_get",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Drilldown type: stage, reason, check, role",
+              "title": "Type"
+            },
+            "description": "Drilldown type: stage, reason, check, role"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Specific ID to filter by",
+              "title": "Id"
+            },
+            "description": "Specific ID to filter by"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Period filter (e.g., '2025-11')",
+              "title": "Period"
+            },
+            "description": "Period filter (e.g., '2025-11')"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrilldownResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/packages/{package_id}/approve": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Approve Package",
+        "description": "Approve an entire package for posting to ERP.",
+        "operationId": "approve_package_dashboard_packages__package_id__approve_post",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Package identifier",
+              "title": "Package Id"
+            },
+            "description": "Package identifier"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ApprovalAction"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Action"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/invoices/{invoice_id}/approve": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Approve Invoice",
+        "description": "Approve a single invoice for posting.",
+        "operationId": "approve_invoice_dashboard_invoices__invoice_id__approve_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Invoice identifier",
+              "title": "Invoice Id"
+            },
+            "description": "Invoice identifier"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ApprovalAction"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Action"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/invoices/{invoice_id}/review-decision": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Submit Review Decision",
+        "description": "Submit a human review decision for an invoice.",
+        "operationId": "submit_review_decision_dashboard_invoices__invoice_id__review_decision_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Invoice identifier",
+              "title": "Invoice Id"
+            },
+            "description": "Invoice identifier"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ReviewDecision"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Decision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDecisionResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages": {
+      "post": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Create Package",
+        "description": "Create a new AP package.\n\nCreates an empty package ready to receive statement and invoice documents.",
+        "operationId": "create_package_packages_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PackageCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "List Packages",
+        "description": "List AP packages with optional filtering.",
+        "operationId": "list_packages_packages_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/api__routes__packages__PackageStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "vendor_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Vendor Code"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages/{package_id}": {
+      "get": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Get Package",
+        "description": "Get a specific AP package by ID.",
+        "operationId": "get_package_packages__package_id__get",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Delete Package",
+        "description": "Delete an AP package.",
+        "operationId": "delete_package_packages__package_id__delete",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Delete Package Packages  Package Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages/{package_id}/summary": {
+      "get": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Get Package Summary",
+        "description": "Get processing summary for a package.",
+        "operationId": "get_package_summary_packages__package_id__summary_get",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages/{package_id}/statement": {
+      "post": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Upload Statement",
+        "description": "Upload a statement document to the package.",
+        "operationId": "upload_statement_packages__package_id__statement_post",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_statement_packages__package_id__statement_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Upload Statement Packages  Package Id  Statement Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages/{package_id}/invoices": {
+      "post": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Upload Invoices",
+        "description": "Upload invoice documents to the package.",
+        "operationId": "upload_invoices_packages__package_id__invoices_post",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_invoices_packages__package_id__invoices_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Upload Invoices Packages  Package Id  Invoices Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages/{package_id}/extract": {
+      "post": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Trigger Extraction",
+        "description": "Trigger extraction workflow for a package.",
+        "operationId": "trigger_extraction_packages__package_id__extract_post",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Trigger Extraction Packages  Package Id  Extract Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages/{package_id}/reconcile": {
+      "post": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Trigger Reconciliation",
+        "description": "Trigger reconciliation for a package.",
+        "operationId": "trigger_reconciliation_packages__package_id__reconcile_post",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Trigger Reconciliation Packages  Package Id  Reconcile Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packages/{package_id}/post": {
+      "post": {
+        "tags": [
+          "Packages"
+        ],
+        "summary": "Post To Erp",
+        "description": "Post package to ERP system.",
+        "operationId": "post_to_erp_packages__package_id__post_post",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Package Id"
+            }
+          },
+          {
+            "name": "connector_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "business_central",
+              "title": "Connector Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Post To Erp Packages  Package Id  Post Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices": {
+      "get": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "List Invoices",
+        "description": "List invoices with optional filtering.",
+        "operationId": "list_invoices_invoices_get",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Package Id"
+            }
+          },
+          {
+            "name": "vendor_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Vendor Code"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From Date"
+            }
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To Date"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice_id}": {
+      "get": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Get Invoice",
+        "description": "Get a specific invoice by ID.",
+        "operationId": "get_invoice_invoices__invoice_id__get",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Update Invoice",
+        "description": "Update invoice fields.\n\nUse this to set or override GL accounts, dimensions, etc.",
+        "operationId": "update_invoice_invoices__invoice_id__patch",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice_id}/lines/{line_index}": {
+      "patch": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Update Invoice Line",
+        "description": "Update a specific line item.",
+        "operationId": "update_invoice_line_invoices__invoice_id__lines__line_index__patch",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "line_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Line Index"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceLineUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice_id}/suggested-mappings": {
+      "get": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Get Suggested Mappings",
+        "description": "Get AI-suggested GL account mappings for an invoice.",
+        "operationId": "get_suggested_mappings_invoices__invoice_id__suggested_mappings_get",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Suggested Mappings Invoices  Invoice Id  Suggested Mappings Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice_id}/validate": {
+      "post": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Validate Invoice",
+        "description": "Run validation on an invoice.",
+        "operationId": "validate_invoice_invoices__invoice_id__validate_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Validate Invoice Invoices  Invoice Id  Validate Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice_id}/post": {
+      "post": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Post Invoice",
+        "description": "Post a single invoice to ERP.",
+        "operationId": "post_invoice_invoices__invoice_id__post_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "connector_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "business_central",
+              "title": "Connector Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Post Invoice Invoices  Invoice Id  Post Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "List Connectors",
+        "description": "List all available connectors and their status.",
+        "operationId": "list_connectors_connectors_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConnectorInfo"
+                  },
+                  "type": "array",
+                  "title": "Response List Connectors Connectors Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors/{connector_type}": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Get Connector Info",
+        "description": "Get information about a specific connector.",
+        "operationId": "get_connector_info_connectors__connector_type__get",
+        "parameters": [
+          {
+            "name": "connector_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Connector Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectorInfo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors/{connector_type}/configure": {
+      "post": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Configure Connector",
+        "description": "Configure an ERP connector.\n\nFor Business Central, auth_config should include:\n- tenant_id: Azure AD tenant ID\n- client_id: Application client ID\n- client_secret: Client secret\n\ncustom_settings can include:\n- environment: BC environment name (default: \"production\")\n- api_version: API version (default: \"v2.0\")",
+        "operationId": "configure_connector_connectors__connector_type__configure_post",
+        "parameters": [
+          {
+            "name": "connector_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Connector Type"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectorConfigRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectorConfigResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Remove Configuration",
+        "description": "Remove connector configuration.",
+        "operationId": "remove_configuration_connectors__connector_type__configure_delete",
+        "parameters": [
+          {
+            "name": "connector_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Connector Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Remove Configuration Connectors  Connector Type  Configure Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors/{connector_type}/test": {
+      "post": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Test Connection",
+        "description": "Test the connection to the ERP system.",
+        "operationId": "test_connection_connectors__connector_type__test_post",
+        "parameters": [
+          {
+            "name": "connector_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Connector Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionTestResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors/{connector_type}/entities/{entity_type}": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "List Erp Entities",
+        "description": "List entities (vendors, GL accounts, etc.) from the ERP.\n\nEntity types: vendor, gl_account, location, dimension",
+        "operationId": "list_erp_entities_connectors__connector_type__entities__entity_type__get",
+        "parameters": [
+          {
+            "name": "connector_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Connector Type"
+            }
+          },
+          {
+            "name": "entity_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Entity Type"
+            }
+          },
+          {
+            "name": "active_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Active Only"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Erp Entities Connectors  Connector Type  Entities  Entity Type  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors/{connector_type}/lookup/{entity_type}": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Lookup Entity",
+        "description": "Lookup a specific entity in the ERP.",
+        "operationId": "lookup_entity_connectors__connector_type__lookup__entity_type__get",
+        "parameters": [
+          {
+            "name": "connector_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Connector Type"
+            }
+          },
+          {
+            "name": "entity_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Entity Type"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Code"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Lookup Entity Connectors  Connector Type  Lookup  Entity Type  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/types": {
+      "get": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "List Mapping Types",
+        "description": "List available mapping types.",
+        "operationId": "list_mapping_types_mapping_types_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Response List Mapping Types Mapping Types Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/{mapping_type}/rules": {
+      "get": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "List Mapping Rules",
+        "description": "List all mapping rules for a type.",
+        "operationId": "list_mapping_rules_mapping__mapping_type__rules_get",
+        "parameters": [
+          {
+            "name": "mapping_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mapping Type"
+            }
+          },
+          {
+            "name": "include_defaults",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Include Defaults"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MappingRuleResponse"
+                  },
+                  "title": "Response List Mapping Rules Mapping  Mapping Type  Rules Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Create Mapping Rule",
+        "description": "Create a new mapping rule.",
+        "operationId": "create_mapping_rule_mapping__mapping_type__rules_post",
+        "parameters": [
+          {
+            "name": "mapping_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mapping Type"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MappingRuleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MappingRuleResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/{mapping_type}/rules/{rule_id}": {
+      "delete": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Delete Mapping Rule",
+        "description": "Delete a mapping rule.",
+        "operationId": "delete_mapping_rule_mapping__mapping_type__rules__rule_id__delete",
+        "parameters": [
+          {
+            "name": "mapping_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mapping Type"
+            }
+          },
+          {
+            "name": "rule_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rule Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Delete Mapping Rule Mapping  Mapping Type  Rules  Rule Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/{mapping_type}/test": {
+      "post": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Test Mapping",
+        "description": "Test a mapping lookup.",
+        "operationId": "test_mapping_mapping__mapping_type__test_post",
+        "parameters": [
+          {
+            "name": "mapping_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mapping Type"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MappingTestRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MappingTestResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/{mapping_type}/stats": {
+      "get": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Get Mapping Stats",
+        "description": "Get statistics for a mapping type.",
+        "operationId": "get_mapping_stats_mapping__mapping_type__stats_get",
+        "parameters": [
+          {
+            "name": "mapping_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mapping Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MappingStatsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/{mapping_type}/import": {
+      "post": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Import Rules",
+        "description": "Import multiple mapping rules.",
+        "operationId": "import_rules_mapping__mapping_type__import_post",
+        "parameters": [
+          {
+            "name": "mapping_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mapping Type"
+            }
+          },
+          {
+            "name": "replace",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Replace existing rules if true",
+              "default": false,
+              "title": "Replace"
+            },
+            "description": "Replace existing rules if true"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MappingRuleRequest"
+                },
+                "title": "Rules"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Import Rules Mapping  Mapping Type  Import Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/{mapping_type}/export": {
+      "get": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Export Rules",
+        "description": "Export mapping rules as JSON.",
+        "operationId": "export_rules_mapping__mapping_type__export_get",
+        "parameters": [
+          {
+            "name": "mapping_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mapping Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "title": "Response Export Rules Mapping  Mapping Type  Export Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mapping/batch-lookup": {
+      "post": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Batch Lookup",
+        "description": "Perform multiple mapping lookups at once.\n\nEach lookup should have 'mapping_type' and 'source_value' keys.",
+        "operationId": "batch_lookup_mapping_batch_lookup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "array",
+                "title": "Lookups"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Response Batch Lookup Mapping Batch Lookup Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/bc/start": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Start Bc Auth",
+        "description": "Start Business Central OAuth flow.\n\nRedirects the user to Microsoft login. After authentication,\nMicrosoft will redirect back to /api/auth/bc/callback.\n\n**Usage:**\n1. Call this endpoint (or redirect user to it)\n2. User logs in to Microsoft\n3. User grants consent\n4. Microsoft redirects to callback\n5. Tokens are stored securely\n\n**For browser redirect:**\nSimply redirect to: GET /api/auth/bc/start?tenant_id=...\n\n**For API usage:**\nGet the auth_url and redirect manually.",
+        "operationId": "start_bc_auth_api_auth_bc_start_get",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Azure AD tenant ID",
+              "title": "Tenant Id"
+            },
+            "description": "Azure AD tenant ID"
+          },
+          {
+            "name": "return_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Return URL after auth",
+              "title": "Return Url"
+            },
+            "description": "Return URL after auth"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartAuthResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/bc/start-redirect": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Start Bc Auth Redirect",
+        "description": "Start OAuth and immediately redirect to Microsoft login.\n\nUse this endpoint when you want automatic redirect (e.g., from a button).",
+        "operationId": "start_bc_auth_redirect_api_auth_bc_start_redirect_get",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tenant Id"
+            }
+          },
+          {
+            "name": "return_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Return Url"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/bc/callback": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Bc Auth Callback",
+        "description": "OAuth callback endpoint.\n\nMicrosoft redirects here after user authentication.\nThis endpoint exchanges the authorization code for tokens.\n\n**Note:** This is called by Microsoft, not by your frontend directly.",
+        "operationId": "bc_auth_callback_api_auth_bc_callback_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Code"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Error"
+            }
+          },
+          {
+            "name": "error_description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Error Description"
+            }
+          },
+          {
+            "name": "session_state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Session State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/bc/status": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get Bc Auth Status",
+        "description": "Check if Business Central is connected for a tenant.\n\nReturns connection status and token expiration info.",
+        "operationId": "get_bc_auth_status_api_auth_bc_status_get",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant ID to check",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant ID to check"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/bc/disconnect": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Disconnect Bc",
+        "description": "Disconnect Business Central for a tenant.\n\nRemoves stored tokens. User will need to re-authenticate.",
+        "operationId": "disconnect_bc_api_auth_bc_disconnect_post",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant ID to disconnect",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant ID to disconnect"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisconnectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/bc/refresh": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Refresh Bc Token",
+        "description": "Manually refresh the access token.\n\nNormally tokens are auto-refreshed, but this can be used\nto proactively refresh before a long operation.",
+        "operationId": "refresh_bc_token_api_auth_bc_refresh_get",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant ID",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/bc/config": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get Bc Auth Config",
+        "description": "Get OAuth configuration (non-sensitive).\n\nUseful for verifying setup and debugging.",
+        "operationId": "get_bc_auth_config_api_auth_bc_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentCommentary": {
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          },
+          "time_display": {
+            "type": "string",
+            "title": "Time Display",
+            "description": "Display time (e.g., '10:43 AM')"
+          },
+          "icon": {
+            "type": "string",
+            "title": "Icon",
+            "description": "Icon type: upload, extract, warn, info, review"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Short title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Detailed description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "timestamp",
+          "time_display",
+          "icon",
+          "title",
+          "description"
+        ],
+        "title": "AgentCommentary",
+        "description": "AI agent processing commentary entry."
+      },
+      "AlertItem": {
+        "properties": {
+          "alert_type": {
+            "$ref": "#/components/schemas/AlertType",
+            "description": "Alert severity"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Alert message"
+          },
+          "is_actionable": {
+            "type": "boolean",
+            "title": "Is Actionable",
+            "description": "Whether user can take action",
+            "default": false
+          },
+          "action_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Url",
+            "description": "URL for action if actionable"
+          }
+        },
+        "type": "object",
+        "required": [
+          "alert_type",
+          "message"
+        ],
+        "title": "AlertItem",
+        "description": "Alert/notification for stakeholder view."
+      },
+      "AlertType": {
+        "type": "string",
+        "enum": [
+          "success",
+          "info",
+          "warn",
+          "error"
+        ],
+        "title": "AlertType",
+        "description": "Alert severity types."
+      },
+      "ApprovalAction": {
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "enum": [
+              "invoice",
+              "package"
+            ],
+            "title": "Entity Type"
+          },
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id"
+          },
+          "approver_id": {
+            "type": "string",
+            "title": "Approver Id"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "entity_type",
+          "entity_id",
+          "approver_id"
+        ],
+        "title": "ApprovalAction",
+        "description": "Request to approve an invoice or package."
+      },
+      "ApprovalResult": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id"
+          },
+          "new_status": {
+            "type": "string",
+            "title": "New Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "posted_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posted At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "entity_id",
+          "new_status",
+          "message"
+        ],
+        "title": "ApprovalResult",
+        "description": "Result of an approval action."
+      },
+      "AuthStatusResponse": {
+        "properties": {
+          "connected": {
+            "type": "boolean",
+            "title": "Connected"
+          },
+          "tenant_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tenant Id"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "scopes": {
+            "items": {},
+            "type": "array",
+            "title": "Scopes",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "connected"
+        ],
+        "title": "AuthStatusResponse",
+        "description": "OAuth connection status."
+      },
+      "Body_upload_invoices_packages__package_id__invoices_post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "Body_upload_invoices_packages__package_id__invoices_post"
+      },
+      "Body_upload_statement_packages__package_id__statement_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_statement_packages__package_id__statement_post"
+      },
+      "ConnectionTestResult": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "latency_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Ms"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "message"
+        ],
+        "title": "ConnectionTestResult",
+        "description": "Result of a connection test."
+      },
+      "ConnectorConfigRequest": {
+        "properties": {
+          "base_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Url"
+          },
+          "company_id": {
+            "type": "string",
+            "title": "Company Id",
+            "description": "Company/tenant identifier in ERP"
+          },
+          "auth_config": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Auth Config",
+            "description": "Authentication configuration (varies by connector type)"
+          },
+          "custom_settings": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Custom Settings",
+            "description": "Connector-specific settings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_id",
+          "auth_config"
+        ],
+        "title": "ConnectorConfigRequest",
+        "description": "Request to configure a connector."
+      },
+      "ConnectorConfigResponse": {
+        "properties": {
+          "connector_type": {
+            "type": "string",
+            "title": "Connector Type"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ConnectorStatus"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "connector_type",
+          "status",
+          "message"
+        ],
+        "title": "ConnectorConfigResponse",
+        "description": "Response after configuring a connector."
+      },
+      "ConnectorInfo": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ConnectorStatus"
+          },
+          "is_configured": {
+            "type": "boolean",
+            "title": "Is Configured"
+          },
+          "last_connected": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Connected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "name",
+          "description",
+          "status",
+          "is_configured"
+        ],
+        "title": "ConnectorInfo",
+        "description": "Information about an available connector."
+      },
+      "ConnectorStatus": {
+        "type": "string",
+        "enum": [
+          "configured",
+          "not_configured",
+          "connected",
+          "disconnected",
+          "error"
+        ],
+        "title": "ConnectorStatus",
+        "description": "Connector status."
+      },
+      "DetailListItem": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "success",
+                  "warn",
+                  "error",
+                  "neutral"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "value"
+        ],
+        "title": "DetailListItem",
+        "description": "Single item in a detail list."
+      },
+      "DetailSection": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Section title"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DetailListItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "DetailSection",
+        "description": "Section of details for drilldown view."
+      },
+      "DisconnectResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "message"
+        ],
+        "title": "DisconnectResponse",
+        "description": "Response after disconnect."
+      },
+      "DrilldownResponse": {
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/StakeholderRole",
+            "description": "Stakeholder role"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "View title (e.g., 'Financial Overview')"
+          },
+          "icon": {
+            "type": "string",
+            "title": "Icon",
+            "description": "Icon identifier for the view"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/MetricItem"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "title": "Metrics"
+          },
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/AlertItem"
+            },
+            "type": "array",
+            "title": "Alerts"
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/DetailSection"
+            },
+            "type": "array",
+            "title": "Details"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "As Of",
+            "description": "Data freshness timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "title",
+          "icon",
+          "as_of"
+        ],
+        "title": "DrilldownResponse",
+        "description": "Role-based drilldown view data."
+      },
+      "ExtractedField": {
+        "properties": {
+          "field_name": {
+            "type": "string",
+            "title": "Field Name"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "confidence": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "description": "Confidence percentage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_name",
+          "value",
+          "confidence"
+        ],
+        "title": "ExtractedField",
+        "description": "Single extracted field with confidence."
+      },
+      "GLCodingEntry": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Line item description"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Expense category"
+          },
+          "gl_code": {
+            "type": "string",
+            "title": "Gl Code",
+            "description": "GL account code"
+          },
+          "status": {
+            "$ref": "#/components/schemas/GLMappingStatus",
+            "description": "Mapping status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "description",
+          "category",
+          "gl_code",
+          "status"
+        ],
+        "title": "GLCodingEntry",
+        "description": "GL coding for a line item."
+      },
+      "GLMappingStatus": {
+        "type": "string",
+        "enum": [
+          "mapped",
+          "suspense",
+          "unmapped"
+        ],
+        "title": "GLMappingStatus",
+        "description": "GL code mapping status."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "services": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Services"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "timestamp",
+          "version",
+          "services"
+        ],
+        "title": "HealthResponse",
+        "description": "Health check response."
+      },
+      "HumanReviewSummary": {
+        "properties": {
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count",
+            "description": "Total invoices needing review"
+          },
+          "total_dollars": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Dollars",
+            "description": "Total dollar amount needing review"
+          },
+          "by_reason": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewReasonSummary"
+            },
+            "type": "array",
+            "title": "By Reason"
+          },
+          "recent_items": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewQueueItem"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Recent Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_count",
+          "total_dollars"
+        ],
+        "title": "HumanReviewSummary",
+        "description": "Summary of all items awaiting human review."
+      },
+      "InvoiceDetailResponse": {
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "lot_number": {
+            "type": "string",
+            "title": "Lot Number"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount"
+          },
+          "status": {
+            "$ref": "#/components/schemas/InvoiceStatus"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "feed_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feed Type"
+          },
+          "head_count": {
+            "type": "integer",
+            "title": "Head Count"
+          },
+          "days_on_feed": {
+            "type": "integer",
+            "title": "Days On Feed"
+          },
+          "cost_per_head": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Cost Per Head"
+          },
+          "confidence": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          },
+          "extracted_fields": {
+            "items": {
+              "$ref": "#/components/schemas/ExtractedField"
+            },
+            "type": "array",
+            "title": "Extracted Fields"
+          },
+          "line_items": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLineItem"
+            },
+            "type": "array",
+            "title": "Line Items"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/InvoiceTotals"
+          },
+          "agent_commentary": {
+            "items": {
+              "$ref": "#/components/schemas/AgentCommentary"
+            },
+            "type": "array",
+            "title": "Agent Commentary"
+          },
+          "gl_coding": {
+            "items": {
+              "$ref": "#/components/schemas/GLCodingEntry"
+            },
+            "type": "array",
+            "title": "Gl Coding"
+          },
+          "validation_checks": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationCheck"
+            },
+            "type": "array",
+            "title": "Validation Checks"
+          },
+          "reconciliation": {
+            "$ref": "#/components/schemas/ReconciliationResult"
+          },
+          "source_pdf_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Pdf Url",
+            "description": "URL to source PDF"
+          },
+          "statement_highlight_region": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Statement Highlight Region",
+            "description": "Region to highlight in statement"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoice_id",
+          "lot_number",
+          "amount",
+          "status",
+          "head_count",
+          "days_on_feed",
+          "cost_per_head",
+          "confidence",
+          "totals",
+          "reconciliation"
+        ],
+        "title": "InvoiceDetailResponse",
+        "description": "Complete invoice detail for the detail panel."
+      },
+      "InvoiceLineItem": {
+        "properties": {
+          "line_id": {
+            "type": "integer",
+            "title": "Line Id",
+            "description": "Line item sequence number"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Line item description"
+          },
+          "gl_code": {
+            "type": "string",
+            "title": "Gl Code",
+            "description": "GL account code"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount",
+            "description": "Line item amount"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity",
+            "description": "Quantity"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit",
+            "description": "Unit of measure"
+          },
+          "rate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate",
+            "description": "Rate with unit (e.g., '0.45/HD/DAY')"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Category: FEED, YARDAGE, VET, etc."
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning",
+            "description": "Warning message if applicable"
+          }
+        },
+        "type": "object",
+        "required": [
+          "line_id",
+          "description",
+          "gl_code",
+          "amount",
+          "category"
+        ],
+        "title": "InvoiceLineItem",
+        "description": "Single line item from an invoice."
+      },
+      "InvoiceLineUpdateRequest": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total"
+          },
+          "gl_account": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gl Account"
+          }
+        },
+        "type": "object",
+        "title": "InvoiceLineUpdateRequest",
+        "description": "Request to update a specific line item."
+      },
+      "InvoiceListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "InvoiceListResponse",
+        "description": "Paginated list of invoices."
+      },
+      "InvoiceResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "package_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Package Id"
+          },
+          "invoice_number": {
+            "type": "string",
+            "title": "Invoice Number"
+          },
+          "invoice_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Date"
+          },
+          "vendor_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor Name"
+          },
+          "vendor_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor Code"
+          },
+          "feedlot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedlot"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
+          },
+          "lot_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lot Number"
+          },
+          "head_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Head Count"
+          },
+          "total_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Amount"
+          },
+          "line_items": {
+            "items": {
+              "$ref": "#/components/schemas/LineItemResponse"
+            },
+            "type": "array",
+            "title": "Line Items",
+            "default": []
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "extracted"
+          },
+          "validation_warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Validation Warnings",
+            "default": []
+          },
+          "erp_document_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Erp Document Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "package_id",
+          "invoice_number"
+        ],
+        "title": "InvoiceResponse",
+        "description": "Invoice response."
+      },
+      "InvoiceStatus": {
+        "type": "string",
+        "enum": [
+          "ready",
+          "review",
+          "blocked",
+          "processing"
+        ],
+        "title": "InvoiceStatus",
+        "description": "Invoice status values."
+      },
+      "InvoiceSummary": {
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id",
+            "description": "Invoice identifier (e.g., INV-13304)"
+          },
+          "lot_number": {
+            "type": "string",
+            "title": "Lot Number",
+            "description": "Lot identifier"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount",
+            "description": "Invoice total amount"
+          },
+          "status": {
+            "$ref": "#/components/schemas/InvoiceStatus",
+            "description": "Current invoice status"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Reason if status is review/blocked"
+          },
+          "feed_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feed Type",
+            "description": "Primary feed type"
+          },
+          "head_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Head Count",
+            "description": "Number of head"
+          },
+          "days_on_feed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days On Feed",
+            "description": "Days on feed"
+          },
+          "cost_per_head": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Head",
+            "description": "Cost per head"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence",
+            "description": "AI extraction confidence (0-100)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoice_id",
+          "lot_number",
+          "amount",
+          "status"
+        ],
+        "title": "InvoiceSummary",
+        "description": "Summary of an invoice for list display within a package."
+      },
+      "InvoiceTotals": {
+        "properties": {
+          "subtotal": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Subtotal",
+            "description": "Sum of line items before adjustments"
+          },
+          "adjustments": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Adjustments",
+            "description": "Total adjustments/credits"
+          },
+          "total": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total",
+            "description": "Final invoice total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subtotal",
+          "total"
+        ],
+        "title": "InvoiceTotals",
+        "description": "Invoice totals breakdown."
+      },
+      "InvoiceUpdateRequest": {
+        "properties": {
+          "vendor_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor Code"
+          },
+          "gl_account_overrides": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gl Account Overrides",
+            "description": "Map of line index to GL account code"
+          },
+          "dimension_overrides": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dimension Overrides"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "title": "InvoiceUpdateRequest",
+        "description": "Request to update invoice fields."
+      },
+      "LineItemResponse": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total"
+          },
+          "gl_account": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gl Account"
+          },
+          "dimension_values": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Dimension Values",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "required": [
+          "description"
+        ],
+        "title": "LineItemResponse",
+        "description": "Invoice line item response."
+      },
+      "MappingRuleRequest": {
+        "properties": {
+          "source_pattern": {
+            "type": "string",
+            "title": "Source Pattern",
+            "description": "Source value to match (exact or regex)"
+          },
+          "target_code": {
+            "type": "string",
+            "title": "Target Code",
+            "description": "Target ERP code"
+          },
+          "target_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Name",
+            "description": "Target name for reference"
+          },
+          "is_regex": {
+            "type": "boolean",
+            "title": "Is Regex",
+            "description": "Whether source_pattern is a regex",
+            "default": false
+          },
+          "is_default": {
+            "type": "boolean",
+            "title": "Is Default",
+            "description": "Whether this is a default fallback rule",
+            "default": false
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority",
+            "description": "Rule priority (higher = evaluated first)",
+            "default": 0
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source_pattern",
+          "target_code"
+        ],
+        "title": "MappingRuleRequest",
+        "description": "Request to create/update a mapping rule."
+      },
+      "MappingRuleResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "mapping_type": {
+            "type": "string",
+            "title": "Mapping Type"
+          },
+          "source_pattern": {
+            "type": "string",
+            "title": "Source Pattern"
+          },
+          "target_code": {
+            "type": "string",
+            "title": "Target Code"
+          },
+          "target_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Name"
+          },
+          "is_regex": {
+            "type": "boolean",
+            "title": "Is Regex"
+          },
+          "is_default": {
+            "type": "boolean",
+            "title": "Is Default"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "mapping_type",
+          "source_pattern",
+          "target_code",
+          "target_name",
+          "is_regex",
+          "is_default",
+          "priority",
+          "created_at",
+          "notes"
+        ],
+        "title": "MappingRuleResponse",
+        "description": "Mapping rule response."
+      },
+      "MappingStatsResponse": {
+        "properties": {
+          "mapping_type": {
+            "type": "string",
+            "title": "Mapping Type"
+          },
+          "total_rules": {
+            "type": "integer",
+            "title": "Total Rules"
+          },
+          "exact_rules": {
+            "type": "integer",
+            "title": "Exact Rules"
+          },
+          "regex_rules": {
+            "type": "integer",
+            "title": "Regex Rules"
+          },
+          "default_rules": {
+            "type": "integer",
+            "title": "Default Rules"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mapping_type",
+          "total_rules",
+          "exact_rules",
+          "regex_rules",
+          "default_rules"
+        ],
+        "title": "MappingStatsResponse",
+        "description": "Mapping statistics."
+      },
+      "MappingTestRequest": {
+        "properties": {
+          "source_value": {
+            "type": "string",
+            "title": "Source Value",
+            "description": "Value to look up"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source_value"
+        ],
+        "title": "MappingTestRequest",
+        "description": "Request to test a mapping."
+      },
+      "MappingTestResponse": {
+        "properties": {
+          "source_value": {
+            "type": "string",
+            "title": "Source Value"
+          },
+          "found": {
+            "type": "boolean",
+            "title": "Found"
+          },
+          "target_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Code"
+          },
+          "target_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Name"
+          },
+          "rule_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Id"
+          },
+          "match_type": {
+            "type": "string",
+            "title": "Match Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source_value",
+          "found",
+          "target_code",
+          "target_name",
+          "rule_id",
+          "match_type"
+        ],
+        "title": "MappingTestResponse",
+        "description": "Mapping test response."
+      },
+      "MetricItem": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Metric label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Display value (formatted)"
+          },
+          "raw_value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Value",
+            "description": "Raw numeric value if applicable"
+          },
+          "trend": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trend",
+            "description": "Trend indicator (e.g., '+12%', '-2')"
+          },
+          "trend_direction": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TrendDirection"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Trend direction for styling"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "value"
+        ],
+        "title": "MetricItem",
+        "description": "Single metric for dashboard display."
+      },
+      "MissionControlResponse": {
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "Period",
+            "description": "Current period (e.g., 'November 2025')"
+          },
+          "period_start": {
+            "type": "string",
+            "format": "date",
+            "title": "Period Start",
+            "description": "Period start date"
+          },
+          "period_end": {
+            "type": "string",
+            "format": "date",
+            "title": "Period End",
+            "description": "Period end date"
+          },
+          "last_sync": {
+            "type": "string",
+            "title": "Last Sync",
+            "description": "Relative time since last sync"
+          },
+          "last_sync_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Sync At",
+            "description": "Absolute sync timestamp"
+          },
+          "pipeline": {
+            "$ref": "#/components/schemas/PipelineSnapshot"
+          },
+          "human_review": {
+            "$ref": "#/components/schemas/HumanReviewSummary"
+          },
+          "packages": {
+            "items": {
+              "$ref": "#/components/schemas/models__api_responses__PackageSummary"
+            },
+            "type": "array",
+            "title": "Packages"
+          },
+          "today_stats": {
+            "$ref": "#/components/schemas/TodayStats"
+          },
+          "insights_available": {
+            "items": {
+              "$ref": "#/components/schemas/StakeholderRole"
+            },
+            "type": "array",
+            "title": "Insights Available",
+            "description": "Available insight views"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "period_start",
+          "period_end",
+          "last_sync",
+          "last_sync_at",
+          "pipeline",
+          "human_review",
+          "today_stats"
+        ],
+        "title": "MissionControlResponse",
+        "description": "Complete Mission Control dashboard response.\n\nThis is the primary API response for the main dashboard view.\nIt includes:\n- Period information\n- Pipeline state\n- Human review queue\n- Package list\n- Today's statistics\n- Role-based insights summary"
+      },
+      "PackageCreateRequest": {
+        "properties": {
+          "vendor_code": {
+            "type": "string",
+            "title": "Vendor Code",
+            "description": "Vendor code or identifier"
+          },
+          "feedlot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedlot",
+            "description": "Feedlot identifier"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "vendor_code"
+        ],
+        "title": "PackageCreateRequest",
+        "description": "Request to create a new AP package."
+      },
+      "PackageDetailHeader": {
+        "properties": {
+          "package_id": {
+            "type": "string",
+            "title": "Package Id"
+          },
+          "feedlot_name": {
+            "type": "string",
+            "title": "Feedlot Name"
+          },
+          "feedlot_code": {
+            "type": "string",
+            "title": "Feedlot Code"
+          },
+          "owner_name": {
+            "type": "string",
+            "title": "Owner Name"
+          },
+          "period": {
+            "type": "string",
+            "title": "Period",
+            "description": "Display period (e.g., 'November 2025')"
+          },
+          "statement_total": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Statement Total",
+            "description": "Total from statement"
+          },
+          "invoice_total": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Invoice Total",
+            "description": "Sum of all invoices"
+          },
+          "variance": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Variance",
+            "description": "Difference between statement and invoices"
+          },
+          "total_invoices": {
+            "type": "integer",
+            "title": "Total Invoices"
+          },
+          "ready_count": {
+            "type": "integer",
+            "title": "Ready Count"
+          },
+          "review_count": {
+            "type": "integer",
+            "title": "Review Count"
+          },
+          "blocked_count": {
+            "type": "integer",
+            "title": "Blocked Count"
+          },
+          "overall_confidence": {
+            "type": "integer",
+            "title": "Overall Confidence",
+            "description": "Overall AI confidence percentage (0-100)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "package_id",
+          "feedlot_name",
+          "feedlot_code",
+          "owner_name",
+          "period",
+          "statement_total",
+          "invoice_total",
+          "variance",
+          "total_invoices",
+          "ready_count",
+          "review_count",
+          "blocked_count",
+          "overall_confidence"
+        ],
+        "title": "PackageDetailHeader",
+        "description": "Extended package info for detail view header."
+      },
+      "PackageDetailResponse": {
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/PackageDetailHeader"
+          },
+          "invoices": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceSummary"
+            },
+            "type": "array",
+            "title": "Invoices"
+          },
+          "selected_invoice_detail": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InvoiceDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "header"
+        ],
+        "title": "PackageDetailResponse",
+        "description": "Complete package detail response for the package drill-down view.\n\nIncludes package header, invoice list, and reconciliation summary."
+      },
+      "PackageListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PackageResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "PackageListResponse",
+        "description": "Paginated list of packages."
+      },
+      "PackageResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "vendor_code": {
+            "type": "string",
+            "title": "Vendor Code"
+          },
+          "feedlot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedlot"
+          },
+          "status": {
+            "$ref": "#/components/schemas/api__routes__packages__PackageStatus"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "statement_count": {
+            "type": "integer",
+            "title": "Statement Count",
+            "default": 0
+          },
+          "invoice_count": {
+            "type": "integer",
+            "title": "Invoice Count",
+            "default": 0
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "default": []
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "vendor_code",
+          "feedlot",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "PackageResponse",
+        "description": "AP package response."
+      },
+      "PackageStatus": {
+        "type": "string",
+        "enum": [
+          "ready",
+          "review",
+          "blocked"
+        ],
+        "title": "PackageStatus",
+        "description": "Package status values."
+      },
+      "PackageSummary": {
+        "properties": {
+          "statement_total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Statement Total"
+          },
+          "invoice_total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Total"
+          },
+          "variance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variance"
+          },
+          "variance_percentage": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variance Percentage"
+          },
+          "line_item_count": {
+            "type": "integer",
+            "title": "Line Item Count"
+          },
+          "reconciliation_status": {
+            "type": "string",
+            "title": "Reconciliation Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "statement_total",
+          "invoice_total",
+          "variance",
+          "variance_percentage",
+          "line_item_count",
+          "reconciliation_status"
+        ],
+        "title": "PackageSummary",
+        "description": "Summary of package processing."
+      },
+      "PipelineSnapshot": {
+        "properties": {
+          "received": {
+            "$ref": "#/components/schemas/PipelineStageData"
+          },
+          "processing": {
+            "$ref": "#/components/schemas/PipelineStageData"
+          },
+          "auto_approved": {
+            "$ref": "#/components/schemas/PipelineStageData"
+          },
+          "human_review": {
+            "$ref": "#/components/schemas/PipelineStageData"
+          },
+          "ready_to_post": {
+            "$ref": "#/components/schemas/PipelineStageData"
+          },
+          "posted": {
+            "$ref": "#/components/schemas/PipelineStageData"
+          }
+        },
+        "type": "object",
+        "required": [
+          "received",
+          "processing",
+          "auto_approved",
+          "human_review",
+          "ready_to_post",
+          "posted"
+        ],
+        "title": "PipelineSnapshot",
+        "description": "Complete pipeline state snapshot."
+      },
+      "PipelineStage": {
+        "type": "string",
+        "enum": [
+          "received",
+          "processing",
+          "auto_approved",
+          "human_review",
+          "ready_to_post",
+          "posted"
+        ],
+        "title": "PipelineStage",
+        "description": "Invoice pipeline stages."
+      },
+      "PipelineStageData": {
+        "properties": {
+          "stage": {
+            "$ref": "#/components/schemas/PipelineStage"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "description": "Number of invoices in this stage"
+          },
+          "dollars": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Dollars",
+            "description": "Total dollar amount in this stage"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Display label for the stage"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color",
+            "description": "Color theme: info, success, warn, error, purple",
+            "default": "info"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "description": "Whether stage is currently processing",
+            "default": false
+          },
+          "is_highlighted": {
+            "type": "boolean",
+            "title": "Is Highlighted",
+            "description": "Whether stage needs attention",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "stage",
+          "count",
+          "dollars",
+          "label"
+        ],
+        "title": "PipelineStageData",
+        "description": "Single pipeline stage data."
+      },
+      "ReconciliationResult": {
+        "properties": {
+          "statement_amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Statement Amount",
+            "description": "Amount from statement"
+          },
+          "invoice_amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Invoice Amount",
+            "description": "Amount from invoice"
+          },
+          "variance": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Variance",
+            "description": "Difference"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReconciliationStatus",
+            "description": "Match status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "statement_amount",
+          "invoice_amount",
+          "variance",
+          "status"
+        ],
+        "title": "ReconciliationResult",
+        "description": "Invoice-to-statement reconciliation result."
+      },
+      "ReconciliationStatus": {
+        "type": "string",
+        "enum": [
+          "matched",
+          "variance",
+          "unmatched"
+        ],
+        "title": "ReconciliationStatus",
+        "description": "Reconciliation match status."
+      },
+      "ReviewDecision": {
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "reject",
+              "escalate"
+            ],
+            "title": "Decision"
+          },
+          "reviewer_id": {
+            "type": "string",
+            "title": "Reviewer Id"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "gl_overrides": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gl Overrides",
+            "description": "GL code overrides if any"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoice_id",
+          "decision",
+          "reviewer_id"
+        ],
+        "title": "ReviewDecision",
+        "description": "Human review decision."
+      },
+      "ReviewDecisionResult": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "new_status": {
+            "$ref": "#/components/schemas/InvoiceStatus"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "audit_id": {
+            "type": "string",
+            "title": "Audit Id",
+            "description": "Audit trail entry ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "invoice_id",
+          "new_status",
+          "message",
+          "audit_id"
+        ],
+        "title": "ReviewDecisionResult",
+        "description": "Result of a review decision."
+      },
+      "ReviewQueueItem": {
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id",
+            "description": "Invoice identifier (e.g., INV-13304)"
+          },
+          "lot_number": {
+            "type": "string",
+            "title": "Lot Number",
+            "description": "Lot identifier"
+          },
+          "feedlot": {
+            "type": "string",
+            "title": "Feedlot",
+            "description": "Feedlot name"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount",
+            "description": "Invoice amount"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "Reason for human review"
+          },
+          "time_ago": {
+            "type": "string",
+            "title": "Time Ago",
+            "description": "Relative time since queued (e.g., '5 min ago')"
+          },
+          "queued_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Queued At",
+            "description": "Absolute timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoice_id",
+          "lot_number",
+          "feedlot",
+          "amount",
+          "reason",
+          "time_ago",
+          "queued_at"
+        ],
+        "title": "ReviewQueueItem",
+        "description": "Single item in the human review queue."
+      },
+      "ReviewReasonSummary": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "Human-readable reason for review"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "description": "Number of invoices with this reason"
+          },
+          "dollars": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Dollars",
+            "description": "Total dollar amount"
+          },
+          "is_urgent": {
+            "type": "boolean",
+            "title": "Is Urgent",
+            "description": "Whether this requires urgent attention",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason",
+          "count",
+          "dollars"
+        ],
+        "title": "ReviewReasonSummary",
+        "description": "Summary of invoices grouped by review reason."
+      },
+      "StakeholderRole": {
+        "type": "string",
+        "enum": [
+          "CFO",
+          "COO",
+          "CIO",
+          "Accounting"
+        ],
+        "title": "StakeholderRole",
+        "description": "Stakeholder roles for role-based views."
+      },
+      "StartAuthResponse": {
+        "properties": {
+          "auth_url": {
+            "type": "string",
+            "title": "Auth Url"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In",
+            "default": 600
+          }
+        },
+        "type": "object",
+        "required": [
+          "auth_url",
+          "session_id"
+        ],
+        "title": "StartAuthResponse",
+        "description": "Response with authorization URL."
+      },
+      "TodayStats": {
+        "properties": {
+          "invoices_processed": {
+            "type": "integer",
+            "title": "Invoices Processed",
+            "description": "Invoices processed today"
+          },
+          "avg_processing_time": {
+            "type": "string",
+            "title": "Avg Processing Time",
+            "description": "Average processing time (e.g., '4.2 sec')"
+          },
+          "avg_processing_seconds": {
+            "type": "number",
+            "title": "Avg Processing Seconds",
+            "description": "Average processing time in seconds"
+          },
+          "auto_approval_rate": {
+            "type": "integer",
+            "title": "Auto Approval Rate",
+            "description": "Auto-approval percentage (0-100)"
+          },
+          "dollars_processed": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Dollars Processed",
+            "description": "Total dollars processed today"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoices_processed",
+          "avg_processing_time",
+          "avg_processing_seconds",
+          "auto_approval_rate",
+          "dollars_processed"
+        ],
+        "title": "TodayStats",
+        "description": "Today's processing statistics."
+      },
+      "TrendDirection": {
+        "type": "string",
+        "enum": [
+          "up",
+          "down",
+          "neutral",
+          "good",
+          "bad"
+        ],
+        "title": "TrendDirection",
+        "description": "Trend direction indicators."
+      },
+      "ValidationCheck": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field",
+            "description": "Field being validated"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ValidationStatus",
+            "description": "Check result"
+          },
+          "extracted": {
+            "type": "string",
+            "title": "Extracted",
+            "description": "Value extracted from document"
+          },
+          "matched": {
+            "type": "string",
+            "title": "Matched",
+            "description": "Value matched against (or '\u2014' if none)"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note",
+            "description": "Additional note if warn/fail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "status",
+          "extracted",
+          "matched"
+        ],
+        "title": "ValidationCheck",
+        "description": "Single validation check result."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ValidationStatus": {
+        "type": "string",
+        "enum": [
+          "pass",
+          "warn",
+          "fail"
+        ],
+        "title": "ValidationStatus",
+        "description": "Validation check status."
+      },
+      "api__routes__packages__PackageStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "extracting",
+          "validating",
+          "reconciling",
+          "needs_review",
+          "ready",
+          "posting",
+          "posted",
+          "failed"
+        ],
+        "title": "PackageStatus",
+        "description": "Status of an AP package."
+      },
+      "models__api_responses__PackageSummary": {
+        "properties": {
+          "package_id": {
+            "type": "string",
+            "title": "Package Id",
+            "description": "Package identifier (e.g., PKG-2025-1130-531)"
+          },
+          "feedlot_name": {
+            "type": "string",
+            "title": "Feedlot Name",
+            "description": "Feedlot display name"
+          },
+          "feedlot_code": {
+            "type": "string",
+            "title": "Feedlot Code",
+            "description": "Short feedlot code (e.g., BF2, MC1)"
+          },
+          "owner_name": {
+            "type": "string",
+            "title": "Owner Name",
+            "description": "Cattle owner name"
+          },
+          "total_invoices": {
+            "type": "integer",
+            "title": "Total Invoices",
+            "description": "Total invoices in package"
+          },
+          "total_lots": {
+            "type": "integer",
+            "title": "Total Lots",
+            "description": "Total unique lots"
+          },
+          "ready_count": {
+            "type": "integer",
+            "title": "Ready Count",
+            "description": "Invoices ready to post",
+            "default": 0
+          },
+          "review_count": {
+            "type": "integer",
+            "title": "Review Count",
+            "description": "Invoices needing review",
+            "default": 0
+          },
+          "blocked_count": {
+            "type": "integer",
+            "title": "Blocked Count",
+            "description": "Invoices blocked",
+            "default": 0
+          },
+          "total_dollars": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Dollars",
+            "description": "Total package amount"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PackageStatus",
+            "description": "Overall package status"
+          },
+          "statement_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Statement Date",
+            "description": "Statement date"
+          },
+          "last_activity": {
+            "type": "string",
+            "title": "Last Activity",
+            "description": "Relative time of last activity"
+          },
+          "last_activity_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Activity At",
+            "description": "Absolute timestamp of last activity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "package_id",
+          "feedlot_name",
+          "feedlot_code",
+          "owner_name",
+          "total_invoices",
+          "total_lots",
+          "total_dollars",
+          "status",
+          "statement_date",
+          "last_activity",
+          "last_activity_at"
+        ],
+        "title": "PackageSummary",
+        "description": "Summary of a feedlot package for list display."
+      }
+    }
+  }
+}

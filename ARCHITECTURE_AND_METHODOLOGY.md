@@ -279,7 +279,59 @@ When something fails:
 
 ---
 
-## 6. Key Learnings
+## 6. Frontend Architecture (Mission Control Dashboard)
+
+The frontend is a React-based single-page application providing visibility into the AP automation pipeline.
+
+### Tech Stack
+
+| Component | Technology | Version |
+|-----------|-----------|---------|
+| Framework | React | 18.x |
+| Language | TypeScript | 5.x |
+| Build Tool | Vite | 5.4.21 |
+| Styling | TailwindCSS | 3.x |
+| Routing | React Router DOM | 6.x |
+| Data Fetching | TanStack Query | 5.x |
+
+### Page Structure
+
+```
+Mission Control (/mission-control)
+├── Header: Period selector, stats banner
+├── PipelineFlow: 6-stage visualization (click → filter)
+├── HumanReviewPanel: Review queue with drill-down
+├── TodayStats + InsightsPanel: Metrics and AI insights
+└── PackagesPanel: Tabbed package table
+
+Package Detail (/packages/:id)
+├── PDFViewer (4 cols): Statement/invoice PDF
+├── InvoiceList (4 cols): Status badges, selection
+└── Quick Summary / Detail Panel (4 cols): 6-tab view
+```
+
+### Navigation Context System
+
+All navigation state is encoded in URL query parameters:
+
+| Parameter | Purpose | Example |
+|-----------|---------|---------|
+| `source` | Return destination | `mission-control` |
+| `filter` | Status filter | `review`, `ready`, `blocked` |
+| `focusInvoice` | Auto-select invoice | `INV-13304` |
+| `tab` | Active detail tab | `validation` |
+| `period` | Billing period | `2025-11` |
+
+**Benefits:**
+- Stateless navigation (no Redux/global state)
+- Deep linking support
+- Browser back/forward works correctly
+
+For detailed documentation, see: [docs/FRONTEND_ARCHITECTURE.md](docs/FRONTEND_ARCHITECTURE.md)
+
+---
+
+## 7. Key Learnings
 
 ### What Worked Well
 
@@ -287,12 +339,15 @@ When something fails:
 - **Environment-Based Configuration**: Using `TEMPORAL_API_KEY` env var for credentials is clean and secure
 - **Layered Verification**: Testing each component in isolation before integration testing
 - **Independent Processes**: Keeping worker and client as completely separate processes prevents interference
+- **Query Param Navigation**: Encoding navigation state in URLs avoids complex state management
 
 ### What To Avoid
 
 - **Catching CancelledError**: Python's asyncio uses this for control flow, not for error handling
 - **Shared Connection Lifecycle**: Don't let client connection closure affect worker connection
 - **Mixing Shell Commands**: PowerShell has different idioms than bash - stick to one or abstract them
+- **Type Mismatches**: Python `Optional[T]` must map to TypeScript `T | null`, not just `T?`
+- **Running Commands in Vite Terminal**: Terminal commands can kill the dev server
 
 ### Best Practices Established
 
@@ -301,10 +356,14 @@ When something fails:
 3. Keep long-running processes in separate terminals/processes
 4. Log everything with timestamps for easy debugging
 5. Use environment variables for sensitive credentials
+6. Validate API contracts between backend and frontend
+7. Use URL query params for navigation context
 
 ---
 
-## 7. Technical Stack Summary
+## 8. Technical Stack Summary
+
+### Backend (Temporal Workflows)
 
 | Component | Technology | Version |
 |-----------|-----------|---------|
@@ -313,21 +372,45 @@ When something fails:
 | Temporal SDK | temporalio | Latest |
 | Cloud Provider | Temporal Cloud | us-central1.gcp |
 | Authentication | mTLS | Via API Key |
-| Environment | Windows 11 | PowerShell 5.1 |
+| API Framework | FastAPI | Latest |
+
+### Frontend (Mission Control)
+
+| Component | Technology | Version |
+|-----------|-----------|---------|
+| Framework | React | 18.x |
+| Language | TypeScript | 5.x |
+| Build Tool | Vite | 5.4.21 |
+| Styling | TailwindCSS | 3.x |
+| Routing | React Router DOM | 6.x |
+| Data Fetching | TanStack Query | 5.x |
 
 ---
 
-## 8. Temporal Cloud Configuration
+## 9. Server Configuration
 
+### Backend
+```
+FastAPI:    http://127.0.0.1:8001
+Endpoint:   /dashboard, /dashboard/packages/:id
+Health:     /health
+```
+
+### Frontend
+```
+Vite Dev:   http://localhost:5173
+Proxy:      /api, /dashboard, /health → :8001
+```
+
+### Temporal Cloud
 ```
 Endpoint:   us-central1.gcp.api.temporal.io:7233
 Namespace:  skalable.ocfwk
 Task Queue: ap-default
 Auth:       mTLS (Certificate in TEMPORAL_API_KEY)
-Timeout:    30 seconds (default client timeout)
 ```
 
 ---
 
-**Document Last Updated**: January 7, 2026, 11:51 UTC  
-**Next Review**: After worker persistence testing
+**Document Last Updated**: January 9, 2026  
+**Next Review**: After WebSocket real-time updates implementation

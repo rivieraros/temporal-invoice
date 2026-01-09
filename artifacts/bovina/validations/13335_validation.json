@@ -1,0 +1,30 @@
+{
+  "invoice_number": "13335",
+  "ap_package_id": "pkg-4793db7a",
+  "status": "VALIDATED_PASS",
+  "passed": true,
+  "checks": [
+    {
+      "check_id": "B1_REQUIRED_FIELDS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 13335 has all required fields",
+      "evidence": {
+        "invoice_number": "13335"
+      }
+    },
+    {
+      "check_id": "B2_LINE_SUM",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 13335 line sum matches total",
+      "evidence": {
+        "invoice_number": "13335",
+        "line_sum": "5448.03",
+        "invoice_total": "5448.03",
+        "difference": "0.00"
+      }
+    }
+  ],
+  "validated_at": "2026-01-08T00:32:29.455605"
+}

@@ -1,0 +1,128 @@
+{
+  "invoice_number": "13330",
+  "entity_id": "BF2",
+  "vendor_ref": null,
+  "vendor_number": null,
+  "vendor_name": null,
+  "invoice_date": "2025-11-30",
+  "total_amount": "8517.37",
+  "is_complete": true,
+  "missing_mappings": [],
+  "missing_dimensions": [],
+  "warnings": [
+    "1 line(s) could not be categorized"
+  ],
+  "line_codings": [
+    {
+      "line_index": 0,
+      "description": "Feed & Rations",
+      "amount": "8487.61",
+      "category": "FEED",
+      "gl_ref": "5100-01",
+      "mapping_level": "entity",
+      "dimensions": [
+        {
+          "code": "FEEDLOT",
+          "value": "BF2",
+          "source": "feedlot.name (normalize)"
+        },
+        {
+          "code": "LOT",
+          "value": "20-3883",
+          "source": "invoice.lot_number (uppercase)"
+        },
+        {
+          "code": "OWNER",
+          "value": "531",
+          "source": "owner.number"
+        },
+        {
+          "code": "PERIOD",
+          "value": "2025-11",
+          "source": "invoice.invoice_date (yyyy_mm)"
+        },
+        {
+          "code": "ENTITY",
+          "value": "BF2",
+          "source": "entity.code"
+        }
+      ],
+      "is_complete": true,
+      "missing_dimensions": []
+    },
+    {
+      "line_index": 1,
+      "description": "TCFA DUES",
+      "amount": "12.09",
+      "category": "UNCATEGORIZED",
+      "gl_ref": "9999-00",
+      "mapping_level": "global",
+      "dimensions": [
+        {
+          "code": "FEEDLOT",
+          "value": "BF2",
+          "source": "feedlot.name (normalize)"
+        },
+        {
+          "code": "LOT",
+          "value": "20-3883",
+          "source": "invoice.lot_number (uppercase)"
+        },
+        {
+          "code": "OWNER",
+          "value": "531",
+          "source": "owner.number"
+        },
+        {
+          "code": "PERIOD",
+          "value": "2025-11",
+          "source": "invoice.invoice_date (yyyy_mm)"
+        },
+        {
+          "code": "ENTITY",
+          "value": "BF2",
+          "source": "entity.code"
+        }
+      ],
+      "is_complete": true,
+      "missing_dimensions": []
+    },
+    {
+      "line_index": 2,
+      "description": "CATTLE INSURANCE",
+      "amount": "17.67",
+      "category": "INSURANCE",
+      "gl_ref": "6200-00",
+      "mapping_level": "global",
+      "dimensions": [
+        {
+          "code": "FEEDLOT",
+          "value": "BF2",
+          "source": "feedlot.name (normalize)"
+        },
+        {
+          "code": "LOT",
+          "value": "20-3883",
+          "source": "invoice.lot_number (uppercase)"
+        },
+        {
+          "code": "OWNER",
+          "value": "531",
+          "source": "owner.number"
+        },
+        {
+          "code": "PERIOD",
+          "value": "2025-11",
+          "source": "invoice.invoice_date (yyyy_mm)"
+        },
+        {
+          "code": "ENTITY",
+          "value": "BF2",
+          "source": "entity.code"
+        }
+      ],
+      "is_complete": true,
+      "missing_dimensions": []
+    }
+  ]
+}

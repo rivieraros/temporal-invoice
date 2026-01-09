@@ -1,0 +1,30 @@
+{
+  "invoice_number": "13357",
+  "ap_package_id": "pkg-4793db7a",
+  "status": "VALIDATED_PASS",
+  "passed": true,
+  "checks": [
+    {
+      "check_id": "B1_REQUIRED_FIELDS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 13357 has all required fields",
+      "evidence": {
+        "invoice_number": "13357"
+      }
+    },
+    {
+      "check_id": "B2_LINE_SUM",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 13357 line sum matches total",
+      "evidence": {
+        "invoice_number": "13357",
+        "line_sum": "2154.95",
+        "invoice_total": "2154.95",
+        "difference": "0.00"
+      }
+    }
+  ],
+  "validated_at": "2026-01-08T00:32:33.708407"
+}

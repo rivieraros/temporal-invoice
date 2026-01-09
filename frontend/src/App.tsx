@@ -1,0 +1,18 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { Layout } from './components/Layout'
+import { MissionControlPage } from './pages/MissionControlPage'
+import { PackageDetailPage } from './pages/PackageDetailPage'
+
+function App() {
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Navigate to="/mission-control" replace />} />
+        <Route path="/mission-control" element={<MissionControlPage />} />
+        <Route path="/packages/:packageId" element={<PackageDetailPage />} />
+      </Routes>
+    </Layout>
+  )
+}
+
+export default App

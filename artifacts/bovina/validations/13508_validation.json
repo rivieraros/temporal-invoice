@@ -1,0 +1,30 @@
+{
+  "invoice_number": "13508",
+  "ap_package_id": "pkg-4793db7a",
+  "status": "VALIDATED_PASS",
+  "passed": true,
+  "checks": [
+    {
+      "check_id": "B1_REQUIRED_FIELDS",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 13508 has all required fields",
+      "evidence": {
+        "invoice_number": "13508"
+      }
+    },
+    {
+      "check_id": "B2_LINE_SUM",
+      "severity": "INFO",
+      "passed": true,
+      "message": "Invoice 13508 line sum matches total",
+      "evidence": {
+        "invoice_number": "13508",
+        "line_sum": "7995.87",
+        "invoice_total": "7995.87",
+        "difference": "0.00"
+      }
+    }
+  ],
+  "validated_at": "2026-01-08T00:32:40.718123"
+}

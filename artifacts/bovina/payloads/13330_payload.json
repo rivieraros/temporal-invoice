@@ -1,0 +1,50 @@
+{
+  "purchaseInvoice": {
+    "vendorNumber": null,
+    "vendorName": null,
+    "invoiceDate": "2025-11-30",
+    "vendorInvoiceNumber": "13330",
+    "status": "Draft"
+  },
+  "purchaseInvoiceLines": [
+    {
+      "lineNumber": 10000,
+      "description": "Feed & Rations",
+      "accountId": "5100-01",
+      "unitPrice": 8487.61,
+      "dimensions": {
+        "FEEDLOT": "BF2",
+        "LOT": "20-3883",
+        "OWNER": "531",
+        "PERIOD": "2025-11",
+        "ENTITY": "BF2"
+      }
+    },
+    {
+      "lineNumber": 20000,
+      "description": "TCFA DUES",
+      "accountId": "9999-00",
+      "unitPrice": 12.09,
+      "dimensions": {
+        "FEEDLOT": "BF2",
+        "LOT": "20-3883",
+        "OWNER": "531",
+        "PERIOD": "2025-11",
+        "ENTITY": "BF2"
+      }
+    },
+    {
+      "lineNumber": 30000,
+      "description": "CATTLE INSURANCE",
+      "accountId": "6200-00",
+      "unitPrice": 17.67,
+      "dimensions": {
+        "FEEDLOT": "BF2",
+        "LOT": "20-3883",
+        "OWNER": "531",
+        "PERIOD": "2025-11",
+        "ENTITY": "BF2"
+      }
+    }
+  ]
+}

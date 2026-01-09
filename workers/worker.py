@@ -15,6 +15,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from temporal_client import get_temporal_client
 from workflows.ping_workflow import PingWorkflow
+from workflows.ap_package_workflow import APPackageWorkflow
+from workflows.invoice_workflow import InvoiceWorkflow
+from activities.persist import persist_package_started, persist_invoice, update_package_status, update_invoice_status
+from activities.extract import split_pdf, extract_statement, extract_invoice
+from activities.validate import validate_invoice
+from activities.reconcile import reconcile_package
+from activities.integrate import (
+    resolve_entity,
+    resolve_vendor,
+    apply_mapping_overlay,
+    build_bc_payload,
+    persist_audit_event,
+)
 
 
 logging.basicConfig(
@@ -49,14 +62,39 @@ async def run_worker():
         worker = Worker(
             client,
             task_queue=TASK_QUEUE,
-            workflows=[PingWorkflow],
-            activities=[],  # No activities yet
+            workflows=[PingWorkflow, APPackageWorkflow, InvoiceWorkflow],
+            activities=[
+                # Persistence activities
+                persist_package_started,
+                persist_invoice,
+                update_package_status,
+                update_invoice_status,
+                
+                # Extraction activities
+                split_pdf,
+                extract_statement,
+                extract_invoice,
+                
+                # Validation activities
+                validate_invoice,
+                
+                # Reconciliation activities
+                reconcile_package,
+                
+                # Integration activities (new)
+                resolve_entity,
+                resolve_vendor,
+                apply_mapping_overlay,
+                build_bc_payload,
+                persist_audit_event,
+            ],
         )
         
         logger.info(f"Worker created with:")
         logger.info(f"  - Namespace: {client.namespace}")
         logger.info(f"  - Task queue: {TASK_QUEUE}")
-        logger.info(f"  - Workflows: 1 (PingWorkflow)")
+        logger.info(f"  - Workflows: 3 (PingWorkflow, APPackageWorkflow, InvoiceWorkflow)")
+        logger.info(f"  - Activities: 14 (persist, extract, validate, reconcile, integrate)")
         
         # Run worker (blocks until interrupted)
         logger.info("Worker running... (Ctrl+C to stop)")
