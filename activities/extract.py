@@ -273,6 +273,9 @@ async def extract_statement(input: ExtractStatementInput) -> ExtractStatementOut
     
     activity.logger.info(f"Calling GPT-4o for statement extraction ({len(input.page_indices)} pages)...")
     
+    # Heartbeat before LLM call to signal we're still alive
+    activity.heartbeat("Starting GPT-4o extraction...")
+    
     # Extract statement using existing function
     statement = _extract_statement(
         pdf_path=pdf_path,
@@ -280,6 +283,9 @@ async def extract_statement(input: ExtractStatementInput) -> ExtractStatementOut
         statement_pages=input.page_indices,
         api_key=api_key,
     )
+    
+    # Heartbeat after LLM call
+    activity.heartbeat("GPT-4o extraction complete, saving...")
     
     # Save to artifacts
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -433,6 +439,9 @@ async def extract_invoice(input: ExtractInvoiceInput) -> ExtractInvoiceOutput:
     
     activity.logger.info(f"Calling GPT-4o for invoice extraction (page {input.page_index})...")
     
+    # Heartbeat before LLM call to signal we're still alive
+    activity.heartbeat(f"Starting GPT-4o extraction for page {input.page_index}...")
+    
     # Extract invoice using existing function
     invoice = _extract_invoice(
         pdf_path=pdf_path,
@@ -440,6 +449,9 @@ async def extract_invoice(input: ExtractInvoiceInput) -> ExtractInvoiceOutput:
         page_index=input.page_index,
         api_key=api_key,
     )
+    
+    # Heartbeat after LLM call
+    activity.heartbeat(f"GPT-4o extraction complete for invoice {invoice.invoice_number or 'unknown'}...")
     
     # Save to artifacts
     output_dir.mkdir(parents=True, exist_ok=True)

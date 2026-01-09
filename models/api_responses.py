@@ -144,6 +144,9 @@ class ReviewReasonSummary(ResponseBase):
     count: int = Field(..., description="Number of invoices with this reason")
     dollars: Decimal = Field(..., description="Total dollar amount")
     is_urgent: bool = Field(default=False, description="Whether this requires urgent attention")
+    check_id: Optional[str] = Field(default=None, description="Validation check ID for deterministic drilldown")
+    top_package_id: Optional[str] = Field(default=None, description="Package with most/highest $ items for this reason")
+    top_invoice_id: Optional[str] = Field(default=None, description="First invoice to focus when drilling down")
 
 
 class ReviewQueueItem(ResponseBase):
@@ -156,6 +159,7 @@ class ReviewQueueItem(ResponseBase):
     reason: str = Field(..., description="Reason for human review")
     time_ago: str = Field(..., description="Relative time since queued (e.g., '5 min ago')")
     queued_at: datetime = Field(..., description="Absolute timestamp")
+    check_id: Optional[str] = Field(default=None, description="Specific validation check that flagged this item")
 
 
 class HumanReviewSummary(ResponseBase):
@@ -205,6 +209,11 @@ class PackageSummary(ResponseBase):
     statement_date: date = Field(..., description="Statement date")
     last_activity: str = Field(..., description="Relative time of last activity")
     last_activity_at: datetime = Field(..., description="Absolute timestamp of last activity")
+    
+    # Primary issue info (for quick display in list)
+    primary_reason: Optional[str] = Field(default=None, description="Primary reason for review/blocked status")
+    reason_check_id: Optional[str] = Field(default=None, description="Check ID for drilldown targeting")
+    age_in_state: str = Field(default="0m", description="Time in current status (e.g., '4d', '12m')")
 
 
 class PackageDetailHeader(ResponseBase):
@@ -284,6 +293,43 @@ class AgentCommentary(ResponseBase):
     icon: str = Field(..., description="Icon type: upload, extract, warn, info, review")
     title: str = Field(..., description="Short title")
     description: str = Field(..., description="Detailed description")
+
+
+class TimelineEvent(ResponseBase):
+    """Rich timeline event for agent activity display."""
+    id: str = Field(..., description="Unique event identifier")
+    timestamp: datetime
+    time_display: str = Field(..., description="Display time (e.g., '10:43 AM')")
+    relative_time: str = Field(..., description="Relative time (e.g., '2 min ago')")
+    
+    # Event classification
+    event_type: str = Field(..., description="Event type: upload, extract, validate, resolve, code, reconcile, approve, reject, pause, resume, error")
+    severity: str = Field(default="info", description="Severity: info, success, warning, error")
+    
+    # Display content
+    title: str = Field(..., description="Short title")
+    description: str = Field(..., description="Detailed description")
+    
+    # Agent state
+    agent_state: Optional[str] = Field(default=None, description="Current agent state: processing, waiting, paused, complete")
+    pause_reason: Optional[str] = Field(default=None, description="Why agent paused (if applicable)")
+    
+    # Related entities
+    related_check: Optional[str] = Field(default=None, description="Related validation check ID")
+    related_field: Optional[str] = Field(default=None, description="Related field name")
+    
+    # Progress (optional)
+    progress_current: Optional[int] = Field(default=None, description="Current progress step")
+    progress_total: Optional[int] = Field(default=None, description="Total progress steps")
+
+
+class TimelineResponse(ResponseBase):
+    """Response for invoice timeline endpoint."""
+    invoice_id: str
+    events: List[TimelineEvent] = Field(default_factory=list)
+    current_state: str = Field(..., description="Current processing state: processing, waiting_for_human, paused, complete")
+    last_updated: datetime
+    polling_interval_ms: int = Field(default=15000, description="Recommended polling interval in milliseconds")
 
 
 class GLCodingEntry(ResponseBase):
@@ -504,6 +550,70 @@ class ReviewDecisionResult(ResponseBase):
 
 
 # =============================================================================
+# CONFIGURATION MODELS
+# =============================================================================
+
+class ConnectorStatus(str, Enum):
+    """ERP connector status."""
+    CONNECTED = "connected"
+    CONFIGURED = "configured"
+    NOT_CONFIGURED = "not_configured"
+    ERROR = "error"
+
+
+class ConnectorConfig(ResponseBase):
+    """ERP connector configuration."""
+    id: str
+    name: str
+    connector_type: str  # e.g., "business_central"
+    status: ConnectorStatus
+    tenant_id: Optional[str] = Field(None, description="Azure tenant ID (masked)")
+    client_id: Optional[str] = Field(None, description="App client ID (masked)")
+    company_id: Optional[str] = Field(None, description="BC company ID")
+    environment: str = Field("production", description="BC environment")
+    last_connected: Optional[datetime] = None
+    last_sync: Optional[datetime] = None
+    error_message: Optional[str] = None
+
+
+class EntityMapping(ResponseBase):
+    """Entity/company routing mapping."""
+    id: str
+    entity_name: str
+    entity_code: str
+    bc_company_id: str
+    aliases: List[str] = Field(default_factory=list)
+    routing_keys: List[str] = Field(default_factory=list)
+    default_dimensions: dict = Field(default_factory=dict)
+    is_active: bool = True
+    invoice_count: int = Field(0, description="Invoices processed for this entity")
+    last_used: Optional[datetime] = None
+
+
+class VendorMapping(ResponseBase):
+    """Vendor alias mapping."""
+    id: str
+    entity_id: str
+    entity_name: str
+    alias_normalized: str
+    alias_original: str
+    vendor_id: str
+    vendor_number: str
+    vendor_name: str
+    match_count: int = Field(0, description="Times this alias was matched")
+    created_by: str = "system"
+    created_at: Optional[datetime] = None
+
+
+class ConfigurationResponse(ResponseBase):
+    """Complete configuration state."""
+    connectors: List[ConnectorConfig]
+    entities: List[EntityMapping]
+    vendors: List[VendorMapping]
+    stats: dict = Field(default_factory=dict, description="Configuration statistics")
+
+
+# =============================================================================
 # EXPORT HELPERS
 # =============================================================================
 
@@ -543,6 +653,8 @@ __all__ = [
     "InvoiceLineItem",
     "InvoiceTotals",
     "AgentCommentary",
+    "TimelineEvent",
+    "TimelineResponse",
     "GLCodingEntry",
     "ValidationCheck",
     "ReconciliationResult",
@@ -563,4 +675,11 @@ __all__ = [
     "ApprovalResult",
     "ReviewDecision",
     "ReviewDecisionResult",
+    
+    # Configuration
+    "ConnectorConfig",
+    "ConnectorStatus",
+    "EntityMapping",
+    "VendorMapping",
+    "ConfigurationResponse",
 ]

@@ -33,6 +33,9 @@ export interface ReviewReasonSummary {
   count: number
   dollars: number
   is_urgent: boolean
+  check_id?: string                // Validation check ID for deterministic drilldown
+  top_package_id?: string          // Package with most/highest $ items for this reason
+  top_invoice_id?: string          // First invoice to focus when drilling down
 }
 
 export interface ReviewQueueItem {
@@ -44,6 +47,7 @@ export interface ReviewQueueItem {
   reason: string
   time_ago: string
   queued_at: string
+  check_id?: string                // Specific check that flagged this item
 }
 
 export interface HumanReviewSummary {
@@ -76,6 +80,9 @@ export interface PackageSummary {
   statement_date: string
   last_activity: string
   last_activity_at: string
+  primary_reason?: string           // Primary reason for review/blocked (e.g., "Entity unresolved")
+  reason_check_id?: string          // Check ID for drilldown targeting
+  age_in_state: string              // Compact age string (e.g., "4d", "12h", "35m")
 }
 
 export interface MissionControlResponse {
@@ -158,6 +165,41 @@ export interface AgentCommentary {
   description: string
 }
 
+export interface TimelineEvent {
+  id: string
+  timestamp: string
+  time_display: string
+  relative_time: string
+  
+  // Event classification
+  event_type: 'upload' | 'extract' | 'validate' | 'resolve' | 'code' | 'reconcile' | 'approve' | 'reject' | 'pause' | 'resume' | 'error'
+  severity: 'info' | 'success' | 'warning' | 'error'
+  
+  // Display content
+  title: string
+  description: string
+  
+  // Agent state
+  agent_state?: 'processing' | 'waiting' | 'paused' | 'complete'
+  pause_reason?: string
+  
+  // Related entities
+  related_check?: string
+  related_field?: string
+  
+  // Progress
+  progress_current?: number
+  progress_total?: number
+}
+
+export interface TimelineResponse {
+  invoice_id: string
+  events: TimelineEvent[]
+  current_state: 'processing' | 'waiting_for_human' | 'paused' | 'complete'
+  last_updated: string
+  polling_interval_ms: number
+}
+
 export interface GLCodingEntry {
   description: string
   category: string
@@ -236,4 +278,139 @@ export interface DrilldownResponse {
   alerts: AlertItem[]
   details: DetailSection[]
   as_of: string
+}
+
+// =============================================================================
+// CONFIGURATION TYPES
+// =============================================================================
+
+export type ConnectorStatusType = 'connected' | 'configured' | 'not_configured' | 'error'
+
+export interface ConnectorConfig {
+  id: string
+  name: string
+  connector_type: string
+  status: ConnectorStatusType
+  tenant_id?: string
+  client_id?: string
+  company_id?: string
+  environment: string
+  last_connected?: string
+  last_sync?: string
+  error_message?: string
+}
+
+export interface EntityMapping {
+  id: string
+  entity_name: string
+  entity_code: string
+  bc_company_id: string
+  aliases: string[]
+  routing_keys: string[]
+  default_dimensions: Record<string, string>
+  is_active: boolean
+  invoice_count: number
+  last_used?: string
+}
+
+export interface VendorMapping {
+  id: string
+  entity_id: string
+  entity_name: string
+  alias_normalized: string
+  alias_original: string
+  vendor_id: string
+  vendor_number: string
+  vendor_name: string
+  match_count: number
+  created_by: string
+  created_at?: string
+}
+
+export interface ConfigurationResponse {
+  connectors: ConnectorConfig[]
+  entities: EntityMapping[]
+  vendors: VendorMapping[]
+  stats: Record<string, number>
+}
+
+export interface ConnectorTestResult {
+  success: boolean
+  connector_id: string
+  latency_ms: number
+  message: string
+  details: Record<string, unknown>
+}
+
+// =============================================================================
+// OBSERVABILITY / TRACING TYPES
+// =============================================================================
+
+export interface WorkflowExecution {
+  workflow_id: string
+  run_id: string
+  workflow_type: string
+  status: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'TERMINATED'
+  started_at: string
+  completed_at?: string
+  duration_ms?: number
+  temporal_url: string
+}
+
+export interface ActivityExecution {
+  activity_id: string
+  activity_name: string
+  status: 'SCHEDULED' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'RETRYING'
+  attempt: number
+  started_at?: string
+  completed_at?: string
+  duration_ms?: number
+  error?: string
+  ap_package_id?: string
+  invoice_number?: string
+}
+
+export interface StageEvent {
+  stage: string
+  status: string
+  invoice_number?: string
+  timestamp: string
+  details?: Record<string, unknown>
+  error?: string
+}
+
+export interface TracingInfo {
+  ap_package_id: string
+  invoice_number?: string
+  workflow?: WorkflowExecution
+  child_workflows?: WorkflowExecution[]
+  activities: ActivityExecution[]
+  stages: StageEvent[]
+  temporal_url?: string
+  error?: string
+}
+
+export interface PipelineMetrics {
+  workflows: {
+    started: number
+    completed: number
+    failed: number
+    in_progress: number
+    by_type: Record<string, { started: number; completed: number; failed: number }>
+  }
+  activities: {
+    started: number
+    completed: number
+    failed: number
+    retries: number
+    by_name: Record<string, { started: number; completed: number; failed: number; retries: number }>
+  }
+  timings: {
+    overall: { average_ms: number; p95_ms: number }
+    by_stage: Record<string, { average_ms: number; p95_ms: number }>
+  }
+  queues: {
+    backlog: Record<string, number>
+    last_poll: Record<string, string>
+  }
 }

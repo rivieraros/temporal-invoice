@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Zap, Bell, Sun, Moon, Settings, Calendar, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 
@@ -10,6 +10,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const [isDark, setIsDark] = useState(true)
   const location = useLocation()
+  const navigate = useNavigate()
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-gray-50'}`}>
@@ -49,8 +50,11 @@ export function Layout({ children }: LayoutProps) {
             >
               {isDark ? <Sun size={20} className="text-slate-400" /> : <Moon size={20} className="text-gray-500" />}
             </button>
-            <button className={`p-2 rounded-lg ${isDark ? 'hover:bg-slate-700' : 'hover:bg-gray-100'}`}>
-              <Settings size={20} className={isDark ? 'text-slate-400' : 'text-gray-500'} />
+            <button 
+              onClick={() => navigate('/settings')}
+              className={`p-2 rounded-lg ${isDark ? 'hover:bg-slate-700' : 'hover:bg-gray-100'} ${location.pathname === '/settings' ? 'bg-slate-700' : ''}`}
+            >
+              <Settings size={20} className={location.pathname === '/settings' ? 'text-purple-400' : isDark ? 'text-slate-400' : 'text-gray-500'} />
             </button>
           </div>
         </div>

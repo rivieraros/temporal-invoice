@@ -2,6 +2,12 @@
 
 Main workflow that accepts a package input and coordinates extraction,
 reconciliation, and persistence activities.
+
+Audit Events Emitted (for each stage transition):
+- INGESTED: Package received and persisted
+- EXTRACTED: All invoices extracted
+- VALIDATED: All invoices validated
+- RECONCILED: Statement/invoice reconciliation complete
 """
 
 from dataclasses import dataclass
@@ -9,6 +15,45 @@ from datetime import timedelta
 from typing import List, Optional
 
 from temporalio import workflow
+from temporalio.common import RetryPolicy
+from temporalio.exceptions import ApplicationError
+
+# =============================================================================
+# Task Queues (separation for scale)
+# =============================================================================
+
+TASK_QUEUE_DEFAULT = "ap-default"          # DB/persistence activities
+TASK_QUEUE_LLM = "ap-llm"                  # LLM-heavy extraction activities  
+TASK_QUEUE_ERP = "ap-erp"                  # ERP/Business Central activities
+
+# =============================================================================
+# Retry Policies (rate-limit vs validation errors)
+# =============================================================================
+
+# For LLM activities: retry on rate-limit (429) and server errors (5xx)
+LLM_RETRY_POLICY = RetryPolicy(
+    maximum_attempts=5,
+    initial_interval=timedelta(seconds=2),
+    maximum_interval=timedelta(minutes=2),
+    backoff_coefficient=2.0,
+    # Non-retryable: validation errors, schema errors, auth errors
+    non_retryable_error_types=["ValidationError", "SchemaError", "AuthenticationError"],
+)
+
+# For DB activities: retry transient failures, fail fast on constraint errors
+DB_RETRY_POLICY = RetryPolicy(
+    maximum_attempts=3,
+    initial_interval=timedelta(seconds=1),
+    maximum_interval=timedelta(seconds=10),
+    backoff_coefficient=2.0,
+    non_retryable_error_types=["IntegrityError", "ConstraintError"],
+)
+
+# For reconciliation: limited retries, deterministic operation
+RECONCILE_RETRY_POLICY = RetryPolicy(
+    maximum_attempts=2,
+    initial_interval=timedelta(seconds=1),
+)
 
 with workflow.unsafe.imports_passed_through():
     from activities.persist import (
@@ -37,6 +82,14 @@ with workflow.unsafe.imports_passed_through():
         reconcile_package,
         ReconcilePackageInput,
     )
+    from activities.integrate import (
+        persist_audit_event,
+        AuditEventInput,
+    )
+    # Observability imports
+    from core.observability.tracing import store_workflow_id, update_workflow_status
+    from core.observability.metrics import record_workflow_started, record_workflow_completed, record_workflow_failed
+    from core.observability.logging import with_correlation
 
 
 @dataclass
@@ -78,9 +131,28 @@ class APPackageWorkflow:
         Returns:
             dict with workflow result including ap_package_id, status, and extraction results
         """
+        # Get workflow info for tracing
+        workflow_info = workflow.info()
+        wf_id = workflow_info.workflow_id
+        run_id = workflow_info.run_id
+        start_time = workflow_info.start_time
+        
         workflow.logger.info(f"Starting AP Package Workflow for {input.ap_package_id}")
+        workflow.logger.info(f"Workflow ID: {wf_id}, Run ID: {run_id}")
         workflow.logger.info(f"Feedlot type: {input.feedlot_type}")
         workflow.logger.info(f"PDF path: {input.pdf_path}")
+        
+        # Store workflow ID for UI tracing (best effort, don't fail workflow)
+        try:
+            store_workflow_id(
+                workflow_id=wf_id,
+                run_id=run_id,
+                workflow_type="APPackageWorkflow",
+                ap_package_id=input.ap_package_id,
+            )
+            record_workflow_started("APPackageWorkflow", wf_id)
+        except Exception as e:
+            workflow.logger.warning(f"Failed to store workflow ID: {e}")
         
         # Step 1: Persist package with STARTED status
         persist_input = PersistPackageInput(
@@ -93,9 +165,26 @@ class APPackageWorkflow:
             persist_package_started,
             persist_input,
             start_to_close_timeout=timedelta(seconds=30),
+            retry_policy=DB_RETRY_POLICY,
+            task_queue=TASK_QUEUE_DEFAULT,
         )
         
         workflow.logger.info(f"Package {input.ap_package_id} persisted with status: STARTED")
+        
+        # AUDIT: INGESTED stage
+        await workflow.execute_activity(
+            persist_audit_event,
+            AuditEventInput(
+                ap_package_id=input.ap_package_id,
+                invoice_number="*",  # Package-level event
+                stage="INGESTED",
+                status="SUCCESS",
+                details={"feedlot_type": input.feedlot_type, "pdf_path": input.pdf_path},
+            ),
+            start_to_close_timeout=timedelta(seconds=30),
+            retry_policy=DB_RETRY_POLICY,
+            task_queue=TASK_QUEUE_DEFAULT,
+        )
         
         # Step 2: Split PDF into statement and invoice pages
         split_input = SplitPdfInput(
@@ -108,6 +197,8 @@ class APPackageWorkflow:
             split_pdf,
             split_input,
             start_to_close_timeout=timedelta(seconds=60),
+            retry_policy=DB_RETRY_POLICY,  # Non-LLM, just PDF parsing
+            task_queue=TASK_QUEUE_DEFAULT,
         )
         
         workflow.logger.info(f"PDF split: {len(split_result.statement_pages)} statement pages, {len(split_result.invoice_pages)} invoice pages")
@@ -128,6 +219,9 @@ class APPackageWorkflow:
                 extract_statement,
                 statement_input,
                 start_to_close_timeout=timedelta(minutes=5),  # LLM calls can be slow
+                heartbeat_timeout=timedelta(seconds=60),  # Heartbeat every minute during LLM call
+                retry_policy=LLM_RETRY_POLICY,
+                task_queue=TASK_QUEUE_LLM,
             )
             
             statement_ref = statement_result.statement_ref
@@ -153,6 +247,9 @@ class APPackageWorkflow:
                 extract_invoice,
                 invoice_input,
                 start_to_close_timeout=timedelta(minutes=5),  # LLM calls can be slow
+                heartbeat_timeout=timedelta(seconds=60),  # Heartbeat every minute during LLM call
+                retry_policy=LLM_RETRY_POLICY,
+                task_queue=TASK_QUEUE_LLM,
             )
             
             invoice_results.append(invoice_result)
@@ -172,6 +269,8 @@ class APPackageWorkflow:
                 persist_invoice,
                 persist_invoice_input,
                 start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=DB_RETRY_POLICY,
+                task_queue=TASK_QUEUE_DEFAULT,
             )
             
             # Step 5b: Validate invoice (B1/B2 checks)
@@ -185,6 +284,8 @@ class APPackageWorkflow:
                 validate_invoice,
                 validate_input,
                 start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=DB_RETRY_POLICY,
+                task_queue=TASK_QUEUE_DEFAULT,
             )
             
             validation_results.append(validation_result)
@@ -201,9 +302,49 @@ class APPackageWorkflow:
                 update_invoice_status,
                 update_status_input,
                 start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=DB_RETRY_POLICY,
+                task_queue=TASK_QUEUE_DEFAULT,
             )
             
             workflow.logger.info(f"Invoice {invoice_result.invoice_number} validation: {validation_result.status}")
+        
+        # AUDIT: EXTRACTED stage (all invoices extracted)
+        await workflow.execute_activity(
+            persist_audit_event,
+            AuditEventInput(
+                ap_package_id=input.ap_package_id,
+                invoice_number="*",
+                stage="EXTRACTED",
+                status="SUCCESS",
+                details={
+                    "total_invoices": len(invoice_results),
+                    "invoice_numbers": [r.invoice_number for r in invoice_results],
+                },
+            ),
+            start_to_close_timeout=timedelta(seconds=30),
+            retry_policy=DB_RETRY_POLICY,
+            task_queue=TASK_QUEUE_DEFAULT,
+        )
+        
+        # AUDIT: VALIDATED stage (all invoices validated)
+        passed_count = sum(1 for v in validation_results if v.passed)
+        failed_count = len(validation_results) - passed_count
+        await workflow.execute_activity(
+            persist_audit_event,
+            AuditEventInput(
+                ap_package_id=input.ap_package_id,
+                invoice_number="*",
+                stage="VALIDATED",
+                status="SUCCESS" if failed_count == 0 else "PARTIAL",
+                details={
+                    "passed": passed_count,
+                    "failed": failed_count,
+                },
+            ),
+            start_to_close_timeout=timedelta(seconds=30),
+            retry_policy=DB_RETRY_POLICY,
+            task_queue=TASK_QUEUE_DEFAULT,
+        )
         
         # Step 6: Reconcile statement with invoices
         reconciliation_result = None
@@ -224,15 +365,32 @@ class APPackageWorkflow:
                 reconcile_package,
                 reconcile_input,
                 start_to_close_timeout=timedelta(minutes=2),
+                retry_policy=RECONCILE_RETRY_POLICY,
+                task_queue=TASK_QUEUE_DEFAULT,
             )
             
             workflow.logger.info(f"Reconciliation complete: {reconciliation_result.status}")
+            
+            # AUDIT: RECONCILED stage
+            await workflow.execute_activity(
+                persist_audit_event,
+                AuditEventInput(
+                    ap_package_id=input.ap_package_id,
+                    invoice_number="*",
+                    stage="RECONCILED",
+                    status=reconciliation_result.status,
+                    details={
+                        "passed_checks": reconciliation_result.passed_checks,
+                        "total_checks": reconciliation_result.total_checks,
+                        "blocking_issues": reconciliation_result.blocking_issues,
+                    },
+                ),
+                start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=DB_RETRY_POLICY,
+                task_queue=TASK_QUEUE_DEFAULT,
+            )
         
         # Step 7: Update package status based on reconciliation
-        # Count validation results
-        passed_count = sum(1 for v in validation_results if v.passed)
-        failed_count = len(validation_results) - passed_count
-        
         # Determine final status
         if reconciliation_result:
             final_status = reconciliation_result.status  # RECONCILED_PASS/WARN/FAIL
@@ -249,15 +407,28 @@ class APPackageWorkflow:
             update_package_status,
             update_input,
             start_to_close_timeout=timedelta(seconds=30),
+            retry_policy=DB_RETRY_POLICY,
+            task_queue=TASK_QUEUE_DEFAULT,
         )
         
         workflow.logger.info(f"Package {input.ap_package_id} complete with status: {final_status}")
         workflow.logger.info(f"Validation summary: {passed_count} passed, {failed_count} failed")
         
+        # Record workflow completion for metrics
+        try:
+            import time
+            duration_ms = (time.time() * 1000) - (start_time.timestamp() * 1000) if start_time else None
+            update_workflow_status(wf_id, run_id, "COMPLETED", duration_ms)
+            record_workflow_completed("APPackageWorkflow", wf_id, duration_ms)
+        except Exception as e:
+            workflow.logger.warning(f"Failed to record workflow completion: {e}")
+        
         result = {
             "ap_package_id": input.ap_package_id,
             "feedlot_type": input.feedlot_type,
             "status": final_status,
+            "workflow_id": wf_id,  # Include for UI tracing
+            "run_id": run_id,
             "statement_extracted": statement_ref is not None,
             "invoices_extracted": len(invoice_results),
             "invoices_validated_pass": passed_count,

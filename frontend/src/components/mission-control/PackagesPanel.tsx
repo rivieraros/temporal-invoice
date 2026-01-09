@@ -6,10 +6,10 @@ import {
   ChevronRight,
   AlertCircle,
   CheckCircle,
-  Clock,
   ArrowUpDown,
+  Timer,
 } from 'lucide-react'
-import { buildPackageUrl, parseNavigationContext } from '../../utils'
+import { buildPackageUrl, parseNavigationContext, inferTabFromContext } from '../../utils'
 import type { PackageSummary, PackageStatus } from '../../types'
 
 interface PackagesPanelProps {
@@ -18,7 +18,7 @@ interface PackagesPanelProps {
 }
 
 type TabFilter = 'all' | 'ready' | 'review' | 'blocked'
-type SortField = 'feedlot' | 'amount' | 'status' | 'activity'
+type SortField = 'feedlot' | 'amount' | 'status' | 'activity' | 'age'
 type SortDir = 'asc' | 'desc'
 
 const STATUS_CONFIG: Record<PackageStatus, { color: string; icon: React.ElementType }> = {
@@ -84,6 +84,17 @@ export function PackagesPanel({ packages, currentPeriod }: PackagesPanelProps) {
         case 'activity':
           cmp = new Date(a.last_activity_at).getTime() - new Date(b.last_activity_at).getTime()
           break
+        case 'age':
+          // Parse age strings (e.g., "4d", "12h", "35m") to minutes for comparison
+          const parseAge = (age: string): number => {
+            const value = parseInt(age.slice(0, -1)) || 0
+            const unit = age.slice(-1)
+            if (unit === 'd') return value * 24 * 60
+            if (unit === 'h') return value * 60
+            return value // minutes
+          }
+          cmp = parseAge(a.age_in_state) - parseAge(b.age_in_state)
+          break
       }
       return sortDir === 'asc' ? cmp : -cmp
     })
@@ -108,6 +119,29 @@ export function PackagesPanel({ packages, currentPeriod }: PackagesPanelProps) {
       period: currentPeriod,
       // If package needs review, default to validation tab
       tab: pkg.status === 'review' ? 'validation' : undefined,
+    }))
+  }
+
+  // Handler for clicking on a reason - triggers deterministic drilldown
+  const handleReasonClick = (pkg: PackageSummary, e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent row click
+    
+    if (!pkg.primary_reason) return
+    
+    // Infer the correct tab from reason/checkId
+    const tab = inferTabFromContext({
+      reason: pkg.primary_reason,
+      checkId: pkg.reason_check_id,
+    })
+    
+    navigate(buildPackageUrl(pkg.package_id, {
+      source: 'mission-control',
+      period: currentPeriod,
+      reason: pkg.primary_reason,
+      checkId: pkg.reason_check_id,
+      tab,
+      filter: 'review',
+      sort: 'impact',
     }))
   }
 
@@ -200,16 +234,17 @@ export function PackagesPanel({ packages, currentPeriod }: PackagesPanelProps) {
                   <ArrowUpDown size={12} />
                 </button>
               </th>
-              <th className="p-4 text-center">Progress</th>
-              <th className="p-4">
+              <th className="p-4">Reason</th>
+              <th className="p-4 text-center">
                 <button
-                  onClick={() => handleSort('activity')}
-                  className="flex items-center gap-1 hover:text-white transition-colors"
+                  onClick={() => handleSort('age')}
+                  className="flex items-center gap-1 mx-auto hover:text-white transition-colors"
                 >
-                  Last Activity
+                  Age
                   <ArrowUpDown size={12} />
                 </button>
               </th>
+              <th className="p-4 text-center">Progress</th>
               <th className="p-4"></th>
             </tr>
           </thead>
@@ -250,6 +285,29 @@ export function PackagesPanel({ packages, currentPeriod }: PackagesPanelProps) {
                     </div>
                   </td>
                   <td className="p-4">
+                    {pkg.primary_reason ? (
+                      <button
+                        onClick={(e) => handleReasonClick(pkg, e)}
+                        className="text-left text-sm text-amber-400 hover:text-amber-300 hover:underline transition-colors max-w-[180px] truncate"
+                        title={pkg.primary_reason}
+                      >
+                        {pkg.primary_reason}
+                      </button>
+                    ) : (
+                      <span className="text-slate-500 text-sm">—</span>
+                    )}
+                  </td>
+                  <td className="p-4 text-center">
+                    {pkg.status !== 'ready' ? (
+                      <div className="inline-flex items-center gap-1 text-sm font-medium text-slate-300">
+                        <Timer size={14} className="text-slate-400" />
+                        {pkg.age_in_state}
+                      </div>
+                    ) : (
+                      <span className="text-slate-500 text-sm">—</span>
+                    )}
+                  </td>
+                  <td className="p-4">
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-20 h-2 bg-slate-700 rounded-full overflow-hidden">
                         <div
@@ -260,12 +318,6 @@ export function PackagesPanel({ packages, currentPeriod }: PackagesPanelProps) {
                       <span className="text-xs text-slate-400">
                         {pkg.ready_count}/{pkg.total_invoices}
                       </span>
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1 text-sm text-slate-400">
-                      <Clock size={14} />
-                      {pkg.last_activity}
                     </div>
                   </td>
                   <td className="p-4">

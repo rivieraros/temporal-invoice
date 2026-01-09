@@ -8,11 +8,12 @@ import {
   Send,
   ChevronRight,
 } from 'lucide-react'
-import { buildMissionControlUrl } from '../../utils'
-import type { PipelineSnapshot, PipelineStageData } from '../../types'
+import { buildPackageUrl } from '../../utils'
+import type { PipelineSnapshot, PipelineStageData, PackageSummary } from '../../types'
 
 interface PipelineFlowProps {
   pipeline: PipelineSnapshot
+  packages: PackageSummary[]           // Pass packages for deterministic navigation
   currentPeriod?: string
   onStageClick?: (stage: string, count: number, dollars: number) => void
 }
@@ -32,16 +33,6 @@ const COLOR_CLASSES: Record<string, string> = {
   success: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20',
   warn: 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20',
   error: 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20',
-}
-
-// Map stage names to filter parameters
-const STAGE_TO_FILTER: Record<string, { status?: string; stage?: string }> = {
-  received: { stage: 'received' },
-  processing: { stage: 'processing' },
-  auto_approved: { status: 'ready', stage: 'auto_approved' },
-  human_review: { status: 'review' },
-  ready_to_post: { status: 'ready', stage: 'ready_to_post' },
-  posted: { stage: 'posted' },
 }
 
 function PipelineStageCard({
@@ -87,7 +78,7 @@ function PipelineStageCard({
   )
 }
 
-export function PipelineFlow({ pipeline, currentPeriod, onStageClick }: PipelineFlowProps) {
+export function PipelineFlow({ pipeline, packages, currentPeriod, onStageClick }: PipelineFlowProps) {
   const navigate = useNavigate()
 
   const stages: PipelineStageData[] = [
@@ -99,27 +90,74 @@ export function PipelineFlow({ pipeline, currentPeriod, onStageClick }: Pipeline
     pipeline.posted,
   ]
 
+  /**
+   * Find the top package for a given stage
+   * - For human_review: find package with status='review', sorted by $ (impact)
+   * - For other stages: find packages matching stage criteria
+   */
+  const findTopPackageForStage = (stageName: string): PackageSummary | undefined => {
+    let filtered: PackageSummary[] = []
+    
+    switch (stageName) {
+      case 'human_review':
+        // Packages needing human review (status=review or review_count > 0)
+        filtered = packages.filter(p => p.status === 'review' || p.review_count > 0)
+        // Sort by total dollars (highest impact first)
+        filtered.sort((a, b) => b.total_dollars - a.total_dollars)
+        break
+      
+      case 'ready_to_post':
+        // Packages that are ready (status=ready)
+        filtered = packages.filter(p => p.status === 'ready')
+        filtered.sort((a, b) => b.total_dollars - a.total_dollars)
+        break
+      
+      case 'processing':
+        // Currently processing (would need status field for this)
+        // For now, just return undefined to scroll to section
+        break
+      
+      case 'auto_approved':
+        // Auto-approved packages (ready status, no review items)
+        filtered = packages.filter(p => p.status === 'ready' && p.review_count === 0)
+        filtered.sort((a, b) => b.total_dollars - a.total_dollars)
+        break
+      
+      default:
+        // For received/posted, we may not have direct package mapping
+        break
+    }
+    
+    return filtered[0]
+  }
+
   const handleStageClick = (stage: PipelineStageData) => {
     // Call the callback if provided
     onStageClick?.(stage.stage, stage.count, stage.dollars)
 
-    // For human_review, scroll to the human review panel
+    // Find the top package for this stage
+    const topPackage = findTopPackageForStage(stage.stage)
+    
+    if (topPackage) {
+      // Determine which tab to open based on stage
+      const tabForStage = stage.stage === 'human_review' ? 'validation' : undefined
+      
+      navigate(buildPackageUrl(topPackage.package_id, {
+        source: 'mission-control',
+        filter: stage.stage === 'human_review' ? 'review' : 'ready',
+        tab: tabForStage,
+        period: currentPeriod,
+      }))
+      return
+    }
+
+    // Fallback: For human_review without a package, scroll to the human review panel
     if (stage.stage === 'human_review') {
       const element = document.getElementById('human-review-panel')
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' })
         return
       }
-    }
-
-    // Build navigation context based on stage
-    const filter = STAGE_TO_FILTER[stage.stage]
-    if (filter) {
-      navigate(buildMissionControlUrl({
-        filter: filter.status as 'ready' | 'review' | 'blocked' | undefined,
-        stage: filter.stage,
-        period: currentPeriod,
-      }))
     }
   }
 

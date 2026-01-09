@@ -66,6 +66,7 @@ export function MissionControlPage() {
       {/* 2. Pipeline Flow - Stage cards with click handlers */}
       <PipelineFlow
         pipeline={data.pipeline}
+        packages={data.packages}
         currentPeriod={currentPeriod}
         onStageClick={handleStageClick}
       />

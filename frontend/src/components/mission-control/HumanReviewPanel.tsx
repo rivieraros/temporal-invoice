@@ -1,26 +1,102 @@
 import { useNavigate } from 'react-router-dom'
 import { Hand, Eye, ChevronRight, AlertCircle, Clock } from 'lucide-react'
-import { buildPackageUrl, buildMissionControlUrl } from '../../utils'
+import { buildPackageUrl, inferTabFromContext } from '../../utils'
 import type { HumanReviewSummary, ReviewReasonSummary, ReviewQueueItem } from '../../types'
 
 interface HumanReviewPanelProps {
   review: HumanReviewSummary
-  packages: Array<{ package_id: string; status: string; review_count: number }>
+  packages: Array<{ package_id: string; status: string; review_count: number; total_dollars: number }>
   currentPeriod?: string
+}
+
+/**
+ * Find the best package to navigate to for a given reason
+ * Priority: highest $ package with invoices matching that reason
+ */
+function findTopPackageForReason(
+  reason: string,
+  packages: HumanReviewPanelProps['packages'],
+  recentItems: ReviewQueueItem[]
+): { packageId: string; invoiceId?: string } | null {
+  // First, look in recent items for an invoice with this exact reason
+  const matchingItem = recentItems.find(item => 
+    item.reason.toLowerCase().includes(reason.toLowerCase()) ||
+    reason.toLowerCase().includes(item.reason.toLowerCase())
+  )
+  
+  if (matchingItem) {
+    return {
+      packageId: matchingItem.package_id,
+      invoiceId: matchingItem.invoice_id,
+    }
+  }
+  
+  // Fallback: find the package with review items, sorted by $
+  const reviewPackages = packages
+    .filter(p => p.status === 'review' || p.review_count > 0)
+    .sort((a, b) => b.total_dollars - a.total_dollars)
+  
+  if (reviewPackages.length > 0) {
+    return { packageId: reviewPackages[0].package_id }
+  }
+  
+  return null
+}
+
+/**
+ * Find the oldest/most expensive review item
+ * Default: sort by age (oldest first), then by $ (highest first)
+ */
+function findOldestReviewItem(
+  packages: HumanReviewPanelProps['packages'],
+  recentItems: ReviewQueueItem[]
+): { packageId: string; invoiceId?: string } | null {
+  // Recent items are already sorted by time in the API
+  // The last item in the list is the oldest
+  if (recentItems.length > 0) {
+    const oldest = recentItems[recentItems.length - 1]
+    return {
+      packageId: oldest.package_id,
+      invoiceId: oldest.invoice_id,
+    }
+  }
+  
+  // Fallback to package with highest $ review items
+  const reviewPackages = packages
+    .filter(p => p.status === 'review' || p.review_count > 0)
+    .sort((a, b) => b.total_dollars - a.total_dollars)
+  
+  if (reviewPackages.length > 0) {
+    return { packageId: reviewPackages[0].package_id }
+  }
+  
+  return null
 }
 
 export function HumanReviewPanel({ review, packages, currentPeriod }: HumanReviewPanelProps) {
   const navigate = useNavigate()
 
-  // Find the first package with review items
+  // Find the first package with review items for "Review Now"
   // Priority 1: packages with status 'review' (have review invoices)
   // Priority 2: packages with review_count > 0 (may be blocked but have items needing review)
   const firstReviewPackage = packages.find((pkg) => pkg.status === 'review') ||
     packages.find((pkg) => pkg.review_count > 0)
 
   const handleReviewNow = () => {
-    if (firstReviewPackage) {
-      // Navigate to package with review context and validation tab open
+    // Find the oldest review item (most stale = highest priority)
+    const target = findOldestReviewItem(packages, review.recent_items)
+    
+    if (target) {
+      navigate(buildPackageUrl(target.packageId, {
+        source: 'mission-control',
+        filter: 'review',
+        focusInvoice: target.invoiceId,
+        tab: 'validation',
+        period: currentPeriod,
+        sort: 'age',
+      }))
+    } else if (firstReviewPackage) {
+      // Fallback: use any package with review items
       navigate(buildPackageUrl(firstReviewPackage.package_id, {
         source: 'mission-control',
         filter: 'review',
@@ -30,22 +106,41 @@ export function HumanReviewPanel({ review, packages, currentPeriod }: HumanRevie
     }
   }
 
-  const handleReasonClick = (reason: ReviewReasonSummary) => {
-    // Filter packages by review reason, focus on highest-$ item
-    navigate(buildMissionControlUrl({
-      filter: 'review',
-      reason: reason.reason,
-      period: currentPeriod,
-    }))
+  const handleReasonClick = (reasonSummary: ReviewReasonSummary) => {
+    // Find the top package with this reason, sorted by impact ($)
+    const target = findTopPackageForReason(
+      reasonSummary.reason,
+      packages,
+      review.recent_items
+    )
+    
+    if (target) {
+      // Infer which tab to open based on the reason
+      const inferredTab = inferTabFromContext({ reason: reasonSummary.reason })
+      
+      navigate(buildPackageUrl(target.packageId, {
+        source: 'mission-control',
+        filter: 'review',
+        focusInvoice: target.invoiceId,
+        tab: inferredTab,
+        reason: reasonSummary.reason,
+        period: currentPeriod,
+        sort: 'impact',
+      }))
+    }
   }
 
   const handleItemClick = (item: ReviewQueueItem) => {
     // Navigate directly to the package containing this invoice
-    // item.package_id gives us the exact package
+    // Infer tab from the item's reason
+    const inferredTab = inferTabFromContext({ reason: item.reason, checkId: item.check_id })
+    
     navigate(buildPackageUrl(item.package_id, {
       source: 'mission-control',
       focusInvoice: item.invoice_id,
-      tab: 'validation',
+      tab: inferredTab,
+      reason: item.reason,
+      checkId: item.check_id,
       period: currentPeriod,
     }))
   }

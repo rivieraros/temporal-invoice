@@ -14,10 +14,24 @@ import {
   ExternalLink,
   ThumbsUp,
   ThumbsDown,
+  Upload,
+  FileSearch,
+  Link,
+  Code,
+  Play,
+  Pause,
+  RefreshCw,
+  Clock,
+  Maximize2,
+  Activity,
 } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import type { InvoiceDetailResponse, InvoiceStatus, ValidationStatus, GLMappingStatus } from '../../types'
+import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+import type { InvoiceDetailResponse, InvoiceStatus, ValidationStatus, GLMappingStatus, TimelineResponse } from '../../types'
 import type { DetailTab } from '../../utils'
+import { buildEvidenceUrl } from '../../utils'
+import { fetchInvoiceTimeline } from '../../api/client'
+import TracingPanel from '../TracingPanel'
 
 interface DetailPanelProps {
   detail: InvoiceDetailResponse
@@ -27,6 +41,9 @@ interface DetailPanelProps {
   onReject?: (invoiceId: string) => void
   initialTab?: DetailTab
   onTabChange?: (tab: DetailTab) => void
+  highlightCheckId?: string              // Specific check to highlight/scroll to
+  packageId?: string                     // Package ID for timeline fetching
+  highlightReason?: string               // Reason text to match for highlighting
 }
 
 const STATUS_CONFIG: Record<InvoiceStatus, { icon: React.ElementType; color: string; bgColor: string; label: string }> = {
@@ -48,8 +65,61 @@ const GL_STATUS_COLORS: Record<GLMappingStatus, { color: string; bgColor: string
   unmapped: { color: 'text-red-400', bgColor: 'bg-red-500/10' },
 }
 
-export function DetailPanel({ detail, isLoading, onClose, onApprove, onReject, initialTab, onTabChange }: DetailPanelProps) {
+/**
+ * Check if a validation check should be highlighted based on checkId or reason
+ */
+function shouldHighlightCheck(
+  check: { field: string; status: string },
+  checkId?: string,
+  reason?: string
+): boolean {
+  if (!checkId && !reason) return false
+  
+  // Match by checkId (field name often contains the check type)
+  if (checkId) {
+    const checkIdLower = checkId.toLowerCase()
+    const fieldLower = check.field.toLowerCase()
+    if (fieldLower.includes(checkIdLower) || checkIdLower.includes(fieldLower)) {
+      return true
+    }
+  }
+  
+  // Match by reason text
+  if (reason) {
+    const reasonLower = reason.toLowerCase()
+    const fieldLower = check.field.toLowerCase()
+    if (fieldLower.includes(reasonLower) || reasonLower.includes(fieldLower)) {
+      return true
+    }
+  }
+  
+  // Also highlight non-passing checks when we have a reason (user came to investigate)
+  if (reason && check.status !== 'pass') {
+    return true
+  }
+  
+  return false
+}
+
+export function DetailPanel({ 
+  detail, 
+  isLoading, 
+  onClose, 
+  onApprove, 
+  onReject, 
+  initialTab, 
+  onTabChange,
+  highlightCheckId,
+  highlightReason,
+  packageId,
+}: DetailPanelProps) {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<DetailTab>(initialTab || 'validation')
+  
+  // Timeline state
+  const [timeline, setTimeline] = useState<TimelineResponse | null>(null)
+  const [timelineLoading, setTimelineLoading] = useState(false)
+  const [lastPolled, setLastPolled] = useState<Date | null>(null)
 
   // Update tab when initialTab changes
   useEffect(() => {
@@ -57,6 +127,35 @@ export function DetailPanel({ detail, isLoading, onClose, onApprove, onReject, i
       setActiveTab(initialTab)
     }
   }, [initialTab])
+
+  // Fetch timeline when commentary tab is active
+  const loadTimeline = useCallback(async () => {
+    if (!packageId || !detail.invoice_id) return
+    
+    setTimelineLoading(true)
+    try {
+      const data = await fetchInvoiceTimeline(packageId, detail.invoice_id)
+      setTimeline(data)
+      setLastPolled(new Date())
+    } catch (err) {
+      console.error('Failed to load timeline:', err)
+    } finally {
+      setTimelineLoading(false)
+    }
+  }, [packageId, detail.invoice_id])
+
+  // Initial load and polling for commentary tab
+  useEffect(() => {
+    if (activeTab !== 'commentary') return
+    
+    // Initial load
+    loadTimeline()
+    
+    // Set up polling (every 15 seconds)
+    const interval = setInterval(loadTimeline, 15000)
+    
+    return () => clearInterval(interval)
+  }, [activeTab, loadTimeline])
 
   const handleTabChange = (tab: DetailTab) => {
     setActiveTab(tab)
@@ -84,6 +183,7 @@ export function DetailPanel({ detail, isLoading, onClose, onApprove, onReject, i
     { key: 'gl-coding', label: 'GL Coding', icon: Hash },
     { key: 'evidence', label: 'Evidence', icon: FileText },
     { key: 'commentary', label: 'Commentary', icon: MessageSquare },
+    { key: 'tracing', label: 'Tracing', icon: Activity },
   ]
 
   return (
@@ -172,22 +272,47 @@ export function DetailPanel({ detail, isLoading, onClose, onApprove, onReject, i
           {/* Validation Tab */}
           {activeTab === 'validation' && (
             <div className="space-y-2">
-              {detail.validation_checks.map((check, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between p-3 bg-slate-900 rounded-lg"
-                >
-                  <div className="flex items-center gap-2">
-                    {check.status === 'pass' && <CheckCircle2 size={14} className="text-emerald-400" />}
-                    {check.status === 'warn' && <AlertTriangle size={14} className="text-amber-400" />}
-                    {check.status === 'fail' && <XCircle size={14} className="text-red-400" />}
-                    <span className="text-sm text-slate-300">{check.field}</span>
+              {detail.validation_checks.map((check, i) => {
+                const isHighlighted = shouldHighlightCheck(check, highlightCheckId, highlightReason)
+                const needsEvidence = check.status !== 'pass'
+                return (
+                  <div
+                    key={i}
+                    className={`p-3 rounded-lg transition-all ${
+                      isHighlighted
+                        ? 'bg-amber-500/20 ring-2 ring-amber-500/50 ring-offset-1 ring-offset-slate-800'
+                        : 'bg-slate-900'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {check.status === 'pass' && <CheckCircle2 size={14} className="text-emerald-400" />}
+                        {check.status === 'warn' && <AlertTriangle size={14} className="text-amber-400" />}
+                        {check.status === 'fail' && <XCircle size={14} className="text-red-400" />}
+                        <span className="text-sm text-slate-300">{check.field}</span>
+                        {isHighlighted && (
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/30 text-amber-300">
+                            FOCUS
+                          </span>
+                        )}
+                      </div>
+                      <span className={`text-xs font-medium ${VALIDATION_COLORS[check.status]}`}>
+                        {check.status.toUpperCase()}
+                      </span>
+                    </div>
+                    {/* Quick evidence link for WARN/FAIL */}
+                    {needsEvidence && packageId && (
+                      <button
+                        onClick={() => navigate(buildEvidenceUrl(packageId, detail.invoice_id))}
+                        className="mt-2 flex items-center gap-1.5 text-xs text-purple-400 hover:text-purple-300 transition-colors"
+                      >
+                        <FileSearch size={12} />
+                        View source evidence
+                      </button>
+                    )}
                   </div>
-                  <span className={`text-xs font-medium ${VALIDATION_COLORS[check.status]}`}>
-                    {check.status.toUpperCase()}
-                  </span>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
 
@@ -292,6 +417,17 @@ export function DetailPanel({ detail, isLoading, onClose, onApprove, onReject, i
           {/* Evidence Tab (Extracted Fields) */}
           {activeTab === 'evidence' && (
             <div className="space-y-2">
+              {/* View Full Evidence Button */}
+              {packageId && (
+                <button
+                  onClick={() => navigate(buildEvidenceUrl(packageId, detail.invoice_id))}
+                  className="w-full flex items-center justify-center gap-2 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 hover:text-purple-300 transition-colors font-medium"
+                >
+                  <Maximize2 size={16} />
+                  <span>View Full Evidence Page</span>
+                </button>
+              )}
+              
               {detail.extracted_fields.map((field, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-slate-900 rounded-lg">
                   <span className="text-sm text-slate-400">{field.field_name}</span>
@@ -320,10 +456,127 @@ export function DetailPanel({ detail, isLoading, onClose, onApprove, onReject, i
             </div>
           )}
 
-          {/* Commentary Tab */}
+          {/* Commentary Tab - Agent Timeline */}
           {activeTab === 'commentary' && (
-            <div className="space-y-3">
-              {detail.agent_commentary.length > 0 ? (
+            <div className="space-y-4">
+              {/* Timeline Header with Status */}
+              {timeline && (
+                <div className="flex items-center justify-between p-3 bg-slate-900 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-slate-400">Agent Status:</span>
+                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold ${
+                      timeline.current_state === 'complete' ? 'bg-emerald-500/20 text-emerald-400' :
+                      timeline.current_state === 'waiting_for_human' ? 'bg-amber-500/20 text-amber-400' :
+                      timeline.current_state === 'paused' ? 'bg-red-500/20 text-red-400' :
+                      'bg-blue-500/20 text-blue-400'
+                    }`}>
+                      {timeline.current_state === 'complete' && <CheckCircle2 size={12} />}
+                      {timeline.current_state === 'waiting_for_human' && <Pause size={12} />}
+                      {timeline.current_state === 'paused' && <AlertTriangle size={12} />}
+                      {timeline.current_state === 'processing' && <Loader size={12} className="animate-spin" />}
+                      {timeline.current_state.replace(/_/g, ' ').toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                    {lastPolled && (
+                      <>
+                        <Clock size={12} />
+                        <span>Updated {lastPolled.toLocaleTimeString()}</span>
+                      </>
+                    )}
+                    <button
+                      onClick={loadTimeline}
+                      disabled={timelineLoading}
+                      className="p-1 rounded hover:bg-slate-700 transition-colors"
+                      title="Refresh timeline"
+                    >
+                      <RefreshCw size={14} className={timelineLoading ? 'animate-spin' : ''} />
+                    </button>
+                  </div>
+                </div>
+              )}
+              
+              {/* Timeline Events */}
+              {timelineLoading && !timeline ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader className="animate-spin text-purple-500" size={24} />
+                </div>
+              ) : timeline && timeline.events.length > 0 ? (
+                <div className="relative">
+                  {/* Timeline Line */}
+                  <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-700" />
+                  
+                  {/* Events */}
+                  <div className="space-y-4">
+                    {timeline.events.map((event, i) => {
+                      // Icon mapping
+                      const iconConfig: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
+                        upload: { icon: Upload, color: 'text-blue-400', bg: 'bg-blue-500/20' },
+                        extract: { icon: FileSearch, color: 'text-purple-400', bg: 'bg-purple-500/20' },
+                        resolve: { icon: Link, color: 'text-cyan-400', bg: 'bg-cyan-500/20' },
+                        code: { icon: Code, color: 'text-indigo-400', bg: 'bg-indigo-500/20' },
+                        validate: { icon: ShieldCheck, color: event.severity === 'success' ? 'text-emerald-400' : event.severity === 'warning' ? 'text-amber-400' : 'text-red-400', bg: event.severity === 'success' ? 'bg-emerald-500/20' : event.severity === 'warning' ? 'bg-amber-500/20' : 'bg-red-500/20' },
+                        reconcile: { icon: Calculator, color: 'text-teal-400', bg: 'bg-teal-500/20' },
+                        approve: { icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/20' },
+                        reject: { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/20' },
+                        pause: { icon: Pause, color: 'text-amber-400', bg: 'bg-amber-500/20' },
+                        resume: { icon: Play, color: 'text-blue-400', bg: 'bg-blue-500/20' },
+                        error: { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/20' },
+                      }
+                      const config = iconConfig[event.event_type] || { icon: MessageSquare, color: 'text-slate-400', bg: 'bg-slate-500/20' }
+                      const Icon = config.icon
+                      
+                      const isLatest = i === timeline.events.length - 1
+                      
+                      return (
+                        <div key={event.id} className="relative flex gap-3 pl-1">
+                          {/* Timeline Node */}
+                          <div className={`flex-shrink-0 w-8 h-8 rounded-full ${config.bg} flex items-center justify-center ${config.color} z-10 ${isLatest && timeline.current_state !== 'complete' ? 'ring-2 ring-offset-2 ring-offset-slate-800 ring-purple-500/50' : ''}`}>
+                            <Icon size={14} />
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex-1 pb-4">
+                            <div className="p-3 bg-slate-900 rounded-lg">
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-sm font-medium text-white">{event.title}</span>
+                                <span className="text-xs text-slate-500">{event.relative_time}</span>
+                              </div>
+                              <p className="text-sm text-slate-400">{event.description}</p>
+                              
+                              {/* Progress indicator */}
+                              {event.progress_current && event.progress_total && (
+                                <div className="mt-2 flex items-center gap-2">
+                                  <div className="flex-1 h-1 bg-slate-700 rounded-full overflow-hidden">
+                                    <div 
+                                      className="h-full bg-purple-500 rounded-full transition-all"
+                                      style={{ width: `${(event.progress_current / event.progress_total) * 100}%` }}
+                                    />
+                                  </div>
+                                  <span className="text-xs text-slate-500">
+                                    {event.progress_current}/{event.progress_total}
+                                  </span>
+                                </div>
+                              )}
+                              
+                              {/* Pause reason callout */}
+                              {event.pause_reason && event.agent_state === 'waiting' && (
+                                <div className="mt-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                                  <div className="flex items-center gap-2 text-amber-400 text-xs font-medium">
+                                    <Pause size={12} />
+                                    Waiting for human decision
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              ) : detail.agent_commentary.length > 0 ? (
+                // Fallback to legacy commentary if no timeline
                 detail.agent_commentary.map((comment, i) => (
                   <div key={i} className="flex gap-3 p-3 bg-slate-900 rounded-lg">
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
@@ -341,10 +594,19 @@ export function DetailPanel({ detail, isLoading, onClose, onApprove, onReject, i
               ) : (
                 <div className="text-center text-slate-400 py-8">
                   <MessageSquare size={32} className="mx-auto mb-2 opacity-50" />
-                  <p>No agent commentary available</p>
+                  <p>No agent activity yet</p>
                 </div>
               )}
             </div>
+          )}
+
+          {/* Tracing Tab - Workflow Execution Info */}
+          {activeTab === 'tracing' && packageId && (
+            <TracingPanel
+              apPackageId={packageId}
+              invoiceNumber={detail.invoice_id}
+              className="bg-slate-900 border-slate-700"
+            />
           )}
         </div>
       </div>

@@ -73,6 +73,9 @@ MOCK_PACKAGES: Dict[str, dict] = {
         "status": PackageStatus.REVIEW,
         "last_activity_at": datetime.now() - timedelta(minutes=5),
         "overall_confidence": 96,
+        "primary_reason": "Entity unresolved",
+        "reason_check_id": "entity_unresolved",
+        "state_entered_at": datetime.now() - timedelta(hours=2),
     },
     "PKG-2025-11-MC1-001": {
         "package_id": "PKG-2025-11-MC1-001",
@@ -92,6 +95,9 @@ MOCK_PACKAGES: Dict[str, dict] = {
         "status": PackageStatus.REVIEW,
         "last_activity_at": datetime.now() - timedelta(minutes=12),
         "overall_confidence": 94,
+        "primary_reason": "GL in Suspense",
+        "reason_check_id": "gl_suspense",
+        "state_entered_at": datetime.now() - timedelta(hours=4),
     },
     "PKG-2025-11-PF3-001": {
         "package_id": "PKG-2025-11-PF3-001",
@@ -111,6 +117,9 @@ MOCK_PACKAGES: Dict[str, dict] = {
         "status": PackageStatus.READY,
         "last_activity_at": datetime.now() - timedelta(hours=1),
         "overall_confidence": 98,
+        "primary_reason": None,
+        "reason_check_id": None,
+        "state_entered_at": datetime.now() - timedelta(hours=1),
     },
     "PKG-2025-11-CF4-001": {
         "package_id": "PKG-2025-11-CF4-001",
@@ -130,6 +139,9 @@ MOCK_PACKAGES: Dict[str, dict] = {
         "status": PackageStatus.BLOCKED,
         "last_activity_at": datetime.now() - timedelta(hours=2),
         "overall_confidence": 87,
+        "primary_reason": "B2 variance $4,100",
+        "reason_check_id": "recon_variance",
+        "state_entered_at": datetime.now() - timedelta(days=1, hours=4),
     },
     "PKG-2025-11-BF2-002": {
         "package_id": "PKG-2025-11-BF2-002",
@@ -148,6 +160,9 @@ MOCK_PACKAGES: Dict[str, dict] = {
         "blocked_count": 0,
         "status": PackageStatus.READY,
         "last_activity_at": datetime.now() - timedelta(hours=3),
+        "primary_reason": None,
+        "reason_check_id": None,
+        "state_entered_at": datetime.now() - timedelta(hours=3),
         "overall_confidence": 99,
     },
     "PKG-2025-11-MC1-002": {
@@ -798,8 +813,26 @@ def _relative_time(dt: datetime) -> str:
     return "just now"
 
 
+def _age_in_state(dt: datetime) -> str:
+    """Convert datetime to compact age string (e.g., '4d', '12h', '35m')."""
+    delta = datetime.now() - dt
+    if delta.days > 0:
+        return f"{delta.days}d"
+    hours = delta.seconds // 3600
+    if hours > 0:
+        return f"{hours}h"
+    minutes = delta.seconds // 60
+    if minutes > 0:
+        return f"{minutes}m"
+    return "0m"
+
+
 def build_package_summary(pkg: dict) -> PackageSummary:
     """Build PackageSummary from mock data dict."""
+    # Calculate age in state
+    state_entered = pkg.get("state_entered_at", pkg["last_activity_at"])
+    age = _age_in_state(state_entered)
+    
     return PackageSummary(
         package_id=pkg["package_id"],
         feedlot_name=pkg["feedlot_name"],
@@ -815,6 +848,9 @@ def build_package_summary(pkg: dict) -> PackageSummary:
         statement_date=pkg["statement_date"],
         last_activity=_relative_time(pkg["last_activity_at"]),
         last_activity_at=pkg["last_activity_at"],
+        primary_reason=pkg.get("primary_reason"),
+        reason_check_id=pkg.get("reason_check_id"),
+        age_in_state=age,
     )
 
 

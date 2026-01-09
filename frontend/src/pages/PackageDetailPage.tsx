@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { usePackageDetail, useInvoiceDetail } from '../hooks'
 import {
@@ -18,7 +18,7 @@ import {
   Send,
   DollarSign,
 } from 'lucide-react'
-import { parseNavigationContext, getReturnUrl, type DetailTab } from '../utils'
+import { parseNavigationContext, getReturnUrl, inferTabFromContext, type DetailTab } from '../utils'
 import type { InvoiceSummary, PackageStatus } from '../types'
 
 // Derive package status from counts
@@ -28,6 +28,51 @@ function getPackageStatus(header: { ready_count: number; review_count: number; b
   return 'ready'
 }
 
+/**
+ * Find the best invoice to focus based on navigation context
+ */
+function findFocusInvoice(
+  invoices: InvoiceSummary[],
+  context: ReturnType<typeof parseNavigationContext>
+): InvoiceSummary | undefined {
+  // Priority 1: Exact invoice ID match
+  if (context.focusInvoice) {
+    const exact = invoices.find(inv => inv.invoice_id === context.focusInvoice)
+    if (exact) return exact
+  }
+  
+  // Priority 2: Match by reason (filter to invoices with matching reason)
+  if (context.reason) {
+    const reasonLower = context.reason.toLowerCase()
+    const reasonMatch = invoices.find(inv => 
+      inv.reason?.toLowerCase().includes(reasonLower) ||
+      reasonLower.includes(inv.reason?.toLowerCase() || '')
+    )
+    if (reasonMatch) return reasonMatch
+  }
+  
+  // Priority 3: Match by filter status
+  if (context.filter && context.filter !== 'all') {
+    const statusMatch = invoices.find(inv => inv.status === context.filter)
+    if (statusMatch) return statusMatch
+  }
+  
+  // Priority 4: If sort=impact, find highest $ review invoice
+  if (context.sort === 'impact') {
+    const reviewInvoices = invoices.filter(inv => inv.status === 'review')
+    if (reviewInvoices.length > 0) {
+      return reviewInvoices.sort((a, b) => b.amount - a.amount)[0]
+    }
+  }
+  
+  // Priority 5: If sort=age or default for review, find first review invoice
+  if (context.filter === 'review' || context.sort === 'age') {
+    return invoices.find(inv => inv.status === 'review')
+  }
+  
+  return undefined
+}
+
 export function PackageDetailPage() {
   const { packageId } = useParams<{ packageId: string }>()
   const [searchParams] = useSearchParams()
@@ -35,12 +80,21 @@ export function PackageDetailPage() {
   // Parse navigation context from query params
   const navContext = parseNavigationContext(searchParams)
   const returnTo = getReturnUrl(searchParams)
+  
+  // Determine which tab to open based on context
+  const initialTab = useMemo<DetailTab>(() => {
+    // Explicit tab in URL takes precedence
+    if (navContext.tab) return navContext.tab
+    // Otherwise infer from reason/checkId
+    return inferTabFromContext(navContext)
+  }, [navContext])
 
   // State
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceSummary | null>(null)
   const [showDetailPanel, setShowDetailPanel] = useState(false)
   const [detailInvoiceId, setDetailInvoiceId] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<DetailTab | undefined>(navContext.tab)
+  const [activeTab, setActiveTab] = useState<DetailTab>(initialTab)
+  const [hasAutoFocused, setHasAutoFocused] = useState(false)
 
   // Data fetching
   const { data, isLoading, error } = usePackageDetail(packageId!)
@@ -55,48 +109,36 @@ export function PackageDetailPage() {
     return getPackageStatus(data.header)
   }, [data])
 
-  // Auto-select invoice based on navigation context
+  // Auto-select invoice based on navigation context (runs once when data loads)
   useEffect(() => {
-    if (!data) return
-
-    // Priority 1: focusInvoice from URL
-    if (navContext.focusInvoice) {
-      const invoice = data.invoices.find((inv) => inv.invoice_id === navContext.focusInvoice)
-      if (invoice) {
-        setSelectedInvoice(invoice)
-        setDetailInvoiceId(invoice.invoice_id)
-        setShowDetailPanel(true)
-        return
-      }
+    if (!data || hasAutoFocused) return
+    
+    const focusInvoice = findFocusInvoice(data.invoices, navContext)
+    
+    if (focusInvoice) {
+      setSelectedInvoice(focusInvoice)
+      setDetailInvoiceId(focusInvoice.invoice_id)
+      setShowDetailPanel(true)
+      setActiveTab(initialTab)
+      setHasAutoFocused(true)
     }
-
-    // Priority 2: filter=review means auto-select first review invoice
-    if (navContext.filter === 'review') {
-      const reviewInvoice = data.invoices.find((inv) => inv.status === 'review')
-      if (reviewInvoice) {
-        setSelectedInvoice(reviewInvoice)
-        setDetailInvoiceId(reviewInvoice.invoice_id)
-        setShowDetailPanel(true)
-        return
-      }
-    }
-  }, [data, navContext.focusInvoice, navContext.filter])
+  }, [data, navContext, initialTab, hasAutoFocused])
 
   // Handlers
-  const handleInvoiceSelect = (invoice: InvoiceSummary) => {
+  const handleInvoiceSelect = useCallback((invoice: InvoiceSummary) => {
     setSelectedInvoice(invoice)
     // Close detail panel when selecting a different invoice
     if (showDetailPanel && detailInvoiceId !== invoice.invoice_id) {
       setShowDetailPanel(false)
       setDetailInvoiceId(null)
     }
-  }
+  }, [showDetailPanel, detailInvoiceId])
 
-  const handleDetailClick = (invoice: InvoiceSummary) => {
+  const handleDetailClick = useCallback((invoice: InvoiceSummary) => {
     setSelectedInvoice(invoice)
     setDetailInvoiceId(invoice.invoice_id)
     setShowDetailPanel(true)
-  }
+  }, [])
 
   const handleCloseDetail = () => {
     setShowDetailPanel(false)
@@ -279,6 +321,9 @@ export function PackageDetailPage() {
               onReject={handleReject}
               initialTab={activeTab}
               onTabChange={setActiveTab}
+              highlightCheckId={navContext.checkId}
+              highlightReason={navContext.reason}
+              packageId={packageId}
             />
           ) : (
             <QuickSummary

@@ -156,15 +156,35 @@ class InvoiceWorkflow:
             current_stage=InvoiceStage.RESOLVE_ENTITY.value,
         )
         
-        # Activity options
-        activity_options = {
+        # Activity options for ERP activities (resolve_entity, resolve_vendor, mapping, payload)
+        # These may be rate-limited by Business Central API
+        erp_activity_options = {
             "start_to_close_timeout": timedelta(minutes=2),
+            "retry_policy": RetryPolicy(
+                maximum_attempts=5,
+                initial_interval=timedelta(seconds=2),
+                maximum_interval=timedelta(minutes=1),
+                backoff_coefficient=2.0,
+                # Don't retry on validation/schema errors - these won't self-heal
+                non_retryable_error_types=["ValidationError", "SchemaError", "AuthenticationError"],
+            ),
+            "task_queue": "ap-erp",  # Separate queue for ERP activities
+        }
+        
+        # Activity options for DB activities (audit events)
+        db_activity_options = {
+            "start_to_close_timeout": timedelta(seconds=30),
             "retry_policy": RetryPolicy(
                 maximum_attempts=3,
                 initial_interval=timedelta(seconds=1),
                 backoff_coefficient=2.0,
+                non_retryable_error_types=["IntegrityError", "ConstraintError"],
             ),
+            "task_queue": "ap-default",
         }
+        
+        # Legacy activity_options for backwards compatibility
+        activity_options = erp_activity_options
         
         try:
             # =================================================================
